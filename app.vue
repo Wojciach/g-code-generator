@@ -31,16 +31,55 @@
         />
       </div>
 
-      <!-- Between Holes -->
+      <!-- x Between Holes -->
       <div class="mb-4">
-        <label for="holeSpacing" class="block text-gray-700">Spacing Between Holes (mm)</label>
+        <label for="holeXspacing" class="block text-gray-700"> X Spacing Between Holes (mm)</label>
         <input
-          v-model="matrix.spacing"
-          id="holeSpacing"
+          v-model="matrix.xSpacing"
+          id="holeXspacing"
           type="number"
           min="0"
           class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter spacing between holes"
+          placeholder="Enter spacing between holes in X"
+          required
+        />
+      </div>
+      <!-- y Between Holes -->
+      <div class="mb-4">
+        <label for="holeYspacing" class="block text-gray-700"> Y Spacing Between Holes (mm)</label>
+        <input
+          v-model="matrix.ySpacing"
+          id="holeYspacing"
+          type="number"
+          min="0"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="Enter spacing between holes in Y"
+          required
+        />
+      </div>
+      <!-- x Margin -->
+      <div class="mb-4">
+        <label for="xMargin" class="block text-gray-700"> X Margin (mm)</label>
+        <input
+          v-model="matrix.xMargin"
+          id="xMargin"
+          type="number"
+          min="0"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="X Margin"
+          required
+        />
+      </div>
+      <!-- y Margin -->
+      <div class="mb-4">
+        <label for="yMargin" class="block text-gray-700"> Y Margin (mm)</label>
+        <input
+          v-model="matrix.yMargin"
+          id="yMargin"
+          type="number"
+          min="0"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="Y Margin"
           required
         />
       </div>
@@ -75,7 +114,10 @@
       <ul>
         <li><strong>Number of Holes:</strong> {{ matrix.holes }}</li>
         <li><strong>Number of Rows:</strong> {{ matrix.rows }}</li>
-        <li><strong>Spacing Between Holes:</strong> {{ matrix.spacing }} mm</li>
+        <li><strong>Spacing Between Holes in X:</strong> {{ matrix.xSpacing }} mm</li>
+        <li><strong>Spacing Between Holes in Y:</strong> {{ matrix.ySpacing }} mm</li>
+        <li><strong>Margin X:</strong> {{ matrix.xMargin }} mm</li>
+        <li><strong>Margin Y:</strong> {{ matrix.yMargin }} mm</li>
         <li><strong>Hole Diameter:</strong> {{ matrix.diameter }} mm</li>
       </ul>
     </div>
@@ -96,14 +138,15 @@
 
         <!-- Circles -->
         <circle
-          v-for="n in matrix.xPositions"
-          :key="n"
-          :cx="n"
-          :cy="(matrix.diameter / 2) + matrix.spacing" 
+          v-for="n in matrix.xyPositions"
+          :key="`${n[0]}-${n[1]}`"
+          :cx="n[0]"
+          :cy="n[1]" 
           :r="matrix.diameter / 2" 
           fill="blue" />
       </svg>
     </div>
+    <DownloadButtons />
     <DownloadButton />
   </div>
 
@@ -113,7 +156,7 @@
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 
-const matrix = reactive(new MatrixOfHoles(3, 1, 1, 1));
+const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 
 const form = reactive({
   holes: 0,
@@ -124,8 +167,8 @@ const form = reactive({
 });
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matrix.spacing, () => matrix.width], ([newHoles, newRows, newDiameter, newSpacing]) => {
-  matrix.reCalculate(newHoles, newRows, newDiameter, newSpacing);
+watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matrix.xSpacing, () => matrix.ySpacing, () => matrix.xMargin, () => matrix.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
+  matrix.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
   console.log('watch function ran!')
 }, { deep: true });
 
@@ -135,11 +178,6 @@ const submitForm = () => {
   submitted.value = true;
   console.log(form);
 };
-
-
-
-
-
 
 </script>
 
