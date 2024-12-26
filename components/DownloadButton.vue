@@ -1,33 +1,42 @@
 <template>
     <div id='downloadButton'>
       <h1>Generate and Download Text File</h1>
-      <textarea id="textArea" ref="textArea" rows="10" cols="50" placeholder="Type your text here..."></textarea>
-      <br><br>
-      <button id="downloadButton" ref="myButton" @click="handleClick">Download as .txt</button>
+
+      <button class="btn" @click="handleClick">{{ name }}</button>
     </div>
+    
 </template>
 
 <script lang="ts" setup>
 
-  const myButton = ref<HTMLButtonElement | null>(null);
-  const textArea = ref<HTMLButtonElement | null>(null);
+  const props = defineProps<{
+    name: string;
+    svgRef: Ref<SVGSVGElement | null>;
+  }>();
 
     const handleClick = () => {
+      console.log(props.svgRef);
       
-      if(textArea.value) {
-        
-        const text = textArea.value.value;
-        const blob = new Blob([text], { type: "text/plain" });
+      if(props.svgRef) {
+        console.log('click handled');
+        const element = props.svgRef.outerHTML;
+        const blob = new Blob([element], { type: "image/svg+xml" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "output.txt";
+        a.download = "output.svg";
         a.click();
         URL.revokeObjectURL(a.href);
       }
+
+      
   }
 
 </script>
 
 <style>
+
+.btn {
+  @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition;
+}
 
 </style>
