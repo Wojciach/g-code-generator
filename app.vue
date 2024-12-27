@@ -124,7 +124,7 @@
 
     <!-- SVG Representation -->
     <div v-if="submitted" class="mt-6 flex justify-center">
-      <svg ref="SVGid" :viewBox="'0 0 ' + matrix.width + ' ' + matrix.height" xmlns="http://www.w3.org/2000/svg" class="border border-gray-600 bg-slate-400">
+      <svg ref="theSVG" :viewBox="'0 0 ' + matrix.width + ' ' + matrix.height" xmlns="http://www.w3.org/2000/svg" class="border border-gray-600 bg-slate-400">
         <rect 
           :x="0" 
           :y="0" 
@@ -144,7 +144,8 @@
           fill="blue" />
       </svg>
     </div>
-    <DownloadButton :name="'BUTON'" :svgRef="SVGid"/>
+    <DownloadSVG :svgRef="theSVG"/>
+    <DownloadDXF />
   </div>
 
 </template>
@@ -152,8 +153,8 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
-const SVGid = ref<SVGSVGElement | null>(null);
 
+const theSVG = ref<SVGSVGElement | null>(null);
 
 const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 
