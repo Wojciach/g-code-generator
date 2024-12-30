@@ -144,8 +144,11 @@
           fill="blue" />
       </svg>
     </div>
-    <DownloadSVG :svgRef="theSVG"/>
-    <DownloadDXF />
+    <div class="flex justify-center flex-row space-x-4 mt-6">
+      <DownloadSVG :svgRef="theSVG" />
+      <DownloadDXF :matrix="matrix" />
+      <DownloadG_CODE :matrix="matrix" />
+    </div>
   </div>
 
 </template>

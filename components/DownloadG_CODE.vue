@@ -1,13 +1,13 @@
 <template>
-    <div id='downloadDXF'>
-      <button class="btn" @click="handleClick">Download DXF</button>
+    <div id='downloadG_CODE'>
+      <button class="btn" @click="handleClick">Download G-CODE</button>
     </div>
     
 </template>
 
 <script lang="ts" setup>
-import { generateDXF } from '../utils/dxfGenerator';
-import type { MatrixOfHoles } from '@/utils/matrixOfHoles'; 
+import '../utils/G_CODE_Generator';
+import { MatrixOfHoles } from '../utils/matrixOfHoles';
 
 const props = defineProps<{
   matrix: MatrixOfHoles;
@@ -16,15 +16,17 @@ const props = defineProps<{
 
 const handleClick = () => {
 
-    const dxfContent = generateDXF(props.matrix);
+    const gCodeGenerator = new G_CODE_Generator(props.matrix, 100, 100);
+    const gCode = gCodeGenerator.generateFullG_CODE();
       
-      if(dxfContent) {
+      
+      if(gCode) {
         console.log('click handled');
-        const element = dxfContent;
-        const blob = new Blob([element], { type: "application/dxf" });
+        const element = gCode;
+        const blob = new Blob([element], { type: "text/plain" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "output.dxf";
+        a.download = "output.nc";
         a.click();
         URL.revokeObjectURL(a.href);
       }

@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 
   const props = defineProps<{
-    svgRef: Ref<SVGSVGElement | null>;
+    svgRef: Ref<SVGSVGElement>;
   }>();
 
     const handleClick = () => {

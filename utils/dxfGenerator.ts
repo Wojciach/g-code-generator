@@ -1,35 +1,6 @@
-interface DXFProperties {
-  width: number;
-  height: number;
-  numHoles: number;
-  holeDiameter: number;
-  numRows: number;
-  spacingX: number;
-  spacingY: number;
-  marginX: number;
-  marginY: number;
-}
+import type { MatrixOfHoles } from "./matrixOfHoles";
 
-export function generateDXF(props: DXFProperties): string {
-  const { width, height, numHoles, holeDiameter, numRows, spacingX, spacingY, marginX, marginY } = props;
-  const numCols = Math.ceil(numHoles / numRows);
-  const holes = [];
-
-  // Calculate the starting position
-  const startX = marginX + holeDiameter / 2;
-  const startY = marginY + holeDiameter / 2;
-
-  // Generate holes positions
-  for (let row = 0; row < numRows; row++) {
-    for (let col = 0; col < numCols; col++) {
-      const x = startX + col * spacingX;
-      const y = startY + row * spacingY;
-      if (holes.length < numHoles) {
-        holes.push({ x, y });
-      }
-    }
-  }
-
+export function generateDXF(props: MatrixOfHoles): string {
   // Generate DXF content
   let dxfContent = `
 0
@@ -42,6 +13,22 @@ ENDSEC
 SECTION
 2
 TABLES
+0
+TABLE
+2
+LAYER
+0
+LAYER
+2
+0
+70
+0
+62
+7
+6
+CONTINUOUS
+0
+ENDTAB
 0
 ENDSEC
 0
@@ -56,54 +43,86 @@ SECTION
 ENTITIES
 `;
 
-  // Add rectangle (LWPOLYLINE)
+  // Add rectangle (POLYLINE)
   dxfContent += `
 0
-LWPOLYLINE
+POLYLINE
 8
 0
-90
-4
+66
+1
 70
 1
+0
+VERTEX
+8
+0
 10
 0.0
 20
 0.0
+0
+VERTEX
+8
+0
 10
-${width}
+${props.width}
 20
 0.0
+0
+VERTEX
+8
+0
 10
-${width}
+${props.width}
 20
-${height}
+${props.height}
+0
+VERTEX
+8
+0
 10
 0.0
 20
-${height}
+${props.height}
+0
+VERTEX
+8
+0
+10
+0.0
+20
+0.0
+0
+SEQEND
+0
 `;
 
   // Add circles
-  holes.forEach(hole => {
+  props.xyPositions.forEach(hole => {
     dxfContent += `
 0
 CIRCLE
 8
 0
 10
-${hole.x}
+${hole[0]}
 20
-${hole.y}
+${hole[1]}
 30
 0.0
 40
-${holeDiameter / 2}
+${props.diameter / 2}
 `;
   });
 
-  // End of ENTITIES section
   dxfContent += `
+0
+ENDSEC
+0
+SECTION
+2
+OBJECTS
 0
 ENDSEC
 0
