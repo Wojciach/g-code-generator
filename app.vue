@@ -124,12 +124,12 @@
 
     <!-- SVG Representation -->
     <div v-if="submitted" class="mt-6 flex justify-center">
-      <svg ref="theSVG" :viewBox="'0 0 ' + matrix.width + ' ' + matrix.height" xmlns="http://www.w3.org/2000/svg" class="border border-gray-600 bg-slate-400">
+      <svg ref="theSVG" :viewBox="'0 0 ' + (matrix.width + steps.materialThickness * 2) + ' ' + (matrix.height + steps.materialThickness * 2)" xmlns="http://www.w3.org/2000/svg" class="border border-gray-600 bg-slate-400">
         <rect 
-          :x="0" 
-          :y="0" 
-          :width="matrix.width" 
-          :height="matrix.height" 
+          :x="steps.materialThickness" 
+          :y="steps.materialThickness" 
+          :width="(matrix.width)" 
+          :height="(matrix.height)" 
           fill="lightgray" 
           stroke="red" 
           stroke-width="0.1" 
@@ -138,10 +138,17 @@
         <circle
           v-for="n in matrix.xyPositions"
           :key="`${n[0]}-${n[1]}`"
-          :cx="n[0]"
-          :cy="n[1]" 
+          :cx="(n[0] + steps.materialThickness)"
+          :cy="(n[1] + steps.materialThickness)" 
           :r="matrix.diameter / 2" 
           fill="blue" />
+        <!-- Polygon -->
+        <polyline
+          :points="polygonPoints" 
+          fill="none" 
+          stroke="yellow" 
+          stroke-width="0.03" 
+        />
       </svg>
     </div>
     <div class="flex justify-center flex-row space-x-4 mt-6">
@@ -158,16 +165,9 @@ import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 
 const theSVG = ref<SVGSVGElement | null>(null);
-
 const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+const steps = reactive(new StepsGenerator());
 
-const form = reactive({
-  holes: 0,
-  width: 0,
-  height: 0,
-  holeSpacing: 0,
-  holeDiameter: 0
-});
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
 watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matrix.xSpacing, () => matrix.ySpacing, () => matrix.xMargin, () => matrix.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
@@ -179,8 +179,22 @@ const submitted = ref(false);
 
 const submitForm = () => {
   submitted.value = true;
-  console.log(form);
 };
+
+const polygonPoints = computed(() => {
+  return `${steps.startPosition.x},${steps.startPosition.y}  ${steps.goXplusYzero()} ${steps.makeCornerXplusYzero()}`;
+});
+
+const getStepSize = () => {
+  const leastStepSize: number = 1;
+  const width: number = matrix.width;
+  const divisor: number = (Math.ceil(width) % 2 === 0) ? Math.ceil(width) : Math.ceil(width) + 1;
+  const stepSize = (Math.ceil(width) / divisor);
+  const numberOfSteps = Math.ceil(width / stepSize);
+  console.log('step Size: ', stepSize);
+  console.log('number Of Steps: ', numberOfSteps);
+}
+getStepSize();
 
 </script>
 
