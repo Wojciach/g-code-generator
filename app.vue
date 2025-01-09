@@ -166,7 +166,7 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 
 const theSVG = ref<SVGSVGElement | null>(null);
 const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
-const steps = reactive(new StepsGenerator());
+const steps = reactive(new StepsGenerator(7, 7));
 
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
@@ -175,26 +175,42 @@ watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matri
   console.log('watch function ran!')
 }, { deep: true });
 
+// Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+watch([() => matrix.width, () => matrix.height ], ([newWidth, newHeight]) => {
+  steps.reCalculate(newWidth, newHeight);
+  console.log('width height changed!')
+}, { deep: true });
+
 const submitted = ref(false);
 
 const submitForm = () => {
   submitted.value = true;
 };
 
+
 const polygonPoints = computed(() => {
-  return `${steps.startPosition.x},${steps.startPosition.y}  ${steps.goXplusYzero()} ${steps.makeCornerXplusYzero()}`;
+  let points = '';
+  const numberOfSteps = steps.numberOfSteps;
+  steps.currentPosition = { x: steps.materialThickness, y: steps.materialThickness };
+
+  points += `${steps.currentPosition.x},${steps.currentPosition.y} `;
+  
+  for(let i = 0; i < numberOfSteps; i++) {
+    points += `${steps.goRightXplusYzero(steps.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfSteps; i++) {
+    points += `${steps.goDownXzeroYminus(steps.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfSteps; i++) {
+    points += `${steps.goLeftXminusYzero(steps.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfSteps; i++) {
+    points += `${steps.goUpXzeroYminus(steps.currentPosition)}`;
+  }
+  
+  return `${points}`;
 });
 
-const getStepSize = () => {
-  const leastStepSize: number = 1;
-  const width: number = matrix.width;
-  const divisor: number = (Math.ceil(width) % 2 === 0) ? Math.ceil(width) : Math.ceil(width) + 1;
-  const stepSize = (Math.ceil(width) / divisor);
-  const numberOfSteps = Math.ceil(width / stepSize);
-  console.log('step Size: ', stepSize);
-  console.log('number Of Steps: ', numberOfSteps);
-}
-getStepSize();
 
 </script>
 
