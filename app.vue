@@ -98,6 +98,33 @@
         />
       </div>
 
+      <!-- Number of horizontal steps -->
+      <div class="mb-4">
+        <label for="numberOfStepsHorizontal" class="block text-gray-700"> Nmber of horizontal steps</label>
+        <input
+          v-model="steps.numberOfStepsHorizontal"
+          id="numberOfStepsHorizontal"
+          type="number"
+          :min="1"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="How many horizontal steps?"
+          required
+          />
+      </div>
+
+      <!-- Number of vertical steps -->
+      <div class="mb-4">
+        <label for="numberOfStepsVertical" class="block text-gray-700"> Nmber of vertical steps</label>
+        <input
+          v-model="steps.numberOfStepsVertical"
+          id="numberOfStepsVertical"
+          type="number"
+          :min="1"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="How many vertical steps?"
+          required
+          />
+        </div>
       <!-- Submit Button -->
       <div class="flex justify-center">
         <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
@@ -119,6 +146,8 @@
         <li><strong>Margin X:</strong> {{ matrix.xMargin }} mm</li>
         <li><strong>Margin Y:</strong> {{ matrix.yMargin }} mm</li>
         <li><strong>Hole Diameter:</strong> {{ matrix.diameter }} mm</li>
+        <li><strong>Number of horizontal steps:</strong> {{ steps.numberOfStepsHorizontal}}</li>
+        <li><strong>Number of vertical steps:</strong> {{ steps.numberOfStepsVertical}}</li>
       </ul>
     </div>
 
@@ -166,7 +195,7 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 
 const theSVG = ref<SVGSVGElement | null>(null);
 const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
-const steps = reactive(new StepsGenerator(7, 7));
+const steps = reactive(new StepsGenerator(7, 7, 4, 4));
 
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
@@ -176,9 +205,9 @@ watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matri
 }, { deep: true });
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrix.width, () => matrix.height ], ([newWidth, newHeight]) => {
-  steps.reCalculate(newWidth, newHeight);
-  console.log('width height changed!')
+watch([() => matrix.width, () => matrix.height, () => steps.numberOfStepsHorizontal, () => steps.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
+  steps.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
+  console.log('width height or number of steps changed!')
 }, { deep: true });
 
 const submitted = ref(false);
@@ -190,21 +219,22 @@ const submitForm = () => {
 
 const polygonPoints = computed(() => {
   let points = '';
-  const numberOfSteps = steps.numberOfSteps;
+  const numberOfStepsHorizontal = steps.numberOfStepsHorizontal;
+  const numberOfStepsVerticlal = steps.numberOfStepsVertical;
   steps.currentPosition = { x: steps.materialThickness, y: steps.materialThickness };
 
   points += `${steps.currentPosition.x},${steps.currentPosition.y} `;
   
-  for(let i = 0; i < numberOfSteps; i++) {
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
     points += `${steps.goRightXplusYzero(steps.currentPosition)}`;
   }
-  for(let i = 0; i < numberOfSteps; i++) {
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
     points += `${steps.goDownXzeroYminus(steps.currentPosition)}`;
   }
-  for(let i = 0; i < numberOfSteps; i++) {
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
     points += `${steps.goLeftXminusYzero(steps.currentPosition)}`;
   }
-  for(let i = 0; i < numberOfSteps; i++) {
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
     points += `${steps.goUpXzeroYminus(steps.currentPosition)}`;
   }
   
