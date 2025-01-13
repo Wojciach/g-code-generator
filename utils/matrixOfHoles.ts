@@ -6,6 +6,7 @@ export class MatrixOfHoles {
     public xyPositions: number[][] = [];
     public width: number = 0;
     public height: number = 0;
+    public depth: number = 0;
     public holes: number = 0;
     public rows: number = 0;
     public diameter: number = 0;

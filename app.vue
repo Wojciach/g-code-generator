@@ -134,6 +134,7 @@
     </form>
     <div>Width: {{ matrix.width }} mm</div>
     <div>Height: {{ matrix.height }} mm</div>
+    <div>Depth: {{ matrix.depth }} mm</div>
 
     <!-- Output Display -->
     <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
