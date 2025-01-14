@@ -134,7 +134,6 @@
     </form>
     <div>Width: {{ matrix.width }} mm</div>
     <div>Height: {{ matrix.height }} mm</div>
-    <div>Depth: {{ matrix.depth }} mm</div>
 
     <!-- Output Display -->
     <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
@@ -153,34 +152,12 @@
     </div>
 
     <!-- SVG Representation -->
-    <div v-if="submitted" class="mt-6 flex justify-center">
-      <svg ref="theSVG" :viewBox="'0 0 ' + (matrix.width + steps.materialThickness * 2) + ' ' + (matrix.height + steps.materialThickness * 2)" xmlns="http://www.w3.org/2000/svg" class="border border-gray-600 bg-slate-400">
-        <rect 
-          :x="steps.materialThickness" 
-          :y="steps.materialThickness" 
-          :width="(matrix.width)" 
-          :height="(matrix.height)" 
-          fill="lightgray" 
-          stroke="red" 
-          stroke-width="0.1" 
-        />
-        <!-- Circles -->
-        <circle
-          v-for="n in matrix.xyPositions"
-          :key="`${n[0]}-${n[1]}`"
-          :cx="(n[0] + steps.materialThickness)"
-          :cy="(n[1] + steps.materialThickness)" 
-          :r="matrix.diameter / 2" 
-          fill="blue" />
-        <!-- Polygon -->
-        <polyline
-          :points="polygonPoints" 
-          fill="none" 
-          stroke="yellow" 
-          stroke-width="0.03" 
-        />
-      </svg>
+    <div v-if="submitted" class="mt-6 flex-col justify-center">
+      <MySVG :matrix="matrix2" :steps="steps2" :polygonPoints="polygonPoints2" :showCircles="false" :heightInZ="4" color="indigo"/>
+      <MySVG :matrix="matrix" :steps="steps" :polygonPoints="polygonPoints" :showCircles="true" color="gray"/>
+      <MySVG :matrix="matrix2" :steps="steps2" :polygonPoints="polygonPoints2" :showCircles="false" :heightInZ="4" color="forestgreen"/>
     </div>
+
     <div class="flex justify-center flex-row space-x-4 mt-6">
       <DownloadSVG :svgRef="theSVG" />
       <DownloadDXF :matrix="matrix" />
@@ -193,10 +170,14 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
+import { StepsGenerator } from '@/utils/stepsGenerator';
 
 const theSVG = ref<SVGSVGElement | null>(null);
+
 const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+const matrix2 = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 const steps = reactive(new StepsGenerator(7, 7, 4, 4));
+const steps2 = reactive(new StepsGenerator(7, 4, 4, 8));
 
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
@@ -241,6 +222,31 @@ const polygonPoints = computed(() => {
   
   return `${points}`;
 });
+
+const polygonPoints2 = computed(() => {
+  let points = '';
+  const numberOfStepsHorizontal = steps2.numberOfStepsHorizontal;
+  const numberOfStepsVerticlal = steps2.numberOfStepsVertical;
+  steps2.currentPosition = { x: steps2.materialThickness, y: steps2.materialThickness };
+
+  points += `${steps2.currentPosition.x},${steps2.currentPosition.y} `;
+  
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
+    points += `${steps2.goRightXplusYzero(steps2.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
+    points += `${steps2.goDownXzeroYminus(steps2.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
+    points += `${steps2.goLeftXminusYzero(steps2.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
+    points += `${steps2.goUpXzeroYminus(steps2.currentPosition)}`;
+  }
+  
+  return `${points}`;
+});
+
 
 
 </script>
