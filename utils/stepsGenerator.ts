@@ -159,13 +159,30 @@ export class StepsGenerator {
     return result;
   };
 
-  public makeCornerXplusYminus = (currentPosition: Position): string => {
-    this.previousPosition = currentPosition;
-    this.currentPosition = {x: this.previousPosition.x, y: this.previousPosition.y + this.materialThickness * 2};
-    return `${this.previousPosition.x},${this.previousPosition.y - this.materialThickness} 
-            ${this.previousPosition.x + this.stepSizeHorizontal},${this.previousPosition.y - this.materialThickness} 
-            ${this.previousPosition.x + this.stepSizeHorizontal},${this.previousPosition.y + this.materialThickness} 
-            ${this.previousPosition.x},${this.previousPosition.y + this.materialThickness} 
-            ${this.previousPosition.x},${this.previousPosition.y + this.materialThickness + this.stepSizeHorizontal} `;
+  public makeCornerXplusYplus = (currentPosition: Position): string => {
+    let result = '';
+
+    // Move left by material thickness
+    currentPosition.x -= this.materialThickness;
+    result += `${currentPosition.x},${currentPosition.y} `;
+
+    // Move up by step size
+    currentPosition.y -= this.stepSizeVertical;
+    result += `${currentPosition.x},${currentPosition.y} `;
+
+    // Move right by material thickness
+    currentPosition.x += this.materialThickness;
+    result += `${currentPosition.x},${currentPosition.y} `;
+
+    // Move up by step size
+    currentPosition.y -= this.stepSizeVertical;
+    result += `${currentPosition.x},${currentPosition.y} `;
+
+    // Update this.currentPosition once at the end
+    this.currentPosition = { ...currentPosition };
+
+    console.log('STRING: ' + result);
+    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
+    return result;
   }
-} 
+}

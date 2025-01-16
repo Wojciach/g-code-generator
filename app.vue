@@ -7,7 +7,7 @@
       <div class="mb-4">
         <label for="holes" class="block text-gray-700">Number of Holes</label>
         <input
-          v-model="matrix.holes"
+          v-model="matrixTopAndBottom.holes"
           id="holes"
           type="number"
           min="1"
@@ -21,7 +21,7 @@
       <div class="mb-4">
         <label for="holes" class="block text-gray-700">Number of Rows</label>
         <input
-          v-model="matrix.rows"
+          v-model="matrixTopAndBottom.rows"
           id="rows"
           type="number"
           min="1"
@@ -35,7 +35,7 @@
       <div class="mb-4">
         <label for="holeXspacing" class="block text-gray-700"> X Spacing Between Holes (mm)</label>
         <input
-          v-model="matrix.xSpacing"
+          v-model="matrixTopAndBottom.xSpacing"
           id="holeXspacing"
           type="number"
           min="0"
@@ -48,7 +48,7 @@
       <div class="mb-4">
         <label for="holeYspacing" class="block text-gray-700"> Y Spacing Between Holes (mm)</label>
         <input
-          v-model="matrix.ySpacing"
+          v-model="matrixTopAndBottom.ySpacing"
           id="holeYspacing"
           type="number"
           min="0"
@@ -61,7 +61,7 @@
       <div class="mb-4">
         <label for="xMargin" class="block text-gray-700"> X Margin (mm)</label>
         <input
-          v-model="matrix.xMargin"
+          v-model="matrixTopAndBottom.xMargin"
           id="xMargin"
           type="number"
           min="0"
@@ -74,7 +74,7 @@
       <div class="mb-4">
         <label for="yMargin" class="block text-gray-700"> Y Margin (mm)</label>
         <input
-          v-model="matrix.yMargin"
+          v-model="matrixTopAndBottom.yMargin"
           id="yMargin"
           type="number"
           min="0"
@@ -88,7 +88,7 @@
       <div class="mb-4">
         <label for="holeDiameter" class="block text-gray-700">Hole Diameter (mm)</label>
         <input
-          v-model="matrix.diameter"
+          v-model="matrixTopAndBottom.diameter"
           id="holeDiameter"
           type="number"
           min="1"
@@ -102,7 +102,7 @@
       <div class="mb-4">
         <label for="numberOfStepsHorizontal" class="block text-gray-700"> Nmber of horizontal steps</label>
         <input
-          v-model="steps.numberOfStepsHorizontal"
+          v-model="stepsTopAndBottom.numberOfStepsHorizontal"
           id="numberOfStepsHorizontal"
           type="number"
           :min="1"
@@ -116,12 +116,38 @@
       <div class="mb-4">
         <label for="numberOfStepsVertical" class="block text-gray-700"> Nmber of vertical steps</label>
         <input
-          v-model="steps.numberOfStepsVertical"
+          v-model="stepsTopAndBottom.numberOfStepsVertical"
           id="numberOfStepsVertical"
           type="number"
           :min="1"
           class="w-full mt-2 p-2 border border-gray-300 rounded-md"
           placeholder="How many vertical steps?"
+          required
+          />
+        </div>
+      <!-- Number of vertical steps (in Z axis) -->
+      <div class="mb-4">
+        <label for="numberOfStepsInZAxis" class="block text-gray-700"> Nmber of vertical steps in Z axis</label>
+        <input
+          v-model="heightInZ.numberOfStepsInZaxis"
+          id="numberOfStepsInZAxis"
+          type="number"
+          :min="1"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="How many vertical steps in Z axis?"
+          required
+          />
+        </div>
+              <!-- Height in Z axis -->
+      <div class="mb-4">
+        <label for="heightInZAxis" class="block text-gray-700"> Height in Z axis</label>
+        <input
+          v-model="heightInZ.heightInZaxis"
+          id="heightInZAxis"
+          type="number"
+          :min="stepsTopAndBottom.materialThickness * 2"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="Height in Z axis?"
           required
           />
         </div>
@@ -132,36 +158,45 @@
         </button>
       </div>
     </form>
-    <div>Width: {{ matrix.width }} mm</div>
-    <div>Height: {{ matrix.height }} mm</div>
+    <div>Width: {{ matrixTopAndBottom.width }} mm</div>
+    <div>Height: {{ matrixTopAndBottom.height }} mm</div>
+    <div>Height in Z axis: {{ heightInZ.heightInZaxis }} mm</div>
 
     <!-- Output Display -->
     <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
       <h3 class="text-xl font-bold mb-4">Form Data</h3>
       <ul>
-        <li><strong>Number of Holes:</strong> {{ matrix.holes }}</li>
-        <li><strong>Number of Rows:</strong> {{ matrix.rows }}</li>
-        <li><strong>Spacing Between Holes in X:</strong> {{ matrix.xSpacing }} mm</li>
-        <li><strong>Spacing Between Holes in Y:</strong> {{ matrix.ySpacing }} mm</li>
-        <li><strong>Margin X:</strong> {{ matrix.xMargin }} mm</li>
-        <li><strong>Margin Y:</strong> {{ matrix.yMargin }} mm</li>
-        <li><strong>Hole Diameter:</strong> {{ matrix.diameter }} mm</li>
-        <li><strong>Number of horizontal steps:</strong> {{ steps.numberOfStepsHorizontal}}</li>
-        <li><strong>Number of vertical steps:</strong> {{ steps.numberOfStepsVertical}}</li>
+        <li><strong>Number of Holes:</strong> {{ matrixTopAndBottom.holes }}</li>
+        <li><strong>Number of Rows:</strong> {{ matrixTopAndBottom.rows }}</li>
+        <li><strong>Spacing Between Holes in X:</strong> {{ matrixTopAndBottom.xSpacing }} mm</li>
+        <li><strong>Spacing Between Holes in Y:</strong> {{ matrixTopAndBottom.ySpacing }} mm</li>
+        <li><strong>Margin X:</strong> {{ matrixTopAndBottom.xMargin }} mm</li>
+        <li><strong>Margin Y:</strong> {{ matrixTopAndBottom.yMargin }} mm</li>
+        <li><strong>Hole Diameter:</strong> {{ matrixTopAndBottom.diameter }} mm</li>
+        <li><strong>Number of horizontal steps:</strong> {{ stepsTopAndBottom.numberOfStepsHorizontal}}</li>
+        <li><strong>Number of vertical steps:</strong> {{ stepsTopAndBottom.numberOfStepsVertical}}</li>
       </ul>
     </div>
 
-    <!-- SVG Representation -->
-    <div v-if="submitted" class="mt-6 flex-col justify-center">
-      <MySVG :matrix="matrix2" :steps="steps2" :polygonPoints="polygonPoints2" :showCircles="false" :heightInZ="4" color="indigo"/>
-      <MySVG :matrix="matrix" :steps="steps" :polygonPoints="polygonPoints" :showCircles="true" color="gray"/>
-      <MySVG :matrix="matrix2" :steps="steps2" :polygonPoints="polygonPoints2" :showCircles="false" :heightInZ="4" color="forestgreen"/>
+    <div v-if="submitted" class="grid grid-cols-3">
+      <div class="bg-red-100 grid grid-cols-1 place-items-center">
+        <MySVG class="w-full" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="stepsLeftAndRight.width" :height="stepsLeftAndRight.height" color="deepskyblue"/>
+      </div>
+      <!-- SVG Representation -->
+      <div class="bg-red-100 grid grid-cols-1 h-full">
+        <MySVG class="w-full h-full" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="stepsFrontAndBack.width" :height="stepsFrontAndBack.height" color="indigo"/>
+        <MySVG class="w-full h-full" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="stepsTopAndBottom.width" :height="stepsTopAndBottom.height" color="gray"/>
+        <MySVG class="w-full h-full" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="stepsFrontAndBack.width" :height="stepsFrontAndBack.height" color="forestgreen"/>
+      </div>
+      <div class="bg-blue-100 grid grid-cols-1 place-items-center">
+        <MySVG class="w-full" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="stepsLeftAndRight.width" :height="stepsLeftAndRight.height" color="tomato"/>
+      </div>
     </div>
 
     <div class="flex justify-center flex-row space-x-4 mt-6">
       <DownloadSVG :svgRef="theSVG" />
-      <DownloadDXF :matrix="matrix" />
-      <DownloadG_CODE :matrix="matrix" />
+      <DownloadDXF :matrix="matrixTopAndBottom" />
+      <DownloadG_CODE :matrix="matrixTopAndBottom" />
     </div>
   </div>
 
@@ -173,24 +208,39 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
 
 const theSVG = ref<SVGSVGElement | null>(null);
+  const heightInZ = reactive({
+  numberOfStepsInZaxis: 12,
+  heightInZaxis: 5,
+  // other properties...
+});
 
-const matrix = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
-const matrix2 = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
-const steps = reactive(new StepsGenerator(7, 7, 4, 4));
-const steps2 = reactive(new StepsGenerator(7, 4, 4, 8));
+const matrixTopAndBottom = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+const matrixFrontAndBack = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+const matrixLeftAndRight = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+
+const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 4, 4));
+const stepsFrontAndBack = reactive(new StepsGenerator(7, heightInZ.heightInZaxis, 4, heightInZ.numberOfStepsInZaxis));
+const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 4, 8));
 
 
-// Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrix.holes, () => matrix.rows, () => matrix.diameter, () => matrix.xSpacing, () => matrix.ySpacing, () => matrix.xMargin, () => matrix.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
-  matrix.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
+//Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
+  matrixTopAndBottom.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
   console.log('watch function ran!')
 }, { deep: true });
 
 // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrix.width, () => matrix.height, () => steps.numberOfStepsHorizontal, () => steps.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
-  steps.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
+watch([() => matrixTopAndBottom.width, () => matrixTopAndBottom.height, () => stepsTopAndBottom.numberOfStepsHorizontal, () => stepsTopAndBottom.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
+  stepsTopAndBottom.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
   console.log('width height or number of steps changed!')
 }, { deep: true });
+
+// Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+watch([() => heightInZ.heightInZaxis, () => heightInZ.numberOfStepsInZaxis ], ([newHeightInZ, newNumberOfStepsInZaxis]) => {
+  stepsLeftAndRight.reCalculate(stepsTopAndBottom.width, newHeightInZ, stepsTopAndBottom.numberOfStepsHorizontal, newNumberOfStepsInZaxis);
+  console.log('width height or number of steps changed!')
+}, { deep: true });
+
 
 const submitted = ref(false);
 
@@ -199,51 +249,72 @@ const submitForm = () => {
 };
 
 
-const polygonPoints = computed(() => {
+const polygonPointsTopAndBottom = computed(() => {
   let points = '';
-  const numberOfStepsHorizontal = steps.numberOfStepsHorizontal;
-  const numberOfStepsVerticlal = steps.numberOfStepsVertical;
-  steps.currentPosition = { x: steps.materialThickness, y: steps.materialThickness };
+  const numberOfStepsHorizontal = stepsTopAndBottom.numberOfStepsHorizontal;
+  const numberOfStepsVerticlal = stepsTopAndBottom.numberOfStepsVertical;
+  stepsTopAndBottom.currentPosition = { x: stepsTopAndBottom.materialThickness, y: stepsTopAndBottom.materialThickness };
 
-  points += `${steps.currentPosition.x},${steps.currentPosition.y} `;
+  points += `${stepsTopAndBottom.currentPosition.x},${stepsTopAndBottom.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${steps.goRightXplusYzero(steps.currentPosition)}`;
+    points += `${stepsTopAndBottom.goRightXplusYzero(stepsTopAndBottom.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${steps.goDownXzeroYminus(steps.currentPosition)}`;
+    points += `${stepsTopAndBottom.goDownXzeroYminus(stepsTopAndBottom.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${steps.goLeftXminusYzero(steps.currentPosition)}`;
+    points += `${stepsTopAndBottom.goLeftXminusYzero(stepsTopAndBottom.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${steps.goUpXzeroYminus(steps.currentPosition)}`;
+    points += `${stepsTopAndBottom.goUpXzeroYminus(stepsTopAndBottom.currentPosition)}`;
   }
-  
   return `${points}`;
 });
 
-const polygonPoints2 = computed(() => {
+const polygonPointsFrontAndBack = computed(() => {
   let points = '';
-  const numberOfStepsHorizontal = steps2.numberOfStepsHorizontal;
-  const numberOfStepsVerticlal = steps2.numberOfStepsVertical;
-  steps2.currentPosition = { x: steps2.materialThickness, y: steps2.materialThickness };
+  const numberOfStepsHorizontal = stepsFrontAndBack.numberOfStepsHorizontal;
+  const numberOfStepsVerticlal = stepsFrontAndBack.numberOfStepsVertical;
+  stepsFrontAndBack.currentPosition = { x: stepsFrontAndBack.materialThickness, y: stepsFrontAndBack.materialThickness };
 
-  points += `${steps2.currentPosition.x},${steps2.currentPosition.y} `;
+  points += `${stepsFrontAndBack.currentPosition.x},${stepsFrontAndBack.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${steps2.goRightXplusYzero(steps2.currentPosition)}`;
+    points += `${stepsFrontAndBack.goRightXplusYzero(stepsFrontAndBack.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${steps2.goDownXzeroYminus(steps2.currentPosition)}`;
+    points += `${stepsFrontAndBack.goDownXzeroYminus(stepsFrontAndBack.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${steps2.goLeftXminusYzero(steps2.currentPosition)}`;
+    points += `${stepsFrontAndBack.goLeftXminusYzero(stepsFrontAndBack.currentPosition)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${steps2.goUpXzeroYminus(steps2.currentPosition)}`;
+    points += `${stepsFrontAndBack.goUpXzeroYminus(stepsFrontAndBack.currentPosition)}`;
   }
+  return `${points}`;
+});
+
+const polygonPointsLeftAndRight = computed(() => {
+  let points = '';
+  const numberOfStepsHorizontal = stepsLeftAndRight.numberOfStepsHorizontal;
+  const numberOfStepsVerticlal = stepsLeftAndRight.numberOfStepsVertical;
+  stepsLeftAndRight.currentPosition = { x: stepsLeftAndRight.materialThickness, y: stepsLeftAndRight.materialThickness };
+
+  points += `${stepsLeftAndRight.currentPosition.x},${stepsLeftAndRight.currentPosition.y} `;
   
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
+    points += `${stepsLeftAndRight.goRightXplusYzero(stepsLeftAndRight.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
+    points += `${stepsLeftAndRight.goDownXzeroYminus(stepsLeftAndRight.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsHorizontal; i++) {
+    points += `${stepsLeftAndRight.goLeftXminusYzero(stepsLeftAndRight.currentPosition)}`;
+  }
+  for(let i = 0; i < numberOfStepsVerticlal; i++) {
+    points += `${stepsLeftAndRight.goUpXzeroYminus(stepsLeftAndRight.currentPosition)}`;
+  }
   return `${points}`;
 });
 
