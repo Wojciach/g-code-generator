@@ -17,42 +17,24 @@ export class StepsGenerator {
   public width!: number;
   public height!: number;
 
-  public constructor(width: number, height: number, numbnerOfStepsHorizontal?: number, numberOfStepsVertical?: number) {
-    this.reCalculate(width, height,  numbnerOfStepsHorizontal, numberOfStepsVertical);
+  public constructor(width: number, height: number, numberOfStepsHorizontal: number, numberOfStepsVertical: number) {
+    this.reCalculate(width, height,  numberOfStepsHorizontal, numberOfStepsVertical);
   }
 
-  public reCalculate(width: number, height: number, numberOfStepsHorizontal?: number, numberOfStepsVertical?: number) {
+  public reCalculate(width: number, height: number, numberOfStepsHorizontal: number, numberOfStepsVertical: number) {
     this.width = width;
     this.height = height;
-    this.divisorWidth = (Math.ceil(width) % 2 === 0) ? Math.ceil(width) : Math.ceil(width) + 1;
-    this.divisorHeight = (Math.ceil(height) % 2 === 0) ? Math.ceil(height) : Math.ceil(height) + 1;
+    this.numberOfStepsHorizontal = numberOfStepsHorizontal;
+    this.numberOfStepsVertical = numberOfStepsVertical;
+    this.stepSizeHorizontal = width / numberOfStepsHorizontal;
+    this.stepSizeVertical = height / numberOfStepsVertical;
 
-    if (numberOfStepsHorizontal) {
-      this.numberOfStepsHorizontal = numberOfStepsHorizontal;
-      this.stepSizeHorizontal = (Math.ceil(width) / numberOfStepsHorizontal) / 2;
-      console.log("NUMBER OF STEPS HORZONTAL IS: ", numberOfStepsHorizontal);
-    } else {
-      this.numberOfStepsHorizontal = Math.ceil((width / this.stepSizeHorizontal) / 2);
-      this.stepSizeHorizontal = (Math.ceil(width) / this.divisorWidth);
-    }
-
-    if (numberOfStepsVertical) {
-      this.numberOfStepsVertical = numberOfStepsVertical;
-      this.stepSizeVertical = (Math.ceil(height) / numberOfStepsVertical) / 2;
-      console.log("NUMBER OF STEPS VERTICAL IS: ", numberOfStepsVertical);
-    } else {
-      this.numberOfStepsVertical = Math.ceil((height / this.stepSizeVertical) / 2);
-      this.stepSizeVertical = (Math.ceil(height) / this.divisorHeight);
-    }
-
-    //this.stepSize = (Math.ceil(width) / this.divisorWidth);
-    //this.stepSize = (Math.ceil(width) / this.divisorWidth);
-    console.log('DIVIZOR WIDTH: ', this.divisorWidth);
-    console.log('recalculate STEPS ran!');
   }
 
-  public goRightXplusYzero = (currentPosition: Position): string => {
+  public goRightXplusYzero = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number): string => {
     let result = '';
+    this.stepSizeHorizontal = stepSizeHorizontal;
+    this.stepSizeVertical = stepSizeVertical;
 
     // Move down by material thickness
     currentPosition.y -= this.materialThickness;
@@ -72,14 +54,13 @@ export class StepsGenerator {
 
     // Update this.currentPosition once at the end
     this.currentPosition = { ...currentPosition };
-
-    console.log('STRING: ' + result);
-    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
     return result;
   };
 
-  public goDownXzeroYminus = (currentPosition: Position): string => {
+  public goDownXzeroYminus = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number): string => {
     let result = '';
+    this.stepSizeHorizontal = stepSizeHorizontal;
+    this.stepSizeVertical = stepSizeVertical;
 
     // Move right by material thickness
     currentPosition.x += this.materialThickness;
@@ -99,14 +80,13 @@ export class StepsGenerator {
 
     // Update this.currentPosition once at the end
     this.currentPosition = { ...currentPosition };
-
-    console.log('STRING: ' + result);
-    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
     return result;
   };
 
-  public goLeftXminusYzero = (currentPosition: Position): string => {
+  public goLeftXminusYzero = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number): string => {
     let result = '';
+    this.stepSizeHorizontal = stepSizeHorizontal;
+    this.stepSizeVertical = stepSizeVertical;
 
     // Move right by material thickness
     currentPosition.y += this.materialThickness;
@@ -126,14 +106,13 @@ export class StepsGenerator {
 
     // Update this.currentPosition once at the end
     this.currentPosition = { ...currentPosition };
-
-    console.log('STRING: ' + result);
-    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
     return result;
   };
 
-  public goUpXzeroYminus = (currentPosition: Position): string => {
+  public goUpXzeroYminus = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number): string => {
     let result = '';
+    this.stepSizeHorizontal = stepSizeHorizontal;
+    this.stepSizeVertical = stepSizeVertical;
 
     // Move left by material thickness
     currentPosition.x -= this.materialThickness;
@@ -153,9 +132,6 @@ export class StepsGenerator {
 
     // Update this.currentPosition once at the end
     this.currentPosition = { ...currentPosition };
-
-    console.log('STRING: ' + result);
-    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
     return result;
   };
 
@@ -180,9 +156,6 @@ export class StepsGenerator {
 
     // Update this.currentPosition once at the end
     this.currentPosition = { ...currentPosition };
-
-    console.log('STRING: ' + result);
-    console.log('CURRENT POSITION: ' + currentPosition.x + ' ' + currentPosition.y);
     return result;
   }
 }

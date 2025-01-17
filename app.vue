@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
+  <div class="mx-auto p-6 bg-white shadow-md rounded-md">
     <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
 
     <form @submit.prevent="submitForm">
@@ -100,9 +100,9 @@
 
       <!-- Number of horizontal steps -->
       <div class="mb-4">
-        <label for="numberOfStepsHorizontal" class="block text-gray-700"> Nmber of horizontal steps</label>
+        <label for="numberOfStepsHorizontal" class="block text-gray-700"> Nmber of horizontal steps (width)</label>
         <input
-          v-model="stepsTopAndBottom.numberOfStepsHorizontal"
+          v-model="numberOfSteps.width"
           id="numberOfStepsHorizontal"
           type="number"
           :min="1"
@@ -114,9 +114,9 @@
 
       <!-- Number of vertical steps -->
       <div class="mb-4">
-        <label for="numberOfStepsVertical" class="block text-gray-700"> Nmber of vertical steps</label>
+        <label for="numberOfStepsVertical" class="block text-gray-700"> Nmber of vertical steps (depth)</label>
         <input
-          v-model="stepsTopAndBottom.numberOfStepsVertical"
+          v-model="numberOfSteps.depth"
           id="numberOfStepsVertical"
           type="number"
           :min="1"
@@ -125,11 +125,12 @@
           required
           />
         </div>
+
       <!-- Number of vertical steps (in Z axis) -->
       <div class="mb-4">
-        <label for="numberOfStepsInZAxis" class="block text-gray-700"> Nmber of vertical steps in Z axis</label>
+        <label for="numberOfStepsInZAxis" class="block text-gray-700"> Nmber of vertical steps in Z axis (height)</label>
         <input
-          v-model="heightInZ.numberOfStepsInZaxis"
+          v-model="numberOfSteps.height"
           id="numberOfStepsInZAxis"
           type="number"
           :min="1"
@@ -138,11 +139,12 @@
           required
           />
         </div>
-              <!-- Height in Z axis -->
+
+      <!-- Height in Z axis -->
       <div class="mb-4">
         <label for="heightInZAxis" class="block text-gray-700"> Height in Z axis</label>
         <input
-          v-model="heightInZ.heightInZaxis"
+          v-model="dimensions.height"
           id="heightInZAxis"
           type="number"
           :min="stepsTopAndBottom.materialThickness * 2"
@@ -153,14 +155,14 @@
         </div>
       <!-- Submit Button -->
       <div class="flex justify-center">
-        <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <button type="submit" @click="submission" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
           Submit
         </button>
       </div>
     </form>
-    <div>Width: {{ matrixTopAndBottom.width }} mm</div>
-    <div>Height: {{ matrixTopAndBottom.height }} mm</div>
-    <div>Height in Z axis: {{ heightInZ.heightInZaxis }} mm</div>
+    <div>Width: {{ dimensions.width }} mm</div>
+    <div>Depth: {{ dimensions.depth }} mm</div>
+    <div>Height: {{ dimensions.height }} mm</div>
 
     <!-- Output Display -->
     <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
@@ -178,18 +180,18 @@
       </ul>
     </div>
 
-    <div v-if="submitted" class="grid grid-cols-3">
-      <div class="bg-red-100 grid grid-cols-1 place-items-center">
-        <MySVG class="w-full" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="stepsLeftAndRight.width" :height="stepsLeftAndRight.height" color="deepskyblue"/>
+    <div v-if="submitted" class="columns-3 flex flex-nowrap bg-purple-300">
+      <div class="bg-red-100 flex justify-end items-center" >
+        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue"/>
       </div>
       <!-- SVG Representation -->
-      <div class="bg-red-100 grid grid-cols-1 h-full">
-        <MySVG class="w-full h-full" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="stepsFrontAndBack.width" :height="stepsFrontAndBack.height" color="indigo"/>
-        <MySVG class="w-full h-full" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="stepsTopAndBottom.width" :height="stepsTopAndBottom.height" color="gray"/>
-        <MySVG class="w-full h-full" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="stepsFrontAndBack.width" :height="stepsFrontAndBack.height" color="forestgreen"/>
+      <div class="bg-blue-100">
+        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo"/>
+        <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray"/>
+        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen"/>
       </div>
-      <div class="bg-blue-100 grid grid-cols-1 place-items-center">
-        <MySVG class="w-full" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="stepsLeftAndRight.width" :height="stepsLeftAndRight.height" color="tomato"/>
+      <div class="bg-green-100 flex justify-start items-center">
+        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato"/>
       </div>
     </div>
 
@@ -208,39 +210,68 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
 
 const theSVG = ref<SVGSVGElement | null>(null);
-  const heightInZ = reactive({
-  numberOfStepsInZaxis: 12,
-  heightInZaxis: 5,
-  // other properties...
-});
 
-const matrixTopAndBottom = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
+const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 8, 1, 1, 1, 1, 1));
 const matrixFrontAndBack = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 const matrixLeftAndRight = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 
-const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 4, 4));
-const stepsFrontAndBack = reactive(new StepsGenerator(7, heightInZ.heightInZaxis, 4, heightInZ.numberOfStepsInZaxis));
-const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 4, 8));
+const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 2, 2));
+const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2));
+const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2));
+
+const submission = () => {
+  matrixTopAndBottom.reCalculate(matrixTopAndBottom.holes, matrixTopAndBottom.rows, matrixTopAndBottom.diameter, matrixTopAndBottom.xSpacing, matrixTopAndBottom.ySpacing, matrixTopAndBottom.xMargin, matrixTopAndBottom.yMargin);
+  console.log('Submitted!');
+};
+
+const dimensions = reactive({
+  width: matrixTopAndBottom.width,
+  height: 20,
+  depth: matrixTopAndBottom.height,
+});
+
+const numberOfSteps = reactive({
+  width: 3,
+  height: 3,
+  depth: 3
+});
+
+const stepSize = reactive({
+  width: (dimensions.width / numberOfSteps.width) /2,
+  height: (dimensions.height / numberOfSteps.height) /2,
+  depth: (dimensions.depth / numberOfSteps.depth) /2
+});
 
 
-//Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
-  matrixTopAndBottom.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
-  console.log('watch function ran!')
-}, { deep: true });
+// //Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+// watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
+//   matrixTopAndBottom.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
+//   console.log('MATRIX TOP AND BOTTOM CHANGED AAAAAAAAAAAAAAA!');
+//   console.log(stepsTopAndBottom.stepSizeHorizontal)
+//   console.log(stepsTopAndBottom.stepSizeVertical)
+// }, { deep: true });
 
-// Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => matrixTopAndBottom.width, () => matrixTopAndBottom.height, () => stepsTopAndBottom.numberOfStepsHorizontal, () => stepsTopAndBottom.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
-  stepsTopAndBottom.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
-  console.log('width height or number of steps changed!')
-}, { deep: true });
+// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+// watch([() => matrixTopAndBottom.width, () => matrixTopAndBottom.height, () => stepsTopAndBottom.numberOfStepsHorizontal, () => stepsTopAndBottom.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
+//   stepsTopAndBottom.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
+//   dimensions.width = newWidth;
+//   dimensions.depth = newHeight;
+//   console.log('MATRIX TOP AND BOTTOM CHANGED2!');
+// }, { deep: true });
 
-// Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-watch([() => heightInZ.heightInZaxis, () => heightInZ.numberOfStepsInZaxis ], ([newHeightInZ, newNumberOfStepsInZaxis]) => {
-  stepsLeftAndRight.reCalculate(stepsTopAndBottom.width, newHeightInZ, stepsTopAndBottom.numberOfStepsHorizontal, newNumberOfStepsInZaxis);
-  console.log('width height or number of steps changed!')
-}, { deep: true });
+// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+// watch([() => matrixLeftAndRight.width, () => matrixLeftAndRight.height, () => stepsLeftAndRight.numberOfStepsHorizontal, () => stepsLeftAndRight.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
+//   stepsLeftAndRight.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
+//   dimensions.height = newWidth;
+//   dimensions.depth = newHeight;
+//   console.log('MATRIX LEFT AND RIGHT CHANGED!');
+// }, { deep: true });
 
+// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+// watch([() => heightInZ.heightInZaxis, () => heightInZ.numberOfStepsInZaxis ], ([newHeightInZ, newNumberOfStepsInZaxis]) => {
+//   stepsLeftAndRight.reCalculate(stepsTopAndBottom.width, newHeightInZ, stepsTopAndBottom.numberOfStepsHorizontal, newNumberOfStepsInZaxis);
+//   console.log('width height or number of steps changed!')
+// }, { deep: true });
 
 const submitted = ref(false);
 
@@ -248,77 +279,74 @@ const submitForm = () => {
   submitted.value = true;
 };
 
-
 const polygonPointsTopAndBottom = computed(() => {
   let points = '';
-  const numberOfStepsHorizontal = stepsTopAndBottom.numberOfStepsHorizontal;
-  const numberOfStepsVerticlal = stepsTopAndBottom.numberOfStepsVertical;
+  const numberOfStepsHorizontal = numberOfSteps.width;
+  const numberOfStepsVerticlal = numberOfSteps.depth;
   stepsTopAndBottom.currentPosition = { x: stepsTopAndBottom.materialThickness, y: stepsTopAndBottom.materialThickness };
 
   points += `${stepsTopAndBottom.currentPosition.x},${stepsTopAndBottom.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsTopAndBottom.goRightXplusYzero(stepsTopAndBottom.currentPosition)}`;
+    points += `${stepsTopAndBottom.goRightXplusYzero(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsTopAndBottom.goDownXzeroYminus(stepsTopAndBottom.currentPosition)}`;
+    points += `${stepsTopAndBottom.goDownXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsTopAndBottom.goLeftXminusYzero(stepsTopAndBottom.currentPosition)}`;
+    points += `${stepsTopAndBottom.goLeftXminusYzero(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsTopAndBottom.goUpXzeroYminus(stepsTopAndBottom.currentPosition)}`;
+    points += `${stepsTopAndBottom.goUpXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
   }
   return `${points}`;
 });
 
 const polygonPointsFrontAndBack = computed(() => {
   let points = '';
-  const numberOfStepsHorizontal = stepsFrontAndBack.numberOfStepsHorizontal;
-  const numberOfStepsVerticlal = stepsFrontAndBack.numberOfStepsVertical;
+  const numberOfStepsHorizontal = numberOfSteps.width;
+  const numberOfStepsVerticlal = numberOfSteps.height;
   stepsFrontAndBack.currentPosition = { x: stepsFrontAndBack.materialThickness, y: stepsFrontAndBack.materialThickness };
 
   points += `${stepsFrontAndBack.currentPosition.x},${stepsFrontAndBack.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsFrontAndBack.goRightXplusYzero(stepsFrontAndBack.currentPosition)}`;
+    points += `${stepsFrontAndBack.goRightXplusYzero(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsFrontAndBack.goDownXzeroYminus(stepsFrontAndBack.currentPosition)}`;
+    points += `${stepsFrontAndBack.goDownXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsFrontAndBack.goLeftXminusYzero(stepsFrontAndBack.currentPosition)}`;
+    points += `${stepsFrontAndBack.goLeftXminusYzero(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsFrontAndBack.goUpXzeroYminus(stepsFrontAndBack.currentPosition)}`;
+    points += `${stepsFrontAndBack.goUpXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
   }
   return `${points}`;
 });
 
 const polygonPointsLeftAndRight = computed(() => {
   let points = '';
-  const numberOfStepsHorizontal = stepsLeftAndRight.numberOfStepsHorizontal;
-  const numberOfStepsVerticlal = stepsLeftAndRight.numberOfStepsVertical;
+  const numberOfStepsHorizontal = numberOfSteps.height;
+  const numberOfStepsVerticlal = numberOfSteps.depth;
   stepsLeftAndRight.currentPosition = { x: stepsLeftAndRight.materialThickness, y: stepsLeftAndRight.materialThickness };
 
   points += `${stepsLeftAndRight.currentPosition.x},${stepsLeftAndRight.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsLeftAndRight.goRightXplusYzero(stepsLeftAndRight.currentPosition)}`;
+    points += `${stepsLeftAndRight.goRightXplusYzero(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsLeftAndRight.goDownXzeroYminus(stepsLeftAndRight.currentPosition)}`;
+    points += `${stepsLeftAndRight.goDownXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsLeftAndRight.goLeftXminusYzero(stepsLeftAndRight.currentPosition)}`;
+    points += `${stepsLeftAndRight.goLeftXminusYzero(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsLeftAndRight.goUpXzeroYminus(stepsLeftAndRight.currentPosition)}`;
+    points += `${stepsLeftAndRight.goUpXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
   }
   return `${points}`;
 });
-
-
 
 </script>
 
