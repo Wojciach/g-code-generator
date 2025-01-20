@@ -147,9 +147,23 @@
           v-model="dimensions.height"
           id="heightInZAxis"
           type="number"
-          :min="stepsTopAndBottom.materialThickness * 2"
+          :min="materialThickness.value * 2"
           class="w-full mt-2 p-2 border border-gray-300 rounded-md"
           placeholder="Height in Z axis?"
+          required
+          />
+        </div>
+
+              <!-- Height in Z axis -->
+      <div class="mb-4">
+        <label for="materialThickness" class="block text-gray-700"> Material thickness</label>
+        <input
+          v-model="materialThickness.value"
+          id="materialThickness"
+          type="number"
+          :min="1"
+          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+          placeholder="Material thickness?"
           required
           />
         </div>
@@ -163,6 +177,7 @@
     <div>Width: {{ dimensions.width }} mm</div>
     <div>Depth: {{ dimensions.depth }} mm</div>
     <div>Height: {{ dimensions.height }} mm</div>
+    <div>Material Thickness: {{ materialThickness.value }} mm</div>
 
     <!-- Output Display -->
     <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
@@ -215,9 +230,9 @@ const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 8, 1, 1, 1, 1, 1));
 const matrixFrontAndBack = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 const matrixLeftAndRight = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 
-const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 2, 2));
-const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2));
-const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2));
+const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 2, 2, 2));
+const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2, 2));
+const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 
 const submission = () => {
   matrixTopAndBottom.reCalculate(matrixTopAndBottom.holes, matrixTopAndBottom.rows, matrixTopAndBottom.diameter, matrixTopAndBottom.xSpacing, matrixTopAndBottom.ySpacing, matrixTopAndBottom.xMargin, matrixTopAndBottom.yMargin);
@@ -236,20 +251,25 @@ const numberOfSteps = reactive({
   depth: 3
 });
 
-const stepSize = reactive({
-  width: (dimensions.width / numberOfSteps.width) /2,
-  height: (dimensions.height / numberOfSteps.height) /2,
-  depth: (dimensions.depth / numberOfSteps.depth) /2
+const materialThickness = reactive({
+  value: 8
+});
+
+const stepSize = computed(() => {
+  return {
+    width: (dimensions.width / numberOfSteps.width) /2,
+    height: (dimensions.height / numberOfSteps.height) /2,
+    depth: (dimensions.depth / numberOfSteps.depth) /2
+  };
 });
 
 
-// //Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-// watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
-//   matrixTopAndBottom.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
-//   console.log('MATRIX TOP AND BOTTOM CHANGED AAAAAAAAAAAAAAA!');
-//   console.log(stepsTopAndBottom.stepSizeHorizontal)
-//   console.log(stepsTopAndBottom.stepSizeVertical)
-// }, { deep: true });
+//Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
+watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
+  matrixTopAndBottom.reCalculate(newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin);
+  dimensions.width = matrixTopAndBottom.width;
+  dimensions.depth = matrixTopAndBottom.height;
+}, { deep: true });
 
 // // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
 // watch([() => matrixTopAndBottom.width, () => matrixTopAndBottom.height, () => stepsTopAndBottom.numberOfStepsHorizontal, () => stepsTopAndBottom.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
@@ -283,21 +303,21 @@ const polygonPointsTopAndBottom = computed(() => {
   let points = '';
   const numberOfStepsHorizontal = numberOfSteps.width;
   const numberOfStepsVerticlal = numberOfSteps.depth;
-  stepsTopAndBottom.currentPosition = { x: stepsTopAndBottom.materialThickness, y: stepsTopAndBottom.materialThickness };
+  stepsTopAndBottom.currentPosition = { x: materialThickness.value, y: materialThickness.value };
 
   points += `${stepsTopAndBottom.currentPosition.x},${stepsTopAndBottom.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsTopAndBottom.goRightXplusYzero(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
+    points += `${stepsTopAndBottom.goRightXplusYzero(stepsTopAndBottom.currentPosition, stepSize.value.width, stepSize.value.depth, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsTopAndBottom.goDownXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
+    points += `${stepsTopAndBottom.goDownXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.value.width, stepSize.value.depth, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsTopAndBottom.goLeftXminusYzero(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
+    points += `${stepsTopAndBottom.goLeftXminusYzero(stepsTopAndBottom.currentPosition, stepSize.value.width, stepSize.value.depth, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsTopAndBottom.goUpXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.width, stepSize.depth)}`;
+    points += `${stepsTopAndBottom.goUpXzeroYminus(stepsTopAndBottom.currentPosition, stepSize.value.width, stepSize.value.depth, materialThickness.value)}`;
   }
   return `${points}`;
 });
@@ -306,21 +326,21 @@ const polygonPointsFrontAndBack = computed(() => {
   let points = '';
   const numberOfStepsHorizontal = numberOfSteps.width;
   const numberOfStepsVerticlal = numberOfSteps.height;
-  stepsFrontAndBack.currentPosition = { x: stepsFrontAndBack.materialThickness, y: stepsFrontAndBack.materialThickness };
+  stepsFrontAndBack.currentPosition = { x: materialThickness.value, y: materialThickness.value };
 
   points += `${stepsFrontAndBack.currentPosition.x},${stepsFrontAndBack.currentPosition.y} `;
   
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsFrontAndBack.goRightXplusYzero(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
+    points += `${stepsFrontAndBack.goRightXplusYzero(stepsFrontAndBack.currentPosition, stepSize.value.width, stepSize.value.height, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsFrontAndBack.goDownXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
+    points += `${stepsFrontAndBack.goDownXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.value.width, stepSize.value.height, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsFrontAndBack.goLeftXminusYzero(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
+    points += `${stepsFrontAndBack.goLeftXminusYzero(stepsFrontAndBack.currentPosition, stepSize.value.width, stepSize.value.height, materialThickness.value)}`;
   }
   for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsFrontAndBack.goUpXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.width, stepSize.height)}`;
+    points += `${stepsFrontAndBack.goUpXzeroYminus(stepsFrontAndBack.currentPosition, stepSize.value.width, stepSize.value.height, materialThickness.value)}`;
   }
   return `${points}`;
 });
@@ -329,21 +349,28 @@ const polygonPointsLeftAndRight = computed(() => {
   let points = '';
   const numberOfStepsHorizontal = numberOfSteps.height;
   const numberOfStepsVerticlal = numberOfSteps.depth;
-  stepsLeftAndRight.currentPosition = { x: stepsLeftAndRight.materialThickness, y: stepsLeftAndRight.materialThickness };
+  stepsLeftAndRight.currentPosition = { x: materialThickness.value, y: materialThickness.value };
 
   points += `${stepsLeftAndRight.currentPosition.x},${stepsLeftAndRight.currentPosition.y} `;
+
+  points +=`${stepsLeftAndRight.makeCornerXplusYplus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
+  for(let i = 0; i < (numberOfStepsHorizontal -1); i++) {
+    points += `${stepsLeftAndRight.goRightXplusYzero(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
+  }
   
-  for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsLeftAndRight.goRightXplusYzero(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
+  points +=`${stepsLeftAndRight.makeCornerXplusYminus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
+  for(let i = 0; i < (numberOfStepsVerticlal -1); i++) {
+    points += `${stepsLeftAndRight.goDownXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
   }
-  for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsLeftAndRight.goDownXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
+
+  points +=`${stepsLeftAndRight.makeCornerXminusYplus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
+  for(let i = 0; i < (numberOfStepsHorizontal -1); i++) {
+    points += `${stepsLeftAndRight.goLeftXminusYzero(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
   }
-  for(let i = 0; i < numberOfStepsHorizontal; i++) {
-    points += `${stepsLeftAndRight.goLeftXminusYzero(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
-  }
-  for(let i = 0; i < numberOfStepsVerticlal; i++) {
-    points += `${stepsLeftAndRight.goUpXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.height, stepSize.depth)}`;
+
+  points +=`${stepsLeftAndRight.makeCornerXminusYminus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
+  for(let i = 0; i < (numberOfStepsVerticlal -1); i++) {
+    points += `${stepsLeftAndRight.goUpXzeroYminus(stepsLeftAndRight.currentPosition, stepSize.value.height, stepSize.value.depth, materialThickness.value)}`;
   }
   return `${points}`;
 });
