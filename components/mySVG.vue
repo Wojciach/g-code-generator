@@ -1,14 +1,15 @@
 <template>
   <div 
     :style="{
-      width: ((width + (steps.materialThickness * 2)) * 20) + 'px' 
-    , height: ((height + (steps.materialThickness * 2)) * 20) + 'px'
+      width: ((width + (steps.materialThickness * 2)) * viusaSizeModifier) + 'px',
+      height: ((height + (steps.materialThickness * 2)) * viusaSizeModifier) + 'px'
     }"
   >
     <svg
       ref="theSVG" :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))"
       xmlns="http://www.w3.org/2000/svg"
       class="border border-gray-600 bg-slate-100"
+      :style="{ backgroundColor: bgColor}"
     >
       <!-- Polygon -->
       <polyline
@@ -50,9 +51,12 @@
     width: number;
     height: number;
     color?: string;
+    bgColor?: string;
+    viusaSizeModifier: number;
   }>();
 
   const color = props.color ?? 'none';
+  const bgColor = props.bgColor ?? 'none';
 
 </script>
 

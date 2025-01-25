@@ -2,6 +2,14 @@
   <div class="mx-auto p-6 bg-white shadow-md rounded-md">
     <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
 
+    <div class="bg-gray-500 relative w-[400px] h-[400px] items-center">
+      <div class="relative w-1/2 h-1/2 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-green-300">
+        <div class="bg-red-500 absolute translate-x-[100px] -tanslate-y-1/2 w-[100px] h-[100px] skew-y-[-45deg] translate-y-[-50%]"></div>
+        <div class="bg-blue-500 absolute translate-y-[-100px] translate-x-[50%] w-[100px] h-[100px] skew-x-[-45deg]"></div>
+        <div class="bg-yellow-500 absolute w-[100px] h-[100px]"></div>
+      </div>
+    </div>
+
     <form @submit.prevent="submitForm">
       <!-- Number of Holes -->
       <div class="mb-4">
@@ -167,13 +175,27 @@
           required
           />
         </div>
+
+        <div>
+          <label for="visualSizeModifier">Visual Size Modifier: {{ visualSizeModifier.value }}</label>
+          <input
+            id="visualSizeModifier"
+            type="range"
+            v-model="visualSizeModifier.value"
+            :min="1"
+            :max="20"
+            :step="1"
+          />
+        </div>
+
       <!-- Submit Button -->
       <div class="flex justify-center">
-        <button type="submit" @click="submission" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
           Submit
         </button>
       </div>
     </form>
+
     <div>Width: {{ dimensions.width }} mm</div>
     <div>Depth: {{ dimensions.depth }} mm</div>
     <div>Height: {{ dimensions.height }} mm</div>
@@ -197,18 +219,64 @@
 
     <div v-if="submitted" class="columns-3 flex flex-nowrap bg-purple-300">
       <div class="bg-red-100 flex justify-end items-center" >
-        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue"/>
+        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue" :viusaSizeModifier="visualSizeModifier.value"/>
       </div>
       <!-- SVG Representation -->
       <div class="bg-blue-100">
-        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo"/>
-        <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray"/>
-        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen"/>
+        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo" :viusaSizeModifier="visualSizeModifier.value"/>
+        <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray" :viusaSizeModifier="visualSizeModifier.value"/>
+        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen" :viusaSizeModifier="visualSizeModifier.value"/>
       </div>
       <div class="bg-green-100 flex justify-start items-center">
-        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato"/>
+        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato" :viusaSizeModifier="visualSizeModifier.value"/>
       </div>
     </div>
+
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <div v-if="submitted" class="bg-purple-900 relative mt-[600px]">
+      <MySVG
+        class="absolute"
+        :style="computedStyleTop"
+        :matrix="matrixTopAndBottom" 
+        :steps="stepsTopAndBottom"
+        :polygonPoints="polygonPointsTopAndBottom"
+        :showCircles="true" :width="dimensions.width"
+        :height="dimensions.depth" 
+        color="gray"
+        bgColor="#aaaaff"
+        :viusaSizeModifier="visualSizeModifier.value"
+      />
+      <MySVG
+        class="absolute"
+        :style="computedStyleFront"
+        :matrix="matrixFrontAndBack"
+        :steps="stepsLeftAndRight"
+        :polygonPoints="polygonPointsFrontAndBack"
+        :showCircles="false"
+        :width="dimensions.width"
+        :height="dimensions.height"
+        color="forestgreen"
+        bgColor="#aaaaff"
+        :viusaSizeModifier="visualSizeModifier.value"
+      />
+      <MySVG
+        class="absolute"
+        :style="computedStyleRight"
+        :matrix="matrixLeftAndRight"
+        :steps="stepsLeftAndRight"
+        :polygonPoints="polygonPointsLeftAndRight"
+        :showCircles="false" :width="dimensions.height"
+        :height="dimensions.depth"
+        color="tomato"
+        bgColor="#aaaaff"
+        :viusaSizeModifier="visualSizeModifier.value"
+      />
+    </div>
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <!-- SVG VISUAL REPRESENTATION TEST  -->
 
     <div class="flex justify-center flex-row space-x-4 mt-6">
       <DownloadSVG :svgRef="theSVG" />
@@ -224,9 +292,46 @@ import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
 
+//TOP
+const computedStyleTop = computed(() => {
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const translateValueX = outsideDepth / 2;
+  const translateValueY = outsideDepth ;
+  return {
+    transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg)`,
+    top: ``,
+  };
+});
+
+//FRONT
+const computedStyleFront = computed(() => {
+  const translateValue = (1);
+  return {
+    transform: ` `,
+    top: ``,
+  };
+});
+
+//RIGHT
+const computedStyleRight = computed(() => {
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const translateValueX = outsideWidth;
+  const translateValueY = outsideHeight; 
+  return {
+    transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg)`,
+    transformOrigin: 'top left',
+    top: ``,
+  };
+});
+
+
+
 const theSVG = ref<SVGSVGElement | null>(null);
 
-const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 8, 1, 1, 1, 1, 1));
+const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 1, 1, 1, 1, 1));
 const matrixFrontAndBack = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 const matrixLeftAndRight = reactive(new MatrixOfHoles(3, 3, 1, 1, 1, 1, 1));
 
@@ -234,25 +339,24 @@ const stepsTopAndBottom = reactive(new StepsGenerator(7, 7, 2, 2, 2));
 const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2, 2));
 const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 
-const submission = () => {
-  matrixTopAndBottom.reCalculate(matrixTopAndBottom.holes, matrixTopAndBottom.rows, matrixTopAndBottom.diameter, matrixTopAndBottom.xSpacing, matrixTopAndBottom.ySpacing, matrixTopAndBottom.xMargin, matrixTopAndBottom.yMargin);
-  console.log('Submitted!');
-};
+const visualSizeModifier = reactive({
+  value: 15
+});
 
 const dimensions = reactive({
   width: matrixTopAndBottom.width,
-  height: 20,
+  height: 40,
   depth: matrixTopAndBottom.height,
 });
 
 const numberOfSteps = reactive({
-  width: 3,
-  height: 3,
-  depth: 3
+  width: 1,
+  height: 5,
+  depth: 1
 });
 
 const materialThickness = reactive({
-  value: 8
+  value: 2
 });
 
 const stepSize = computed(() => {
@@ -271,29 +375,7 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
   dimensions.depth = matrixTopAndBottom.height;
 }, { deep: true });
 
-// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-// watch([() => matrixTopAndBottom.width, () => matrixTopAndBottom.height, () => stepsTopAndBottom.numberOfStepsHorizontal, () => stepsTopAndBottom.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
-//   stepsTopAndBottom.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
-//   dimensions.width = newWidth;
-//   dimensions.depth = newHeight;
-//   console.log('MATRIX TOP AND BOTTOM CHANGED2!');
-// }, { deep: true });
-
-// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-// watch([() => matrixLeftAndRight.width, () => matrixLeftAndRight.height, () => stepsLeftAndRight.numberOfStepsHorizontal, () => stepsLeftAndRight.numberOfStepsVertical ], ([newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical]) => {
-//   stepsLeftAndRight.reCalculate(newWidth, newHeight, newNumberOfStepsHorizontal, newNumberOfStepsVertical);
-//   dimensions.height = newWidth;
-//   dimensions.depth = newHeight;
-//   console.log('MATRIX LEFT AND RIGHT CHANGED!');
-// }, { deep: true });
-
-// // Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
-// watch([() => heightInZ.heightInZaxis, () => heightInZ.numberOfStepsInZaxis ], ([newHeightInZ, newNumberOfStepsInZaxis]) => {
-//   stepsLeftAndRight.reCalculate(stepsTopAndBottom.width, newHeightInZ, stepsTopAndBottom.numberOfStepsHorizontal, newNumberOfStepsInZaxis);
-//   console.log('width height or number of steps changed!')
-// }, { deep: true });
-
-const submitted = ref(false);
+const submitted = ref(true);
 
 const submitForm = () => {
   submitted.value = true;
