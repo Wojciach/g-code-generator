@@ -1,288 +1,71 @@
 <template>
-  <div class="mx-auto p-6 bg-white shadow-md rounded-md">
-    <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
+  <div class="w-full bg-slate-400 flex flex-row items-start justify-start">
+    
+    <TheForm  @update="console.log('emitorrrr')"
+      :matrixTopAndBottom="matrixTopAndBottom"
+      :numberOfSteps="numberOfSteps"
+      :materialThickness="materialThickness"
+      :visualSizeModifier="visualSizeModifier"
+      :dimensions="dimensions"
+    />
 
-    <div class="bg-gray-500 relative w-[400px] h-[400px] items-center">
-      <div class="relative w-1/2 h-1/2 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-green-300">
-        <div class="bg-red-500 absolute translate-x-[100px] -tanslate-y-1/2 w-[100px] h-[100px] skew-y-[-45deg] translate-y-[-50%]"></div>
-        <div class="bg-blue-500 absolute translate-y-[-100px] translate-x-[50%] w-[100px] h-[100px] skew-x-[-45deg]"></div>
-        <div class="bg-yellow-500 absolute w-[100px] h-[100px]"></div>
+    
+    <div class="p-6 bg-red-200 shadow-md rounded-md max-w-64 items-start ">
+      <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
+
+      <div>Width: {{ dimensions.width }} mm</div>
+      <div>Depth: {{ dimensions.depth }} mm</div>
+      <div>Height: {{ dimensions.height }} mm</div>
+      <div>Material Thickness: {{ materialThickness.value }} mm</div>
+      <!-- Output Display -->
+      <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
+        <h3 class="text-xl font-bold mb-4">Form Data</h3>
+        <ul>
+          <li><strong>Number of Holes:</strong> {{ matrixTopAndBottom.holes }}</li>
+          <li><strong>Number of Rows:</strong> {{ matrixTopAndBottom.rows }}</li>
+          <li><strong>Spacing Between Holes in X:</strong> {{ matrixTopAndBottom.xSpacing }} mm</li>
+          <li><strong>Spacing Between Holes in Y:</strong> {{ matrixTopAndBottom.ySpacing }} mm</li>
+          <li><strong>Margin X:</strong> {{ matrixTopAndBottom.xMargin }} mm</li>
+          <li><strong>Margin Y:</strong> {{ matrixTopAndBottom.yMargin }} mm</li>
+          <li><strong>Hole Diameter:</strong> {{ matrixTopAndBottom.diameter }} mm</li>
+          <li><strong>Number of horizontal steps:</strong> {{ stepsTopAndBottom.numberOfStepsHorizontal}}</li>
+          <li><strong>Number of vertical steps:</strong> {{ stepsTopAndBottom.numberOfStepsVertical}}</li>
+        </ul>
+      </div>
+      <div v-if="submitted" class="columns-3 flex flex-nowrap bg-purple-300">
+        <div class="bg-red-100 flex justify-end items-center" >
+          <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue" :viusaSizeModifier="visualSizeModifier.value"/>
+        </div>
+        <!-- SVG Representation -->
+        <div class="bg-blue-100">
+          <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo" :viusaSizeModifier="visualSizeModifier.value"/>
+          <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray" :viusaSizeModifier="visualSizeModifier.value"/>
+          <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen" :viusaSizeModifier="visualSizeModifier.value"/>
+        </div>
+        <div class="bg-green-100 flex justify-start items-center">
+          <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato" :viusaSizeModifier="visualSizeModifier.value"/>
+        </div>
+      </div>
+      <div class="flex justify-center flex-row space-x-4 mt-6">
+        <DownloadSVG :svgRef="theSVG" />
+        <DownloadDXF :matrix="matrixTopAndBottom" />
+        <DownloadG_CODE :matrix="matrixTopAndBottom" />
       </div>
     </div>
-
-    <form @submit.prevent="submitForm">
-      <!-- Number of Holes -->
-      <div class="mb-4">
-        <label for="holes" class="block text-gray-700">Number of Holes</label>
-        <input
-          v-model="matrixTopAndBottom.holes"
-          id="holes"
-          type="number"
-          min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter number of holes"
-          required
-        />
-      </div>
-
-      <!-- Number of Rows -->
-      <div class="mb-4">
-        <label for="holes" class="block text-gray-700">Number of Rows</label>
-        <input
-          v-model="matrixTopAndBottom.rows"
-          id="rows"
-          type="number"
-          min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter number of rows"
-          required
-        />
-      </div>
-
-      <!-- x Between Holes -->
-      <div class="mb-4">
-        <label for="holeXspacing" class="block text-gray-700"> X Spacing Between Holes (mm)</label>
-        <input
-          v-model="matrixTopAndBottom.xSpacing"
-          id="holeXspacing"
-          type="number"
-          min="0"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter spacing between holes in X"
-          required
-        />
-      </div>
-      <!-- y Between Holes -->
-      <div class="mb-4">
-        <label for="holeYspacing" class="block text-gray-700"> Y Spacing Between Holes (mm)</label>
-        <input
-          v-model="matrixTopAndBottom.ySpacing"
-          id="holeYspacing"
-          type="number"
-          min="0"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter spacing between holes in Y"
-          required
-        />
-      </div>
-      <!-- x Margin -->
-      <div class="mb-4">
-        <label for="xMargin" class="block text-gray-700"> X Margin (mm)</label>
-        <input
-          v-model="matrixTopAndBottom.xMargin"
-          id="xMargin"
-          type="number"
-          min="0"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="X Margin"
-          required
-        />
-      </div>
-      <!-- y Margin -->
-      <div class="mb-4">
-        <label for="yMargin" class="block text-gray-700"> Y Margin (mm)</label>
-        <input
-          v-model="matrixTopAndBottom.yMargin"
-          id="yMargin"
-          type="number"
-          min="0"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Y Margin"
-          required
-        />
-      </div>
-
-      <!-- Hole Diameter -->
-      <div class="mb-4">
-        <label for="holeDiameter" class="block text-gray-700">Hole Diameter (mm)</label>
-        <input
-          v-model="matrixTopAndBottom.diameter"
-          id="holeDiameter"
-          type="number"
-          min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter hole diameter"
-          required
-        />
-      </div>
-
-      <!-- Number of horizontal steps -->
-      <div class="mb-4">
-        <label for="numberOfStepsHorizontal" class="block text-gray-700"> Nmber of horizontal steps (width)</label>
-        <input
-          v-model="numberOfSteps.width"
-          id="numberOfStepsHorizontal"
-          type="number"
-          :min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="How many horizontal steps?"
-          required
-          />
-      </div>
-
-      <!-- Number of vertical steps -->
-      <div class="mb-4">
-        <label for="numberOfStepsVertical" class="block text-gray-700"> Nmber of vertical steps (depth)</label>
-        <input
-          v-model="numberOfSteps.depth"
-          id="numberOfStepsVertical"
-          type="number"
-          :min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="How many vertical steps?"
-          required
-          />
-        </div>
-
-      <!-- Number of vertical steps (in Z axis) -->
-      <div class="mb-4">
-        <label for="numberOfStepsInZAxis" class="block text-gray-700"> Nmber of vertical steps in Z axis (height)</label>
-        <input
-          v-model="numberOfSteps.height"
-          id="numberOfStepsInZAxis"
-          type="number"
-          :min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="How many vertical steps in Z axis?"
-          required
-          />
-        </div>
-
-      <!-- Height in Z axis -->
-      <div class="mb-4">
-        <label for="heightInZAxis" class="block text-gray-700"> Height in Z axis</label>
-        <input
-          v-model="dimensions.height"
-          id="heightInZAxis"
-          type="number"
-          :min="materialThickness.value * 2"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Height in Z axis?"
-          required
-          />
-        </div>
-
-              <!-- Height in Z axis -->
-      <div class="mb-4">
-        <label for="materialThickness" class="block text-gray-700"> Material thickness</label>
-        <input
-          v-model="materialThickness.value"
-          id="materialThickness"
-          type="number"
-          :min="1"
-          class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          placeholder="Material thickness?"
-          required
-          />
-        </div>
-
-        <div>
-          <label for="visualSizeModifier">Visual Size Modifier: {{ visualSizeModifier.value }}</label>
-          <input
-            id="visualSizeModifier"
-            type="range"
-            v-model="visualSizeModifier.value"
-            :min="1"
-            :max="20"
-            :step="1"
-          />
-        </div>
-
-      <!-- Submit Button -->
-      <div class="flex justify-center">
-        <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Submit
-        </button>
-      </div>
-    </form>
-
-    <div>Width: {{ dimensions.width }} mm</div>
-    <div>Depth: {{ dimensions.depth }} mm</div>
-    <div>Height: {{ dimensions.height }} mm</div>
-    <div>Material Thickness: {{ materialThickness.value }} mm</div>
-
-    <!-- Output Display -->
-    <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
-      <h3 class="text-xl font-bold mb-4">Form Data</h3>
-      <ul>
-        <li><strong>Number of Holes:</strong> {{ matrixTopAndBottom.holes }}</li>
-        <li><strong>Number of Rows:</strong> {{ matrixTopAndBottom.rows }}</li>
-        <li><strong>Spacing Between Holes in X:</strong> {{ matrixTopAndBottom.xSpacing }} mm</li>
-        <li><strong>Spacing Between Holes in Y:</strong> {{ matrixTopAndBottom.ySpacing }} mm</li>
-        <li><strong>Margin X:</strong> {{ matrixTopAndBottom.xMargin }} mm</li>
-        <li><strong>Margin Y:</strong> {{ matrixTopAndBottom.yMargin }} mm</li>
-        <li><strong>Hole Diameter:</strong> {{ matrixTopAndBottom.diameter }} mm</li>
-        <li><strong>Number of horizontal steps:</strong> {{ stepsTopAndBottom.numberOfStepsHorizontal}}</li>
-        <li><strong>Number of vertical steps:</strong> {{ stepsTopAndBottom.numberOfStepsVertical}}</li>
-      </ul>
-    </div>
-
-    <div v-if="submitted" class="columns-3 flex flex-nowrap bg-purple-300">
-      <div class="bg-red-100 flex justify-end items-center" >
-        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue" :viusaSizeModifier="visualSizeModifier.value"/>
-      </div>
-      <!-- SVG Representation -->
-      <div class="bg-blue-100">
-        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo" :viusaSizeModifier="visualSizeModifier.value"/>
-        <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray" :viusaSizeModifier="visualSizeModifier.value"/>
-        <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen" :viusaSizeModifier="visualSizeModifier.value"/>
-      </div>
-      <div class="bg-green-100 flex justify-start items-center">
-        <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato" :viusaSizeModifier="visualSizeModifier.value"/>
-      </div>
-    </div>
-
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-    <div v-if="submitted" class="bg-purple-900 relative mt-[600px]">
-      <MySVG
-        class="absolute"
-        :style="computedStyleTop"
-        :matrix="matrixTopAndBottom" 
-        :steps="stepsTopAndBottom"
-        :polygonPoints="polygonPointsTopAndBottom"
-        :showCircles="true" :width="dimensions.width"
-        :height="dimensions.depth" 
-        color="gray"
-        bgColor="#aaaaff"
-        :viusaSizeModifier="visualSizeModifier.value"
-      />
-      <MySVG
-        class="absolute"
-        :style="computedStyleFront"
-        :matrix="matrixFrontAndBack"
-        :steps="stepsLeftAndRight"
-        :polygonPoints="polygonPointsFrontAndBack"
-        :showCircles="false"
-        :width="dimensions.width"
-        :height="dimensions.height"
-        color="forestgreen"
-        bgColor="#aaaaff"
-        :viusaSizeModifier="visualSizeModifier.value"
-      />
-      <MySVG
-        class="absolute"
-        :style="computedStyleRight"
-        :matrix="matrixLeftAndRight"
-        :steps="stepsLeftAndRight"
-        :polygonPoints="polygonPointsLeftAndRight"
-        :showCircles="false" :width="dimensions.height"
-        :height="dimensions.depth"
-        color="tomato"
-        bgColor="#aaaaff"
-        :viusaSizeModifier="visualSizeModifier.value"
-      />
-    </div>
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-    <!-- SVG VISUAL REPRESENTATION TEST  -->
-
-    <div class="flex justify-center flex-row space-x-4 mt-6">
-      <DownloadSVG :svgRef="theSVG" />
-      <DownloadDXF :matrix="matrixTopAndBottom" />
-      <DownloadG_CODE :matrix="matrixTopAndBottom" />
-    </div>
+    <Visualisation3d
+      :matrixFrontAndBack="matrixFrontAndBack"
+      :matrixLeftAndRight="matrixLeftAndRight"
+      :matrixTopAndBottom="matrixTopAndBottom"
+      :stepsTopAndBottom="stepsTopAndBottom"
+      :stepsLeftAndRight="stepsLeftAndRight"
+      :visualSizeModifier="visualSizeModifier"
+      :materialThickness="materialThickness"
+      :polygonPointsTopAndBottom="polygonPointsTopAndBottom"
+      :polygonPointsFrontAndBack="polygonPointsFrontAndBack"
+      :polygonPointsLeftAndRight="polygonPointsLeftAndRight"
+      :dimensions="dimensions"
+      :submitted="submitted"
+    />
   </div>
 
 </template>
@@ -291,42 +74,6 @@
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
-
-//TOP
-const computedStyleTop = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const translateValueX = outsideDepth / 2;
-  const translateValueY = outsideDepth ;
-  return {
-    transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg)`,
-    top: ``,
-  };
-});
-
-//FRONT
-const computedStyleFront = computed(() => {
-  const translateValue = (1);
-  return {
-    transform: ` `,
-    top: ``,
-  };
-});
-
-//RIGHT
-const computedStyleRight = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const translateValueX = outsideWidth;
-  const translateValueY = outsideHeight; 
-  return {
-    transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg)`,
-    transformOrigin: 'top left',
-    top: ``,
-  };
-});
-
 
 
 const theSVG = ref<SVGSVGElement | null>(null);
@@ -342,17 +89,17 @@ const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 const visualSizeModifier = reactive({
   value: 15
 });
-
+ 
 const dimensions = reactive({
   width: matrixTopAndBottom.width,
-  height: 40,
+  height: 20,
   depth: matrixTopAndBottom.height,
 });
 
 const numberOfSteps = reactive({
-  width: 1,
-  height: 5,
-  depth: 1
+  width: 3,
+  height: 2,
+  depth: 2
 });
 
 const materialThickness = reactive({
@@ -460,5 +207,15 @@ const polygonPointsLeftAndRight = computed(() => {
 </script>
 
 <style scoped>
+
+/* .singleInputField {
+  @apply mb-4 max-w-64 flex flex-row space-x-4;
+}
+.singleInputField > label {
+    @apply whitespace-nowrap;
+}
+.singleInputField > input {
+    @apply whitespace-nowrap;
+} */
 /* Custom styling if needed */
 </style>
