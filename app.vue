@@ -18,6 +18,8 @@
       <div>Height: {{ dimensions.height }} mm</div>
       <div>Material Thickness: {{ materialThickness.value }} mm</div>
       <!-- Output Display -->
+      <!-- Output Display -->
+      <!-- Output Display -->
       <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
         <h3 class="text-xl font-bold mb-4">Form Data</h3>
         <ul>
@@ -34,16 +36,92 @@
       </div>
       <div v-if="submitted" class="columns-3 flex flex-nowrap bg-purple-300">
         <div class="bg-red-100 flex justify-end items-center" >
-          <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="deepskyblue" :viusaSizeModifier="visualSizeModifier.value"/>
+          <!-- LEFT -->
+          <MySVG
+            class=""
+            :matrix="matrixLeftAndRight"
+            :steps="stepsLeftAndRight"
+            :polygonPoints="polygonPointsLeftAndRight"
+            :showCircles="false"
+            :width="dimensions.height"
+            :height="dimensions.depth"
+            color="deepskyblue"
+            colorRightRect="gray"
+            colorTopRect="indigo"
+            colorLeftRect="#555"
+            :viusaSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value" />
         </div>
-        <!-- SVG Representation -->
+        <!-- CENTER -->
         <div class="bg-blue-100">
-          <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="indigo" :viusaSizeModifier="visualSizeModifier.value"/>
-          <MySVG class="" :matrix="matrixTopAndBottom" :steps="stepsTopAndBottom" :polygonPoints="polygonPointsTopAndBottom" :showCircles="true" :width="dimensions.width" :height="dimensions.depth" color="gray" :viusaSizeModifier="visualSizeModifier.value"/>
-          <MySVG class="" :matrix="matrixFrontAndBack" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsFrontAndBack" :showCircles="false" :width="dimensions.width" :height="dimensions.height" color="forestgreen" :viusaSizeModifier="visualSizeModifier.value"/>
+          <!-- CENTER TOP -->
+          <MySVG
+            class=""
+            :matrix="matrixFrontAndBack"
+            :steps="stepsLeftAndRight"
+            :polygonPoints="polygonPointsFrontAndBack"
+            :showCircles="false"
+            :width="dimensions.width"
+            :height="dimensions.height"
+            color="indigo"
+            colorTopRect="#555"
+            colorLeftRect="deepskyblue"
+            colorRightRect="tomato"
+            :viusaSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value"
+          />
+          <!-- CENTER CENTER (MIDDLE) -->
+          <MySVG
+            class=""
+            :matrix="matrixTopAndBottom"
+            :steps="stepsTopAndBottom"
+            :polygonPoints="polygonPointsTopAndBottom"
+            :showCircles="true"
+            :width="dimensions.width"
+            :height="dimensions.depth"
+            color="gray"
+            colorRightRect="tomato"
+            colorLeftRect="deepskyblue"
+            colorTopRect="indigo"
+            :viusaSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value"
+          />
+          <!-- CENTER BOTTOM-->
+          <MySVG
+            class=""
+            :matrix="matrixFrontAndBack"
+            :steps="stepsLeftAndRight"
+            :polygonPoints="polygonPointsFrontAndBack"
+            :showCircles="false"
+            :width="dimensions.width"
+            :height="dimensions.height"
+            color="forestgreen"
+            colorTopRect="gray"
+            colorLeftRect="deepskyblue"
+            colorRightRect="tomato"
+            colorBottomRect="#555"
+            :viusaSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value"
+          />
         </div>
+        <!-- RIGHT -->
         <div class="bg-green-100 flex justify-start items-center">
-          <MySVG class="" :matrix="matrixLeftAndRight" :steps="stepsLeftAndRight" :polygonPoints="polygonPointsLeftAndRight" :showCircles="false" :width="dimensions.height" :height="dimensions.depth" color="tomato" :viusaSizeModifier="visualSizeModifier.value"/>
+          <MySVG
+            class=""
+            :matrix="matrixLeftAndRight"
+            :steps="stepsLeftAndRight"
+            :polygonPoints="polygonPointsLeftAndRight"
+            :showCircles="false"
+            :width="dimensions.height"
+            :height="dimensions.depth"
+            color="tomato"
+            colorLeftRect="gray"
+            colorRightRect="#555"
+            colorTopRect="indigo"
+            colorBottomRect="forestgreen"
+            :viusaSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value"
+          />
         </div>
       </div>
       <div class="flex justify-center flex-row space-x-4 mt-6">
@@ -87,7 +165,7 @@ const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2, 2));
 const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 
 const visualSizeModifier = reactive({
-  value: 15
+  value: '15'
 });
  
 const dimensions = reactive({

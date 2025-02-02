@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <form @submit.prevent="submitForm" class="flex flex-col ">
         <!-- Number of Holes -->
         <div class="singleInputField">
@@ -185,7 +185,7 @@ const props = defineProps<{
     matrixTopAndBottom: MatrixOfHoles;
     numberOfSteps: { width: number; depth: number; height: number };
     materialThickness: { value: number };
-    visualSizeModifier: { value: number };
+    visualSizeModifier: { value: string };
     dimensions: { width: number; depth: number; height: number };
   }>();
 

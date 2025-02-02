@@ -20,6 +20,7 @@
           colorLeftRect="blue"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier.value"
+          :materialThickness="materialThickness.value"
         />
         <!-- FRONT -->
         <MySVG
@@ -38,6 +39,7 @@
           colorLeftRect="blue"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier.value"
+          :materialThickness="materialThickness.value"
         />
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
@@ -60,6 +62,7 @@
           colorLeftRect="orange"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier.value"
+          :materialThickness="materialThickness.value"
         />
       </div>
       <!-- SVG VISUAL REPRESENTATION TEST  -->
@@ -97,9 +100,8 @@ const computedStyleTop = computed(() => {
   const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
   const translateValueX = outsideDepth / 4;
   const translateValueY = outsideDepth  - (outsideDepth / 4) ;
-  const adjustment = 0 ; //(outsideDepth / outsideWidth) / 2;
   return {
-    transform: `translateY(-${translateValueY - adjustment}px) translateX(${translateValueX - adjustment}px) skewX(-45deg) scaleY(0.5)`,
+    transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg) scaleY(0.5)`,
     top: ``,
   };
 });
