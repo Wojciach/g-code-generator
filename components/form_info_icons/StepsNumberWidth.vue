@@ -9,13 +9,22 @@
 
       <!-- Text -->
       <text v-for="(step, index) in textXposition"
-        :key="index" :x="step"
+        :key="index"
+        :x="step"
         :y="textY"
         font-family="Arial"
         :font-size="fontSize"
         fill="black"
         text-anchor="middle"
-        :transform="`rotate(${rotationAngle}, ${textXposition[index]}, ${topOfStep - (fontSize / 2)})`"
+        :class="{
+          'skew-text': skewText === true,
+          'leftTextPositionAdjustment': (index === 0 && props.skewText === true),
+          'centerTextPositionAdjustment': (index === 1 && props.skewText === true),
+          'rightTextPositionAdjustment': (index === 2 && props.skewText === true)
+        }"
+        :transform="`
+          rotate(${rotationAngle}, ${textXposition[index]}, ${topOfStep - (fontSize / 2)})
+        `"
       >
         {{ index + 1 }}
       </text>
@@ -26,22 +35,24 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-  rotateLettersBy: number;
+  rotateLettersBy?: number;
+  skewText?: boolean;
 }>();
 
-const rotationAngle = props.rotateLettersBy;
+const rotationAngle = props.rotateLettersBy || 0;
 const letterRotationXposition = 0;
 const letterRotationYposition = 0;
 
-const fontSize = 44;
+const fontSize = 60;
 
 const size = 360;
 const stepWidth = size / 6;
-const bottomOfStep = size / 100 * 65;
-const topOfStep = size / 100 * 50;
+const bottomOfStep = size / 100 * 65; // (100*65 is for  percentage representation) 65% of the size
+const topOfStep = size / 100 * 50; // (100*50 is for  percentage representation) 50% of the size
 const stepsArray = Array.from({length: 6}, (_, i) => (i * stepWidth) + (stepWidth / 2));
 const textY = topOfStep - 10;
-const textXposition = [stepsArray[0] + stepWidth / 2, stepsArray[2] + stepWidth / 2, stepsArray[4] + stepWidth / 2];
+const textXpositionPrep: number[] = [stepsArray[0], stepsArray[2], stepsArray[4]];
+const textXposition: number[] = textXpositionPrep.map((x, i) => x + (stepWidth / 2));
 
 const steps = `
   0,${size}
@@ -65,4 +76,17 @@ const steps = `
 </script>
 
 <style scoped>
+.skew-text {
+  transform-origin: center center; /* Change the transform origin to the center */
+}
+.leftTextPositionAdjustment {
+  transform: translate(15%, 65%) scale(1.5) skewY(55deg);
+}
+.centerTextPositionAdjustment {
+  transform: translate(-5%, -7%) scale(1.5) skewY(55deg);
+}
+.rightTextPositionAdjustment {
+  transform: translate(-20%, -80%) scale(1.5) skewY(55deg);
+
+}
 </style>

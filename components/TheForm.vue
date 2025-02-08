@@ -20,43 +20,6 @@
             placeholder="Enter number of hole"
           />
 
-          <!-- Number of Holes -->
-          <!-- <div class="singleInputField flex justify-between items-center">
-            <div>
-              <label for="holes" class="block text-gray-200">Number of Holes</label>
-              <input
-                v-model="matrixTopAndBottom.holes"
-                id="holes"
-                type="number"
-                min="1"
-                class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-                placeholder="Enter number of holes"
-                required
-              />
-            </div>
-            <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-              <Rows />
-            </div>
-          </div> -->
-
-          <!-- Number of Rows -->
-          <!-- <div class="singleInputField flex justify-between items-center">
-            <div>
-              <label for="holes" class="block text-gray-200">Number of Rows</label>
-              <input
-                v-model="matrixTopAndBottom.rows"
-                id="rows"
-                type="number"
-                min="1"
-                class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-                placeholder="Enter number of rows"
-                required
-              />
-            </div>
-            <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-              <Rows class="rotate-90" />
-            </div>
-          </div> -->
         </fieldset>
 
         <fieldset class="mt-4 bg-blue-500 border border-grey-300 rounded-md p-4">
@@ -78,43 +41,6 @@
             placeholder="Enter spacing between holes in Y"
           />
 
-          <!-- x spacing Between Holes in x axis-->
-          <!-- <div class="singleInputField flex justify-between items-center">
-            <div>
-              <label for="holeXspacing" class="block text-gray-700"> X Spacing Between Holes in X axis (mm)</label>
-              <input
-                v-model="matrixTopAndBottom.xSpacing"
-                id="holeXspacing"
-                type="number"
-                min="0"
-                class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-                placeholder="Enter spacing between holes in X"
-                required
-              />
-            </div>
-            <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-              <Xspacing />
-            </div>
-          </div> -->
-
-          <!-- Y Between Holes in Y axis -->
-          <!-- <div class="singleInputField flex justify-between items-center">
-            <div>
-              <label for="holeYspacing" class="block text-gray-700"> Y Spacing Between Holes in Y axis (mm)</label>
-              <input
-                v-model="matrixTopAndBottom.ySpacing"
-                id="holeYspacing"
-                type="number"
-                min="0"
-                class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-                placeholder="Enter spacing between holes in Y"
-                required
-              />
-            </div>
-            <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-              <Xspacing class="rotate-90" />
-            </div>
-          </div> -->
         </fieldset>
 
         <fieldset class="mt-4 bg-green-600 border border-grey-300 rounded-md p-4">
@@ -129,20 +55,6 @@
             placeholder="X Margin"
           />
 
-          <!-- x Margin -->
-          <!-- <div class="singleInputField">
-            <label for="xMargin" class="block text-gray-700"> X Margin (mm)</label>
-            <input
-              v-model="matrixTopAndBottom.xMargin"
-              id="xMargin"
-              type="number"
-              min="0"
-              class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-              placeholder="X Margin"
-              required
-            />
-          </div> -->
-
           <!-- y Margin -->
           <FormField
             v-model="matrixTopAndBottom.yMargin"
@@ -152,19 +64,6 @@
             placeholder="Y Margin"
           />
 
-          <!-- y Margin -->
-          <!-- <div class="singleInputField">
-            <label for="yMargin" class="block text-gray-700"> Y Margin (mm)</label>
-            <input
-              v-model="matrixTopAndBottom.yMargin"
-              id="yMargin"
-              type="number"
-              min="0"
-              class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-              placeholder="Y Margin"
-              required
-            />
-          </div> -->
         </fieldset>
 
         <!-- Hole Diameter -->
@@ -175,20 +74,6 @@
             shortName="holeDiameter"
             placeholder="Enter hole diameter"
         />
-
-        <!-- Hole Diameter -->
-        <!-- <div class="singleInputField">
-          <label for="holeDiameter" class="block text-gray-700">Hole Diameter (mm)</label>
-          <input
-            v-model="matrixTopAndBottom.diameter"
-            id="holeDiameter"
-            type="number"
-            min="1"
-            class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-            placeholder="Enter hole diameter"
-            required
-          />
-        </div> -->
 
         <fieldset class="mt-4 bg-slate-500 border border-gray-300 rounded-md p-4">
           <legend class="text-lg font-semibold">Steps</legend>
@@ -201,33 +86,15 @@
             shortName="numberOfStepsHorizontal"
             placeholder="How many horizontal steps?"
           />
-          <!-- Number of horizontal steps -->
-          <!-- <div class="singleInputField">
-            <label for="numberOfStepsHorizontal" class="block text-gray-900">Nmber of horizontal steps (width)</label>
-            <input
-              v-model="numberOfSteps.width"
-              id="numberOfStepsHorizontal"
-              type="number"
-              :min="1"
-              class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-              placeholder="How many horizontal steps?"
-              required
-              />
-          </div> -->
 
           <!-- Number of vertical steps -->
-          <div class="singleInputField">
-            <label for="numberOfStepsVertical" class="block text-gray-900"> Nmber of vertical steps (depth)</label>
-            <input
-              v-model="numberOfSteps.depth"
-              id="numberOfStepsVertical"
-              type="number"
-              :min="1"
-              class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-              placeholder="How many vertical steps?"
-              required
-              />
-          </div>
+          <FormField
+            v-model="numberOfSteps.depth"
+            :iconComponent="StepsNumberDepth"
+            displayName="Nmber of vertical steps (depth)"
+            shortName="numberOfStepsVertical"
+            placeholder="How many steps in depth of the box?"
+          />
 
           <!-- Number of vertical steps (in Z axis) -->
           <FormField
@@ -237,19 +104,7 @@
             shortName="numberOfStepsInZAxis"
             placeholder="How many vertical steps in Z axis?"
           />
-          <!-- Number of vertical steps (in Z axis) -->
-          <!-- <div class="singleInputField">
-            <label for="numberOfStepsInZAxis" class="block text-gray-900"> Nmber of vertical steps in Z axis (height)</label>
-            <input
-              v-model="numberOfSteps.height"
-              id="numberOfStepsInZAxis"
-              type="number"
-              :min="1"
-              class="w-full mt-2 p-2 border border-gray-300 rounded-md"
-              placeholder="How many vertical steps in Z axis?"
-              required
-              />
-            </div> -->
+
         </fieldset>
 
         <!-- Height in Z axis -->
@@ -313,6 +168,7 @@ import Ymargins from '@/components/form_info_icons/Ymargins.vue';
 import HoleDiameter from './form_info_icons/HoleDiameter.vue';
 import StepsNumberWidth from './form_info_icons/StepsNumberWidth.vue';
 import StepsNumberHeight from './form_info_icons/StepsNumberHeight.vue';
+import StepsNumberDepth from './form_info_icons/StepsNumberDepth.vue';
 
 
 

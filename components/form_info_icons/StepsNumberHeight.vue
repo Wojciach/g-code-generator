@@ -1,5 +1,5 @@
 <template>
- <StepsNumberWidth class="rotate-90" :rotateLettersBy="-90" />
+ <StepsNumberWidth class="rotate-90" :rotateLettersBy="(-90)" :skewText="false" />
 </template>
 
 <script lang="ts" setup>
