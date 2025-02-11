@@ -92,27 +92,20 @@
         <!-- Height in Z -->
         <FormField
             v-model="dimensions.height"
-            :iconComponent="Visualisation3d"
+            :iconComponent="StepsNumberHeight"
             displayName="Height in Z axis"
             shortName="heightInZAxis"
             placeholder="Height in Z axis?"
-            :universalComponentProps="{
-              matrixFrontAndBack,
-              matrixLeftAndRight,
-              matrixTopAndBottom,
-              stepsTopAndBottom,
-              stepsLeftAndRight,
-              visualSizeModifier: Number(visualSizeModifier.value),
-              materialThickness,
-              polygonPointsTopAndBottom,
-              polygonPointsFrontAndBack,
-              polygonPointsLeftAndRight,
-              dimensions,
-              submitted
-            }"
         />
         <!-- Material thickness -->
-        <div class="singleInputField">
+        <FormField
+            v-model="materialThickness.value"
+            :iconComponent="StepsNumberHeight"
+            displayName="Material thickness"
+            shortName="materialThickness"
+            placeholder="Material thickness?"
+        />
+        <!-- <div class="singleInputField">
           <label for="materialThickness" class="block text-gray-700"> Material thickness</label>
           <input
             v-model="materialThickness.value"
@@ -123,13 +116,15 @@
             placeholder="Material thickness?"
             required
             />
-        </div>
+        </div> -->
+        <!-- Visual Size Modifier -->
         <div>
           <label for="visualSizeModifier">Visual Size Modifier: {{ visualSizeModifier.value }}</label>
           <input
             id="visualSizeModifier"
             type="range"
-            v-model="visualSizeModifier.value"
+            :value="visualSizeModifier.value"
+            @input="$emit('update:visualSizeModifier', Number($event.target.value))"
             :min="1"
             :max="20"
             :step="1"
@@ -137,7 +132,7 @@
         </div>
         <!-- Submit Button -->
         <div class="flex justify-center">
-          <button type="submit" @click="emission" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+          <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
             Submit
           </button>
         </div>
@@ -167,16 +162,8 @@ const props = defineProps<{
     dimensions: { width: number; depth: number; height: number };
   }>();
 
-const data = () => {
-  return  'returned data'
-}
 
-const emit = defineEmits(['update']);
-
-const emission = () => {
-  console.log('emission')
-  emit('update', data())
-}
+const emit = defineEmits(['update:visualSizeModifier']);
 
 </script>
 

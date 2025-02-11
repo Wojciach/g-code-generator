@@ -1,7 +1,8 @@
 <template>
   <div class="w-full bg-slate-400 flex flex-row items-start justify-start">
     
-      <TheForm  @update="console.log('emitorrrr')"
+      <TheForm
+        @update:visualSizeModifier="updateVisualSizeModifier"
         :matrixTopAndBottom="matrixTopAndBottom"
         :numberOfSteps="numberOfSteps"
         :materialThickness="materialThickness"
@@ -135,7 +136,7 @@
         :matrixTopAndBottom="matrixTopAndBottom"
         :stepsTopAndBottom="stepsTopAndBottom"
         :stepsLeftAndRight="stepsLeftAndRight"
-        :visualSizeModifier="Number(visualSizeModifier.value)"
+        :visualSizeModifier="visualSizeModifier.value"
         :materialThickness="materialThickness"
         :polygonPointsTopAndBottom="polygonPointsTopAndBottom"
         :polygonPointsFrontAndBack="polygonPointsFrontAndBack"
@@ -151,8 +152,8 @@
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
+import { updateTemplates } from 'nuxt/kit';
 //import Visualisation3d from './components/Visualisation3d.vue';
-
 
 const theSVG = ref<SVGSVGElement | null>(null);
 
@@ -165,7 +166,7 @@ const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2, 2));
 const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 
 const visualSizeModifier = reactive({
-  value: 15
+  value: 10
 });
  
 const dimensions = reactive({
@@ -280,6 +281,11 @@ const polygonPointsLeftAndRight = computed(() => {
   }
   return `${points}`;
 });
+
+const updateVisualSizeModifier = (value) => {
+  visualSizeModifier.value = value;
+  console.log('visualSizeModifier.value', visualSizeModifier.value);
+};
 
 </script>
 

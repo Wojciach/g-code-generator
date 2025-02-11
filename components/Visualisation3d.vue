@@ -85,12 +85,12 @@ const props = defineProps<{
 
 const dimensions = props.dimensions;
 const materialThickness = props.materialThickness;
-const visualSizeModifier = props.visualSizeModifier;
+//const visualSizeModifier = props.visualSizeModifier;
 
 //TOP
 const computedStyleTop = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier;
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * props.visualSizeModifier;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * props.visualSizeModifier;
   const translateValueX = outsideDepth / 4;
   const translateValueY = outsideDepth  - (outsideDepth / 4) ;
   return {
@@ -111,9 +111,9 @@ const computedStyleFront = computed(() => {
 
 //RIGHT
 const computedStyleRight = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier;
-  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * visualSizeModifier;
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * props.visualSizeModifier;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * props.visualSizeModifier;
+  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * props.visualSizeModifier;
   const translateValueX = outsideWidth;
   const translateValueY = outsideHeight; 
   return {

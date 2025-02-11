@@ -15,7 +15,7 @@
     />
   </div>
   <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-    <component :is="iconComponent" v-bind="universalComponentProps" />
+    <component :is="iconComponent"/>
   </div>
 </div>
   
@@ -29,7 +29,6 @@ defineProps<{
   placeholder: string;
   iconComponent: any;
   modelValue: number | string;
-  universalComponentProps?: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
