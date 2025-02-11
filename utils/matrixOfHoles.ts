@@ -18,7 +18,7 @@ export class MatrixOfHoles {
         console.log(this.xPositions);
     }
   
-    private initialize(holes: number, rows: number, diameter: number, xSpacing: number, ySpacing: number, xMargin: number, yMargin: number) {
+    public initialize(holes: number, rows: number, diameter: number, xSpacing: number, ySpacing: number, xMargin: number, yMargin: number) {
         this.holes = holes;
         this.rows = rows;
         this.diameter = diameter;
@@ -33,12 +33,12 @@ export class MatrixOfHoles {
         this.calculatePositions();
     }
 
-    private calculateDimensions() {
+    public calculateDimensions() {
         this.width = ((this.diameter + this.xSpacing) * this.holes) - this.xSpacing + (this.xMargin * 2);
         this.height = ((this.diameter + this.ySpacing) * this.rows) - this.ySpacing + (this.yMargin * 2);
     }
 
-    private calculatePositions() {
+    public calculatePositions() {
 
         this.xPositions.splice(0, this.xPositions.length, ...Array.from({ length: this.holes }, (_, i) => this.xMargin + i * (this.diameter + this.xSpacing) + this.diameter / 2));
         this.yPositions.splice(0, this.yPositions.length, ...Array.from({ length: this.rows }, (_, i) => this.yMargin + i * (this.diameter + this.ySpacing) + this.diameter / 2));

@@ -1,12 +1,9 @@
 <template>
   <div class="w-full h-full flex items-center justify-center">
     <svg :viewBox="`0 0 ${size} ${size}`" xmlns="http://www.w3.org/2000/svg">
-
       <rect x="0" y="0" :width="`${size}`" :height="`${size}`" fill="tomato" stroke="none" stroke-width="0" />
-
       <!-- Steps -->
       <polygon :points="steps" fill="red"  stroke="black" stroke-width="4"/>
-
       <!-- Text -->
       <text v-for="(step, index) in textXposition"
         :key="index"
@@ -40,9 +37,6 @@ const props = defineProps<{
 }>();
 
 const rotationAngle = props.rotateLettersBy || 0;
-const letterRotationXposition = 0;
-const letterRotationYposition = 0;
-
 const fontSize = 60;
 
 const size = 360;
@@ -76,17 +70,16 @@ const steps = `
 </script>
 
 <style scoped>
-.skew-text {
-  transform-origin: center center; /* Change the transform origin to the center */
-}
-.leftTextPositionAdjustment {
-  transform: translate(15%, 65%) scale(1.5) skewY(55deg);
-}
-.centerTextPositionAdjustment {
-  transform: translate(-5%, -7%) scale(1.5) skewY(55deg);
-}
-.rightTextPositionAdjustment {
-  transform: translate(-20%, -80%) scale(1.5) skewY(55deg);
-
-}
+  .skew-text {
+    transform-origin: center center; /* Change the transform origin to the center */
+  }
+  .leftTextPositionAdjustment {
+    transform: translate(15%, 65%) scale(1.5) skewY(55deg);
+  }
+  .centerTextPositionAdjustment {
+    transform: translate(-5%, -7%) scale(1.5) skewY(55deg);
+  }
+  .rightTextPositionAdjustment {
+    transform: translate(-20%, -80%) scale(1.5) skewY(55deg);
+  }
 </style>

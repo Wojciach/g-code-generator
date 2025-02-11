@@ -1,15 +1,14 @@
 <template>
   <div class="w-full bg-slate-400 flex flex-row items-start justify-start">
     
-    <TheForm  @update="console.log('emitorrrr')"
-      :matrixTopAndBottom="matrixTopAndBottom"
-      :numberOfSteps="numberOfSteps"
-      :materialThickness="materialThickness"
-      :visualSizeModifier="visualSizeModifier"
-      :dimensions="dimensions"
-    />
+      <TheForm  @update="console.log('emitorrrr')"
+        :matrixTopAndBottom="matrixTopAndBottom"
+        :numberOfSteps="numberOfSteps"
+        :materialThickness="materialThickness"
+        :visualSizeModifier="visualSizeModifier"
+        :dimensions="dimensions"
+      />
 
-    
     <div class="p-6 bg-red-200 shadow-md rounded-md max-w-64 items-start ">
       <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
 
@@ -130,20 +129,20 @@
         <DownloadG_CODE :matrix="matrixTopAndBottom" />
       </div>
     </div>
-    <Visualisation3d
-      :matrixFrontAndBack="matrixFrontAndBack"
-      :matrixLeftAndRight="matrixLeftAndRight"
-      :matrixTopAndBottom="matrixTopAndBottom"
-      :stepsTopAndBottom="stepsTopAndBottom"
-      :stepsLeftAndRight="stepsLeftAndRight"
-      :visualSizeModifier="visualSizeModifier"
-      :materialThickness="materialThickness"
-      :polygonPointsTopAndBottom="polygonPointsTopAndBottom"
-      :polygonPointsFrontAndBack="polygonPointsFrontAndBack"
-      :polygonPointsLeftAndRight="polygonPointsLeftAndRight"
-      :dimensions="dimensions"
-      :submitted="submitted"
-    />
+      <Visualisation3d
+        :matrixFrontAndBack="matrixFrontAndBack"
+        :matrixLeftAndRight="matrixLeftAndRight"
+        :matrixTopAndBottom="matrixTopAndBottom"
+        :stepsTopAndBottom="stepsTopAndBottom"
+        :stepsLeftAndRight="stepsLeftAndRight"
+        :visualSizeModifier="Number(visualSizeModifier.value)"
+        :materialThickness="materialThickness"
+        :polygonPointsTopAndBottom="polygonPointsTopAndBottom"
+        :polygonPointsFrontAndBack="polygonPointsFrontAndBack"
+        :polygonPointsLeftAndRight="polygonPointsLeftAndRight"
+        :dimensions="dimensions"
+        :submitted="submitted"
+      />
   </div>
 
 </template>
@@ -152,6 +151,7 @@
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
+import Visualisation3d from './components/Visualisation3d.vue';
 
 
 const theSVG = ref<SVGSVGElement | null>(null);
@@ -165,7 +165,7 @@ const stepsFrontAndBack = reactive(new StepsGenerator(7, 7, 2, 2, 2));
 const stepsLeftAndRight = reactive(new StepsGenerator(7, 4, 2, 2, 2));
 
 const visualSizeModifier = reactive({
-  value: '15'
+  value: 15
 });
  
 const dimensions = reactive({
@@ -191,7 +191,6 @@ const stepSize = computed(() => {
     depth: (dimensions.depth / numberOfSteps.depth) /2
   };
 });
-
 
 //Watch for changes in holes, holeSpacing, and holeDiameter to recalculate width
 watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matrixTopAndBottom.diameter, () => matrixTopAndBottom.xSpacing, () => matrixTopAndBottom.ySpacing, () => matrixTopAndBottom.xMargin, () => matrixTopAndBottom.yMargin], ([newHoles, newRows, newDiameter, newXspacing, newYspacing, newXmargin, newYmargin]) => {
@@ -286,14 +285,4 @@ const polygonPointsLeftAndRight = computed(() => {
 
 <style scoped>
 
-/* .singleInputField {
-  @apply mb-4 max-w-64 flex flex-row space-x-4;
-}
-.singleInputField > label {
-    @apply whitespace-nowrap;
-}
-.singleInputField > input {
-    @apply whitespace-nowrap;
-} */
-/* Custom styling if needed */
 </style>

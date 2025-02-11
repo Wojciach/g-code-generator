@@ -1,10 +1,8 @@
 <template>
   <div class="p-4">
     <form @submit.prevent="submitForm" class="flex flex-col">
-
         <fieldset class="bg-red-500 border border-grey-300 rounded-md p-4">
           <legend class="text-lg font-semibold text-white">Holes</legend>
-
           <FormField
             v-model="matrixTopAndBottom.holes"
             :iconComponent="Rows"
@@ -19,12 +17,9 @@
             shortName="holes"
             placeholder="Enter number of hole"
           />
-
         </fieldset>
-
         <fieldset class="mt-4 bg-blue-500 border border-grey-300 rounded-md p-4">
           <legend class="text-lg font-semibold text-white">Spacing</legend>
-
           <FormField
             v-model="matrixTopAndBottom.xSpacing"
             :iconComponent="Xspacing"
@@ -32,7 +27,6 @@
             shortName="holeXspacing"
             placeholder="Enter spacing between holes in X"
           />
-
           <FormField
             v-model="matrixTopAndBottom.ySpacing"
             :iconComponent="Yspacing"
@@ -40,12 +34,9 @@
             shortName="holeYspacing"
             placeholder="Enter spacing between holes in Y"
           />
-
         </fieldset>
-
         <fieldset class="mt-4 bg-green-600 border border-grey-300 rounded-md p-4">
           <legend class="text-lg font-semibold">Margins</legend>
-
           <!-- x Margin -->
           <FormField
             v-model="matrixTopAndBottom.xMargin"
@@ -54,7 +45,6 @@
             shortName="xMargin"
             placeholder="X Margin"
           />
-
           <!-- y Margin -->
           <FormField
             v-model="matrixTopAndBottom.yMargin"
@@ -63,9 +53,7 @@
             shortName="yMargin"
             placeholder="Y Margin"
           />
-
         </fieldset>
-
         <!-- Hole Diameter -->
         <FormField
             v-model="matrixTopAndBottom.diameter"
@@ -74,10 +62,8 @@
             shortName="holeDiameter"
             placeholder="Enter hole diameter"
         />
-
         <fieldset class="mt-4 bg-slate-500 border border-gray-300 rounded-md p-4">
           <legend class="text-lg font-semibold">Steps</legend>
-
           <!-- Number of horizontal steps -->
           <FormField
             v-model="numberOfSteps.width"
@@ -86,7 +72,6 @@
             shortName="numberOfStepsHorizontal"
             placeholder="How many horizontal steps?"
           />
-
           <!-- Number of vertical steps -->
           <FormField
             v-model="numberOfSteps.depth"
@@ -95,7 +80,6 @@
             shortName="numberOfStepsVertical"
             placeholder="How many steps in depth of the box?"
           />
-
           <!-- Number of vertical steps (in Z axis) -->
           <FormField
             v-model="numberOfSteps.height"
@@ -104,24 +88,30 @@
             shortName="numberOfStepsInZAxis"
             placeholder="How many vertical steps in Z axis?"
           />
-
         </fieldset>
-
-        <!-- Height in Z axis -->
-        <div class="singleInputField">
-          <label for="heightInZAxis" class="block text-gray-700"> Height in Z axis</label>
-          <input
+        <!-- Height in Z -->
+        <FormField
             v-model="dimensions.height"
-            id="heightInZAxis"
-            type="number"
-            :min="materialThickness.value * 2"
-            class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+            :iconComponent="Visualisation3d"
+            displayName="Height in Z axis"
+            shortName="heightInZAxis"
             placeholder="Height in Z axis?"
-            required
-            />
-        </div>
-
-        <!-- Height in Z axis -->
+            :universalComponentProps="{
+              matrixFrontAndBack,
+              matrixLeftAndRight,
+              matrixTopAndBottom,
+              stepsTopAndBottom,
+              stepsLeftAndRight,
+              visualSizeModifier: Number(visualSizeModifier.value),
+              materialThickness,
+              polygonPointsTopAndBottom,
+              polygonPointsFrontAndBack,
+              polygonPointsLeftAndRight,
+              dimensions,
+              submitted
+            }"
+        />
+        <!-- Material thickness -->
         <div class="singleInputField">
           <label for="materialThickness" class="block text-gray-700"> Material thickness</label>
           <input
@@ -145,16 +135,15 @@
             :step="1"
           />
         </div>
-
         <!-- Submit Button -->
         <div class="flex justify-center">
           <button type="submit" @click="emission" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
             Submit
           </button>
         </div>
-
       </form>
   </div>
+  
 </template>
 
 <script lang="ts" setup>
@@ -169,14 +158,12 @@ import HoleDiameter from './form_info_icons/HoleDiameter.vue';
 import StepsNumberWidth from './form_info_icons/StepsNumberWidth.vue';
 import StepsNumberHeight from './form_info_icons/StepsNumberHeight.vue';
 import StepsNumberDepth from './form_info_icons/StepsNumberDepth.vue';
-
-
-
+  
 const props = defineProps<{
     matrixTopAndBottom: MatrixOfHoles;
     numberOfSteps: { width: number; depth: number; height: number };
     materialThickness: { value: number };
-    visualSizeModifier: { value: string };
+    visualSizeModifier: { value: number };
     dimensions: { width: number; depth: number; height: number };
   }>();
 
@@ -190,7 +177,6 @@ const emission = () => {
   console.log('emission')
   emit('update', data())
 }
-
 
 </script>
 

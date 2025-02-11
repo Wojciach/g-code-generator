@@ -1,8 +1,6 @@
 <template>
-    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value)}px`}" >
-            <!-- SVG VISUAL REPRESENTATION TEST  -->
-      <!-- SVG VISUAL REPRESENTATION TEST  -->
-      <!-- SVG VISUAL REPRESENTATION TEST  -->
+    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier)}px`}" >
+      <!-- VISIUAL REPRESENTATION OF THE BOX -->
       <div v-if="submitted" class="relative ">
         <!-- TOP -->
         <MySVG
@@ -19,7 +17,7 @@
           colorRightRect="tomato"
           colorLeftRect="blue"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier.value"
+          :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness.value"
         />
         <!-- FRONT -->
@@ -38,7 +36,7 @@
           colorRightRect="tomato"
           colorLeftRect="blue"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier.value"
+          :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness.value"
         />
         <!-- RIGHT -->
@@ -61,19 +59,14 @@
           colorRightRect="gray"
           colorLeftRect="orange"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier.value"
+          :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness.value"
         />
       </div>
-      <!-- SVG VISUAL REPRESENTATION TEST  -->
-      <!-- SVG VISUAL REPRESENTATION TEST  -->
-      <!-- SVG VISUAL REPRESENTATION TEST  -->
-
     </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 
 const props = defineProps<{
   matrixFrontAndBack: MatrixOfHoles;
@@ -82,7 +75,7 @@ const props = defineProps<{
   stepsTopAndBottom: StepsGenerator;
   stepsLeftAndRight: StepsGenerator;
   dimensions: { width: number; depth: number; height: number };
-  visualSizeModifier: { value: number };
+  visualSizeModifier: number;
   materialThickness: { value: number };
   polygonPointsTopAndBottom: string;
   polygonPointsFrontAndBack: string;
@@ -96,8 +89,8 @@ const visualSizeModifier = props.visualSizeModifier;
 
 //TOP
 const computedStyleTop = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier;
   const translateValueX = outsideDepth / 4;
   const translateValueY = outsideDepth  - (outsideDepth / 4) ;
   return {
@@ -118,9 +111,9 @@ const computedStyleFront = computed(() => {
 
 //RIGHT
 const computedStyleRight = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier.value;
-  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * visualSizeModifier.value;
+  const outsideWidth = (dimensions.width + (materialThickness.value * 2)) * visualSizeModifier;
+  const outsideDepth = (dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier;
+  const outsideHeight = (dimensions.height + (materialThickness.value * 2)) * visualSizeModifier;
   const translateValueX = outsideWidth;
   const translateValueY = outsideHeight; 
   return {
@@ -129,8 +122,6 @@ const computedStyleRight = computed(() => {
     top: ``,
   };
 });
-
-
 
 </script>
 

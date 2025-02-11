@@ -15,24 +15,24 @@
     />
   </div>
   <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-    <component :is="iconComponent" />
+    <component :is="iconComponent" v-bind="universalComponentProps" />
   </div>
 </div>
   
 </template>
 
-<script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
+<script lang="ts" setup> 
+
 defineProps<{
   displayName: string;
   shortName: string;
   placeholder: string;
- // vModel?: any;
   iconComponent: any;
   modelValue: number | string;
-  }>();
+  universalComponentProps?: any;
+}>();
 
-  const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 </script>
 
