@@ -151,7 +151,7 @@
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
-import Visualisation3d from './components/Visualisation3d.vue';
+//import Visualisation3d from './components/Visualisation3d.vue';
 
 
 const theSVG = ref<SVGSVGElement | null>(null);
