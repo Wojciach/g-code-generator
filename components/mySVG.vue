@@ -90,7 +90,7 @@
   const props = defineProps<{
     showCircles: boolean;
     matrix: MatrixOfHoles;
-    steps: StepsGenerator;
+    //steps: StepsGenerator; //TODO: remove
     polygonPoints: string;
     width: number;
     height: number;

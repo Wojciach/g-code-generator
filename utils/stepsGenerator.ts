@@ -1,7 +1,4 @@
-type Position = {
-  x: number
-  y: number };
-
+import type { Position } from '@/utils/types';
 export class StepsGenerator {
   public theString: string = '';
   public materialThickness!: number;

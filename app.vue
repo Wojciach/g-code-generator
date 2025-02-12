@@ -144,15 +144,23 @@
         :dimensions="dimensions"
         :submitted="submitted"
       />
+      <NewVisualisation3d
+        class="mt-96"
+        :matrix="matrixTopAndBottom"
+        :numberOfSteps="numberOfSteps"
+        :materialThickness="materialThickness.value"
+        :visualSizeModifier="visualSizeModifier.value"
+        :dimensions="dimensions"
+      />
   </div>
 
 </template>
 
 <script lang="ts" setup>
+import type { Dimensions } from '@/utils/types';
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { StepsGenerator } from '@/utils/stepsGenerator';
-import { updateTemplates } from 'nuxt/kit';
 //import Visualisation3d from './components/Visualisation3d.vue';
 
 const theSVG = ref<SVGSVGElement | null>(null);
@@ -169,13 +177,13 @@ const visualSizeModifier = reactive({
   value: 10
 });
  
-const dimensions = reactive({
+const dimensions = reactive<Dimensions>({
   width: matrixTopAndBottom.width,
   height: 20,
   depth: matrixTopAndBottom.height,
 });
 
-const numberOfSteps = reactive({
+const numberOfSteps = reactive<Dimensions>({
   width: 3,
   height: 2,
   depth: 2
