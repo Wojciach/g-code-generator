@@ -1,6 +1,6 @@
 import { StepsGeneratorStatic } from './stepsGeneratorStatic';
-class polygonGenerator {
-    public polygonPointsTopAndBottom = (
+export class polygonGenerator {
+    public static polygonPointsTopAndBottom = (
             numberOfSteps:{ horizontal:number, vertical:number},
             stepSize:{ horizontal:number, vertical:number},
             materialThickness:number,
@@ -33,7 +33,7 @@ class polygonGenerator {
         return `${points}`;
     };
 
-    public polygonPointsFrontAndBack = (
+    public static polygonPointsFrontAndBack = (
         numberOfSteps:{ horizontal:number, vertical:number},
         stepSize:{ horizontal:number, vertical:number},
         materialThickness:number,
@@ -60,7 +60,7 @@ class polygonGenerator {
         return `${points}`;
     };
 
-    public polygonPointsLeftAndRight = (
+    public static polygonPointsLeftAndRight = (
         numberOfSteps:{ horizontal:number, vertical:number},
         stepSize:{ horizontal:number, vertical:number},
         materialThickness:number,

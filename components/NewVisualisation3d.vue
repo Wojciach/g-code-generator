@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier)}px`}" >
+    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`}" >
       <!-- VISIUAL REPRESENTATION OF THE BOX -->
       <div class="relative ">
         <!-- TOP -->
@@ -67,7 +67,7 @@
 
 <script lang="ts" setup>
 import type { Dimensions } from '@/utils/types';
-
+import { polygonGenerator } from '@/utils/polygonGenerator';
 
 const props = defineProps<{
   matrix: MatrixOfHoles;
@@ -77,14 +77,41 @@ const props = defineProps<{
   dimensions: Dimensions;
 }>();
 
-const dimensions = props.dimensions;
-const materialThickness = props.materialThickness;
-//const visualSizeModifier = props.visualSizeModifier;
+const stepSizes = computed(() => {
+    return {
+    width: (props.dimensions.width / props.numberOfSteps.width) / 2,
+    height: (props.dimensions.height / props.numberOfSteps.height) / 2,
+    depth: (props.dimensions.depth / props.numberOfSteps.depth) / 2
+  }
+});
 
-//TOP
+const polygonPointsTopAndBottom = computed(()=>{
+  return polygonGenerator.polygonPointsTopAndBottom(
+    {horizontal: props.numberOfSteps.width, vertical: props.numberOfSteps.depth},
+    {horizontal: stepSizes.value.width, vertical: stepSizes.value.depth},
+    props.materialThickness
+  );
+});
+
+const polygonPointsFrontAndBack = computed(()=>{
+  return polygonGenerator.polygonPointsFrontAndBack(
+    {horizontal: props.numberOfSteps.width, vertical: props.numberOfSteps.height},
+    {horizontal: stepSizes.value.width, vertical: stepSizes.value.height},
+    props.materialThickness
+  );
+});
+const polygonPointsLeftAndRight = computed(()=>{
+  return polygonGenerator.polygonPointsLeftAndRight(
+    {horizontal: props.numberOfSteps.height, vertical: props.numberOfSteps.depth},
+    {horizontal: stepSizes.value.height, vertical: stepSizes.value.depth},
+    props.materialThickness
+  );
+}) 
+
+//TOP SIDE WALL DIV
 const computedStyleTop = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness * 2)) * props.visualSizeModifier;
-  const outsideDepth = (dimensions.depth + (materialThickness * 2)) * props.visualSizeModifier;
+  const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
+  const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
   const translateValueX = outsideDepth / 4;
   const translateValueY = outsideDepth  - (outsideDepth / 4) ;
   return {
@@ -93,7 +120,7 @@ const computedStyleTop = computed(() => {
   };
 });
 
-//FRONT
+//FRONT SIDE WALL DIV
 const computedStyleFront = computed(() => {
   const translateValue = (1);
   return {
@@ -103,11 +130,11 @@ const computedStyleFront = computed(() => {
   };
 });
 
-//RIGHT
+//RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
-  const outsideWidth = (dimensions.width + (materialThickness * 2)) * props.visualSizeModifier;
-  const outsideDepth = (dimensions.depth + (materialThickness * 2)) * props.visualSizeModifier;
-  const outsideHeight = (dimensions.height + (materialThickness * 2)) * props.visualSizeModifier;
+  const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
+  const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
+  const outsideHeight = (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier;
   const translateValueX = outsideWidth;
   const translateValueY = outsideHeight; 
   return {
