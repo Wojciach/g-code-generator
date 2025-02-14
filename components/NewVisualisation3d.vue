@@ -7,7 +7,7 @@
           class="absolute"
           :style="computedStyleTop"
           :matrix="matrix"
-          :polygonPoints="polygonPointsTopAndBottom"
+          :polygonPoints="polygons.topAndBottom"
           :showCircles="true"
           :width="dimensions.width"
           :height="dimensions.depth"
@@ -25,7 +25,7 @@
           class="absolute"
           :style="computedStyleFront"
           :matrix="matrix"
-          :polygonPoints="polygonPointsFrontAndBack"
+          :polygonPoints="polygons.frontAndBack"
           :showCircles="false"
           :width="dimensions.width"
           :height="dimensions.height"
@@ -48,7 +48,7 @@
           class="absolute"
           :style="computedStyleRight"
           :matrix="matrix"
-          :polygonPoints="polygonPointsLeftAndRight"
+          :polygonPoints="polygons.leftAndRight"
           :showCircles="false"
           :width="dimensions.height"
           :height="dimensions.depth"
@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Dimensions } from '@/utils/types';
+import type { Dimensions, Polygons } from '@/utils/types';
 import { polygonGenerator } from '@/utils/polygonGenerator';
 
 const props = defineProps<{
@@ -75,6 +75,7 @@ const props = defineProps<{
   materialThickness: number;
   visualSizeModifier: number;
   dimensions: Dimensions;
+  polygons: Polygons;
 }>();
 
 const stepSizes = computed(() => {

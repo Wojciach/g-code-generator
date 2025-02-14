@@ -7,9 +7,6 @@ export class polygonGenerator {
         ):string => {
 
         let points = '';
-        //const numberOfStepsHorizontal = numberOfSteps.width;
-       //const numberOfStepsVerticlal = numberOfSteps.depth;
-        //stepsTopAndBottom.currentPosition = { x: materialThickness, y: materialThickness };
         const currentPosition = { x: materialThickness, y: materialThickness };
       
         points += `${currentPosition.x},${currentPosition.y} `;
@@ -39,8 +36,6 @@ export class polygonGenerator {
         materialThickness:number,
     ):string => {
         let points = '';
-        // const numberOfStepsHorizontal = numberOfSteps.width;
-        // const numberOfStepsVerticlal = numberOfSteps.height;
         const currentPosition = { x: materialThickness, y: materialThickness };
       
         points += `${currentPosition.x},${currentPosition.y} `;
@@ -66,8 +61,6 @@ export class polygonGenerator {
         materialThickness:number,
     ):string => {
         let points = '';
-        // const numberOfStepsHorizontal = numberOfSteps.height;
-        // const numberOfStepsVerticlal = numberOfSteps.depth;
         const currentPosition = { x: materialThickness, y: materialThickness };
       
         points += `${currentPosition.x},${currentPosition.y} `;

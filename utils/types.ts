@@ -8,3 +8,14 @@ export type Dimensions = {
   height: number;
   depth: number;
 };
+
+export type Polygons = {
+  topAndBottom: string;
+  frontAndBack: string;
+  leftAndRight: string;
+}
+
+// export type StepsInfo = {
+//   vertical: number;
+//   horizontal: number;
+// }

@@ -1,36 +1,5 @@
-type Position = {
-  x: number
-  y: number };
-
+import type { Position } from './types';
 export class StepsGeneratorStatic {
-  public theString: string = '';
-  public materialThickness!: number;
-  public stepSizeHorizontal: number = 1;
-  public stepSizeVertical: number = 1;
-  public numberOfStepsHorizontal!: number;
-  public numberOfStepsVertical!: number;
-  public divisorWidth!: number;
-  public divisorHeight!: number;
-  public startPosition: Position = { x: 0, y: 0 };
-  public currentPosition: Position = { x: 0, y: 0 };
-  public previousPosition: Position = { x: 0, y: 0 };
-  public width!: number;
-  public height!: number;
-
-  // public constructor(width: number, height: number, numberOfStepsHorizontal: number, numberOfStepsVertical: number, materialThickness: number) {
-  //   this.reCalculate(width, height,  numberOfStepsHorizontal, numberOfStepsVertical, materialThickness);
-  // }
-
-  // public reCalculate(width: number, height: number, numberOfStepsHorizontal: number, numberOfStepsVertical: number, materialThickness: number ) {
-  //   this.width = width;
-  //   this.height = height;
-  //   this.numberOfStepsHorizontal = numberOfStepsHorizontal;
-  //   this.numberOfStepsVertical = numberOfStepsVertical;
-  //   this.stepSizeHorizontal = width / numberOfStepsHorizontal;
-  //   this.stepSizeVertical = height / numberOfStepsVertical;
-  //   this.materialThickness = materialThickness;
-
-  // }
 
   public static goRightXplusYzero = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number, materialThickness: number): string => {
     let result = '';
@@ -51,8 +20,6 @@ export class StepsGeneratorStatic {
     currentPosition.x += stepSizeHorizontal;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    //currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   };
 
@@ -75,8 +42,6 @@ export class StepsGeneratorStatic {
     currentPosition.y += stepSizeVertical;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    //this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   };
 
@@ -99,8 +64,6 @@ export class StepsGeneratorStatic {
     currentPosition.x -= stepSizeHorizontal;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    // this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   };
 
@@ -123,8 +86,6 @@ export class StepsGeneratorStatic {
     currentPosition.y -= stepSizeVertical;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    // this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   };
 
@@ -155,8 +116,6 @@ export class StepsGeneratorStatic {
     currentPosition.x += stepSizeHorizontal;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    //this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   }
 
@@ -187,8 +146,6 @@ export class StepsGeneratorStatic {
     currentPosition.y += stepSizeVertical;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    // this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   }
 
@@ -219,8 +176,6 @@ export class StepsGeneratorStatic {
     currentPosition.x -= stepSizeHorizontal;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    // this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result;
   }
 
@@ -251,8 +206,6 @@ export class StepsGeneratorStatic {
     currentPosition.y -= stepSizeVertical;
     result += `${currentPosition.x},${currentPosition.y} `;
 
-    // Update this.currentPosition once at the end
-    //this.currentPosition = { ...currentPosition }; // This is not needed because I want to affect original object
     return result; 
   }
 }
