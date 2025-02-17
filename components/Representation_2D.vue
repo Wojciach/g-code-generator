@@ -1,5 +1,5 @@
 <template>
-      <div v-if="true" class="columns-3 flex flex-nowrap bg-purple-300">
+      <div v-if="true" class="columns-3 flex justify-center flex-nowrap bg-purple-300">
         <div class="bg-red-100 flex justify-end items-center" >
           <!-- LEFT -->
           <MySVG

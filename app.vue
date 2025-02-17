@@ -1,6 +1,19 @@
 <template>
-  <div class="w-full bg-slate-400 flex flex-row items-start justify-start">
-    
+  <div class="w-full bg-slate-400 flex flex-col items-start justify-start">
+    <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full z-100">
+      <div class="flex flex-row space-x-4 items-center">
+        <h2>Current dimensions:</h2>
+        <div>Width: {{ dimensions.width }} mm</div>
+        <div>Depth: {{ dimensions.depth }} mm</div>
+        <div>Height: {{ dimensions.height }} mm</div>
+      </div>
+      <div class="flex flex-row justify-center space-x-4">
+        <DownloadSVG :svgRef="theSVG" />
+        <DownloadDXF :matrix="matrixTopAndBottom" />
+        <DownloadG_CODE :matrix="matrixTopAndBottom" />
+      </div>
+    </article>
+    <article class="flex flex-row space-x-4 items-start">
       <TheForm
         @update:visualSizeModifier="updateVisualSizeModifier"
         :matrixTopAndBottom="matrixTopAndBottom"
@@ -9,53 +22,31 @@
         :visualSizeModifier="visualSizeModifier"
         :dimensions="dimensions"
       />
-
-    <div class="p-6 bg-red-200 shadow-md rounded-md max-w-64 items-start ">
-      <h2 class="text-2xl font-bold mb-6 text-center">Input Form</h2>
-
-      <div>Width: {{ dimensions.width }} mm</div>
-      <div>Depth: {{ dimensions.depth }} mm</div>
-      <div>Height: {{ dimensions.height }} mm</div>
-      <div>Material Thickness: {{ materialThickness.value }} mm</div>
-      <!-- Output Display -->
-      <!-- Output Display -->
-      <!-- Output Display -->
-      <div v-if="submitted" class="mt-6 bg-gray-100 p-4 rounded-md">
-        <h3 class="text-xl font-bold mb-4">Form Data</h3>
-        <ul>
-          <li><strong>Number of Holes:</strong> {{ matrixTopAndBottom.holes }}</li>
-          <li><strong>Number of Rows:</strong> {{ matrixTopAndBottom.rows }}</li>
-          <li><strong>Spacing Between Holes in X:</strong> {{ matrixTopAndBottom.xSpacing }} mm</li>
-          <li><strong>Spacing Between Holes in Y:</strong> {{ matrixTopAndBottom.ySpacing }} mm</li>
-          <li><strong>Margin X:</strong> {{ matrixTopAndBottom.xMargin }} mm</li>
-          <li><strong>Margin Y:</strong> {{ matrixTopAndBottom.yMargin }} mm</li>
-          <li><strong>Hole Diameter:</strong> {{ matrixTopAndBottom.diameter }} mm</li>
-          <li><strong>Number of horizontal steps:</strong> {{ numberOfSteps.width}}</li>
-          <li><strong>Number of vertical steps:</strong> {{ numberOfSteps.height}}</li>
-        </ul>
-      </div>
-      <Representation_2D
-        :matrix="matrixTopAndBottom"
-        :dimensions="dimensions"
-        :polygons="polygons"
-        :visualSizeModifier="visualSizeModifier.value"
-        :materialThickness="materialThickness.value"
-      />
-      <div class="flex justify-center flex-row space-x-4 mt-6">
-        <DownloadSVG :svgRef="theSVG" />
-        <DownloadDXF :matrix="matrixTopAndBottom" />
-        <DownloadG_CODE :matrix="matrixTopAndBottom" />
-      </div>
-    </div>
-      <NewVisualisation3d
-        class="mt-8"
-        :matrix="matrixTopAndBottom"
-        :numberOfSteps="numberOfSteps"
-        :materialThickness="materialThickness.value"
-        :visualSizeModifier="visualSizeModifier.value"
-        :dimensions="dimensions"
-        :polygons="polygons"
-      />
+      <section
+        :class="{
+          'flex flex-col justify-center w-full bg-red-800': true,
+          'md:flex-row': (dimensions.width < 35),
+        }"
+      >
+        <NewVisualisation3d
+          class="bg-red-300"
+          :matrix="matrixTopAndBottom"
+          :numberOfSteps="numberOfSteps"
+          :materialThickness="materialThickness.value"
+          :visualSizeModifier="visualSizeModifier.value"
+          :dimensions="dimensions"
+          :polygons="polygons"
+          :padding="50"
+        />
+        <Representation_2D
+          :matrix="matrixTopAndBottom"
+          :dimensions="dimensions"
+          :polygons="polygons"
+          :visualSizeModifier="visualSizeModifier.value"
+          :materialThickness="materialThickness.value"
+        />
+      </section>
+    </article>
   </div>
 
 </template>
@@ -105,19 +96,12 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
   dimensions.depth = matrixTopAndBottom.height;
 }, { deep: true });
 
-const submitted = ref(true);
-
-const submitForm = () => {
-  submitted.value = true;
-};
-
 const polygons = computed(() => {
   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
 });
 
 const updateVisualSizeModifier = (value) => {
   visualSizeModifier.value = value;
-  console.log('visualSizeModifier.value', visualSizeModifier.value);
 };
 
 </script>

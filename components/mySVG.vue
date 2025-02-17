@@ -73,7 +73,7 @@
       />  
       <!-- Circles -->
       <circle
-        v-if="showCircles"
+        v-if="(showCircles && matrix)"
         v-for="n in matrix.xyPositions"
         :key="`${n[0]}-${n[1]}`"
         :cx="(n[0] + materialThickness)"
@@ -89,7 +89,7 @@
 
   const props = defineProps<{
     showCircles: boolean;
-    matrix: MatrixOfHoles;
+    matrix?: MatrixOfHoles;
     //steps: StepsGenerator; //TODO: remove
     polygonPoints: string;
     width: number;

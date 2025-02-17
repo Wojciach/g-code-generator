@@ -6,19 +6,19 @@ export class StepsGeneratorStatic {
 
     // Move down by material thickness
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by step size
     currentPosition.x += stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by material thickness
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by step size
     currentPosition.x += stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   };
@@ -28,19 +28,19 @@ export class StepsGeneratorStatic {
 
     // Move right by material thickness
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.y += stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by material thickness
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.y += stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   };
@@ -50,19 +50,19 @@ export class StepsGeneratorStatic {
 
     // Move right by material thickness
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.x -= stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by material thickness
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.x -= stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   };
@@ -72,19 +72,19 @@ export class StepsGeneratorStatic {
 
     // Move left by material thickness
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by step size
     currentPosition.y -= stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by material thickness
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by step size
     currentPosition.y -= stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   };
@@ -94,27 +94,27 @@ export class StepsGeneratorStatic {
 
     // Move left by material thickness
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by step size
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by material thickness
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by step size
     currentPosition.x += stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by material thickness 
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by step size
     currentPosition.x += stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   }
@@ -124,27 +124,27 @@ export class StepsGeneratorStatic {
 
     // Move top by material thickness
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by material thickness
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by material thickness
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.y += stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by material thickness 
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by step size
     currentPosition.y += stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   }
@@ -154,27 +154,27 @@ export class StepsGeneratorStatic {
 
     // Move right by material thickness
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by material thickness
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by material thickness
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by step size
     currentPosition.x -= stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move top by material thickness 
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by step size
     currentPosition.x -= stepSizeHorizontal;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;
   }
@@ -184,27 +184,27 @@ export class StepsGeneratorStatic {
 
     // Move down by material thickness
     currentPosition.y += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move left by material thickness
     currentPosition.x -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by material thickness
     currentPosition.y -= materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move up by step size
     currentPosition.y -= stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move right by material thickness 
     currentPosition.x += materialThickness;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move top by step size
     currentPosition.y -= stepSizeVertical;
-    result += `${currentPosition.x},${currentPosition.y} `;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result; 
   }

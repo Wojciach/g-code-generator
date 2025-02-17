@@ -1,22 +1,23 @@
 <template>
   <!-- Number of Holes -->
-<div class="singleInputField flex justify-between items-center">
-  <div>
-    <label :for="shortName" class="block text-gray-200">{{displayName}}</label>
+<div class="singleInputField flex justify-start items-center">
+  <div class="w-10 h-10 m-1 flex items-center justify-center bg-blue-500">
+    <component :is="iconComponent"/>
+  </div>
+  <div class="flex flex-row items-center">
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', Number($event.target.value))"
       :id="shortName"
       type="number"
       min="1"
-      class="w-full mt-2 p-2 border border-gray-300 rounded-md"
+      class="w-16 h-8 mt-1 mx-4 p-2 border border-gray-300 rounded-md"
       :placeholder="placeholder"
       required
     />
+    <label :for="shortName" class="block text-gray-200 whitespace-nowrap">{{displayName}}</label>
   </div>
-  <div class="w-20 h-20 flex items-center justify-center bg-blue-500">
-    <component :is="iconComponent"/>
-  </div>
+
 </div>
   
 </template>

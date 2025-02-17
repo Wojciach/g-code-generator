@@ -2,7 +2,6 @@ export type Position = {
   x: number
   y: number };
 
-
 export type Dimensions = {
   width: number;
   height: number;
@@ -14,8 +13,3 @@ export type Polygons = {
   frontAndBack: string;
   leftAndRight: string;
 }
-
-// export type StepsInfo = {
-//   vertical: number;
-//   horizontal: number;
-// }

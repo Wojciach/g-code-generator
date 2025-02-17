@@ -1,5 +1,21 @@
 <template>
-    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`}" >
+    <div
+      class="bg-purple-900 relative"
+      :style="{
+        // width: `${((dimensions.width + (materialThickness * 2)) * visualSizeModifier)}px`,
+       // height: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`,
+        width: '1px',
+        height: '1px',
+        //padding: '100px',
+        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * visualSizeModifier) / 2) + padding}px`,
+        paddingBottom: `${((dimensions.height + (materialThickness * 2)) * visualSizeModifier) + padding}px`,
+        paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * visualSizeModifier)/2) + padding}px`,
+        paddingLeft: `${padding}px`,
+        margin: 'auto',
+        marginTop: '0',
+        bottom: '0px'
+      }"
+    >
       <!-- VISIUAL REPRESENTATION OF THE BOX -->
       <div class="relative ">
         <!-- TOP -->
@@ -67,54 +83,31 @@
 
 <script lang="ts" setup>
 import type { Dimensions, Polygons } from '@/utils/types';
-import { polygonGenerator } from '@/utils/polygonGenerator';
 
 const props = defineProps<{
-  matrix: MatrixOfHoles;
+  matrix?: MatrixOfHoles;
   numberOfSteps: Dimensions;
   materialThickness: number;
   visualSizeModifier: number;
   dimensions: Dimensions;
   polygons: Polygons;
+  padding: number;
 }>();
 
-const stepSizes = computed(() => {
-    return {
-    width: (props.dimensions.width / props.numberOfSteps.width) / 2,
-    height: (props.dimensions.height / props.numberOfSteps.height) / 2,
-    depth: (props.dimensions.depth / props.numberOfSteps.depth) / 2
-  }
+const outsideDimensions = computed(() => {
+  return {
+    width: (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier,
+    depth: (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier,
+    height: (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier,
+  };
 });
-
-const polygonPointsTopAndBottom = computed(()=>{
-  return polygonGenerator.polygonPointsTopAndBottom(
-    {horizontal: props.numberOfSteps.width, vertical: props.numberOfSteps.depth},
-    {horizontal: stepSizes.value.width, vertical: stepSizes.value.depth},
-    props.materialThickness
-  );
-});
-
-const polygonPointsFrontAndBack = computed(()=>{
-  return polygonGenerator.polygonPointsFrontAndBack(
-    {horizontal: props.numberOfSteps.width, vertical: props.numberOfSteps.height},
-    {horizontal: stepSizes.value.width, vertical: stepSizes.value.height},
-    props.materialThickness
-  );
-});
-const polygonPointsLeftAndRight = computed(()=>{
-  return polygonGenerator.polygonPointsLeftAndRight(
-    {horizontal: props.numberOfSteps.height, vertical: props.numberOfSteps.depth},
-    {horizontal: stepSizes.value.height, vertical: stepSizes.value.depth},
-    props.materialThickness
-  );
-}) 
 
 //TOP SIDE WALL DIV
 const computedStyleTop = computed(() => {
-  const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
-  const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
-  const translateValueX = outsideDepth / 4;
-  const translateValueY = outsideDepth  - (outsideDepth / 4) ;
+  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
+  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
+  const translateValueX = outsideDimensions.value.depth / 4;
+  const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4) ;
   return {
     transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg) scaleY(0.5)`,
     top: ``,
@@ -133,11 +126,11 @@ const computedStyleFront = computed(() => {
 
 //RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
-  const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
-  const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
-  const outsideHeight = (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier;
-  const translateValueX = outsideWidth;
-  const translateValueY = outsideHeight; 
+  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
+  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
+  // const outsideHeight = (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier;
+  const translateValueX = outsideDimensions.value.width;
+  const translateValueY = outsideDimensions.value.height; 
   return {
     transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg) scaleY(0.5)`,
     transformOrigin: 'top left',
