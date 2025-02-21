@@ -1,6 +1,7 @@
 <template>
   <div class="w-full h-full flex items-center justify-center">
-    <svg :viewBox="`0 0 ${size} ${size}`" xmlns="http://www.w3.org/2000/svg">
+    <!-- alternative viewBox value in case you want three steps visible on the icon instead of two: 20 100 ${200} ${200} -->
+    <svg :viewBox="`20 75 ${200} ${220}`" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" :width="`${size}`" :height="`${size}`" fill="tomato" stroke="none" stroke-width="0" />
       <!-- Steps -->
       <polygon :points="steps" fill="red"  stroke="black" stroke-width="4"/>

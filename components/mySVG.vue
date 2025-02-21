@@ -81,7 +81,7 @@
         :r="matrix.diameter / 2" 
         fill="black"
       />
-    </svg> 
+    </svg>
   </div>
 </template>
 

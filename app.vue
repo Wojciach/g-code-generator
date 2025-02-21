@@ -37,6 +37,7 @@
           :dimensions="dimensions"
           :polygons="polygons"
           :padding="50"
+          showInfo="height"
         />
         <Representation_2D
           :matrix="matrixTopAndBottom"

@@ -54,6 +54,15 @@
           :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness"
         />
+        <div class="absolute z-20">
+          <HeightFocusInfo
+            v-if="showInfo && showInfo.includes('height')"
+            :width="dimensions.width"
+            :height="dimensions.height"
+            :viusaSizeModifier="visualSizeModifier"
+            :materialThickness="materialThickness"
+          />
+        </div>
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
         <!-- top is left  -->
@@ -83,6 +92,7 @@
 
 <script lang="ts" setup>
 import type { Dimensions, Polygons } from '@/utils/types';
+import HeightFocusInfo from './on_focus_info/HeightFocusInfo.vue';
 
 const props = defineProps<{
   matrix?: MatrixOfHoles;
@@ -92,6 +102,7 @@ const props = defineProps<{
   dimensions: Dimensions;
   polygons: Polygons;
   padding: number;
+  showInfo?: string;
 }>();
 
 const outsideDimensions = computed(() => {
@@ -110,7 +121,6 @@ const computedStyleTop = computed(() => {
   const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4) ;
   return {
     transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg) scaleY(0.5)`,
-    top: ``,
   };
 });
 
@@ -120,9 +130,17 @@ const computedStyleFront = computed(() => {
   return {
     transform: `scaleY(1)`,
     transformOrigin: 'top center',
-    top: ``,
+    zIndex: 10
   };
 });
+// const computedStyleHeightInfo = computed(() => {
+//   const translateValue = (200);
+//   return {
+//     transform: `scaleY(1) translateX(${translateValue}%)`,
+//     transformOrigin: 'top center',
+//     zIndex: 10
+//   };
+// });
 
 //RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
@@ -134,12 +152,12 @@ const computedStyleRight = computed(() => {
   return {
     transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg) scaleY(0.5)`,
     transformOrigin: 'top left',
-    top: ``,
+    zIndex: 0
   };
 });
 
 </script>
 
-<style>
+<style scoped>
 
 </style>

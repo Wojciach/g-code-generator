@@ -74,7 +74,7 @@
           <!-- Material thickness -->
           <FormField
               v-model="materialThickness.value"
-              :iconComponent="StepsNumberHeight"
+              :iconComponent="Thickness"
               displayName="Material thickness"
               shortName="materialThickness"
               placeholder="Material thickness?"
@@ -139,12 +139,12 @@ import Xspacing from '@/components/form_info_icons/Xspacing.vue';
 import Yspacing from '@/components/form_info_icons/Yspacing.vue';
 import Xmargins from '@/components/form_info_icons/Xmargins.vue';
 import Ymargins from '@/components/form_info_icons/Ymargins.vue';
+import Thickness from '@/components/form_info_icons/Thickness.vue';
 import Height from '@/components/form_info_icons/Height.vue';
 import HoleDiameter from './form_info_icons/HoleDiameter.vue';
 import StepsNumberWidth from './form_info_icons/StepsNumberWidth.vue';
 import StepsNumberHeight from './form_info_icons/StepsNumberHeight.vue';
 import StepsNumberDepth from './form_info_icons/StepsNumberDepth.vue';
-import NewVisualisation3d from './NewVisualisation3d.vue';
   
 const props = defineProps<{
     matrixTopAndBottom: MatrixOfHoles;

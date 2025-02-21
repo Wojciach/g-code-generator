@@ -4,9 +4,9 @@
       <!-- Square -->
       <rect x="0" y="0" width="200" height="200" fill="tomato" stroke="none" stroke-width="0" />
       <!-- Circles -->
-      <circle cx="50" cy="100" r="20" fill="black" />
-      <circle cx="100" cy="100" r="20" fill="black" />
-      <circle cx="150" cy="100" r="20" fill="black" />
+      <circle cx="15" cy="100" r="30" fill="black" />
+      <circle cx="100" cy="100" r="30" fill="black" />
+      <circle cx="185" cy="100" r="30" fill="black" />
     </svg>
   </div>
 </template>
