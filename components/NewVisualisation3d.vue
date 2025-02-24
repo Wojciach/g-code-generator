@@ -1,6 +1,6 @@
 <template>
     <div
-      class="bg-purple-900 relative"
+      class="relative"
       :style="{
         // width: `${((dimensions.width + (materialThickness * 2)) * visualSizeModifier)}px`,
        // height: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`,
@@ -15,53 +15,53 @@
         marginTop: '0',
         bottom: '0px'
       }"
-    >
+      >
       <!-- VISIUAL REPRESENTATION OF THE BOX -->
-      <div class="relative ">
+      <div class="relative">
         <!-- TOP -->
         <MySVG
-          class="absolute"
+          class="absolute border-black border-1 border-b-0"
           :style="computedStyleTop"
           :matrix="matrix"
           :polygonPoints="polygons.topAndBottom"
           :showCircles="true"
           :width="dimensions.width"
           :height="dimensions.depth"
-          color="gray"
-          colorTopRect="purple"
-          colorBottomRect="green"
-          colorRightRect="tomato"
-          colorLeftRect="blue"
+          :color="wallColors.top"
+          :colorTopRect="wallColors.back"
+          :colorBottomRect="wallColors.front"
+          :colorRightRect="wallColors.right"
+          :colorLeftRect="wallColors.left"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness"
         />
         <!-- FRONT -->
         <MySVG
-          class="absolute"
+          class="absolute border-black border-1 border-t-0"
           :style="computedStyleFront"
           :matrix="matrix"
           :polygonPoints="polygons.frontAndBack"
           :showCircles="false"
           :width="dimensions.width"
           :height="dimensions.height"
-          color="forestgreen"
-          colorTopRect="gray"
-          colorBottomRect="orange"
-          colorRightRect="tomato"
-          colorLeftRect="blue"
+          :color="wallColors.front"
+          :colorTopRect="wallColors.top"
+          :colorBottomRect="wallColors.bottom"
+          :colorRightRect="wallColors.right"
+          :colorLeftRect="wallColors.left"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness"
         />
         <div class="absolute z-20">
-          <HeightFocusInfo
+          <!-- <HeightFocusInfo
             v-if="showInfo && showInfo.includes('height')"
             :width="dimensions.width"
             :height="dimensions.height"
             :viusaSizeModifier="visualSizeModifier"
             :materialThickness="materialThickness"
-          />
+          /> -->
         </div>
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
@@ -70,18 +70,18 @@
         <!-- left is bottom  -->
         <!-- right is top  -->
         <MySVG
-          class="absolute"
+          class="absolute border-black border-2 border-b-4"
           :style="computedStyleRight"
           :matrix="matrix"
           :polygonPoints="polygons.leftAndRight"
           :showCircles="false"
           :width="dimensions.height"
           :height="dimensions.depth"
-          color="tomato"
-          colorTopRect="green" 
-          colorBottomRect="purple"
-          colorRightRect="gray"
-          colorLeftRect="orange"
+          :color="wallColors.right"
+          :colorTopRect="wallColors.front"
+          :colorBottomRect="wallColors.back"
+          :colorRightRect="wallColors.top"
+          :colorLeftRect="wallColors.bottom"
           bgColor="#aaaaff"
           :viusaSizeModifier="visualSizeModifier"
           :materialThickness="materialThickness"
@@ -93,6 +93,7 @@
 <script lang="ts" setup>
 import type { Dimensions, Polygons } from '@/utils/types';
 import HeightFocusInfo from './on_focus_info/HeightFocusInfo.vue';
+import { wallColors } from '@/utils/wallColors.ts'
 
 const props = defineProps<{
   matrix?: MatrixOfHoles;
@@ -133,20 +134,9 @@ const computedStyleFront = computed(() => {
     zIndex: 10
   };
 });
-// const computedStyleHeightInfo = computed(() => {
-//   const translateValue = (200);
-//   return {
-//     transform: `scaleY(1) translateX(${translateValue}%)`,
-//     transformOrigin: 'top center',
-//     zIndex: 10
-//   };
-// });
 
 //RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
-  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
-  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
-  // const outsideHeight = (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier;
   const translateValueX = outsideDimensions.value.width;
   const translateValueY = outsideDimensions.value.height; 
   return {
@@ -159,5 +149,8 @@ const computedStyleRight = computed(() => {
 </script>
 
 <style scoped>
+.border-1 {
+  border-width: 1px;
+}
 
 </style>

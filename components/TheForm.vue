@@ -75,7 +75,7 @@
           <FormField
               v-model="materialThickness.value"
               :iconComponent="Thickness"
-              displayName="Material thickness"
+              displayName="Wall thickness"
               shortName="materialThickness"
               placeholder="Material thickness?"
           />
@@ -120,12 +120,6 @@
             :step="1"
           />
         </div>
-        <!-- Submit Button -->
-        <!-- <div class="flex justify-center">
-          <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-            Submit
-          </button>
-        </div> -->
       </form>
   </div>
   

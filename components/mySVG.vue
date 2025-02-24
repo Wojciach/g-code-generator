@@ -10,20 +10,21 @@
       ref="theSVG"
       :viewBox="'0 0 ' + (width + (materialThickness * 2)) + ' ' + (height + (materialThickness * 2))"
       xmlns="http://www.w3.org/2000/svg"
-      class="border border-gray-600 bg-slate-100 w-full h-full"
+      class="w-full h-full"
       :style="{ backgroundColor: bgColor}"
       preserveAspectRatio="none"
     >
-      <!-- Main Rectangle -->
-      <rect 
-          :x="materialThickness" 
-          :y="materialThickness" 
-          :width="width" 
-          :height="height"
-          fill="none" 
-          stroke="red" 
-          stroke-width="0.02" 
+    <!-- MAIN RECTANGLE -->
+    <rect 
+        :x="materialThickness" 
+        :y="materialThickness" 
+        :width="width" 
+        :height="height"
+        fill="none" 
+        stroke="red" 
+        stroke-width="0.02" 
       />
+
       <!-- TOP Rectangle -->
       <rect 
           :x="materialThickness" 
@@ -31,8 +32,8 @@
           :width="width" 
           :height="materialThickness" 
           :fill="topRectColor" 
-          stroke="none" 
-          stroke-width="0.02" 
+          stroke="black" 
+          stroke-width="0.12" 
       />
       <!-- BOTTOM Rectangle -->
       <rect 
@@ -41,8 +42,8 @@
           :width="width" 
           :height="materialThickness" 
           :fill="bottomRectColor" 
-          stroke="none" 
-          stroke-width="0.02" 
+          stroke="black" 
+          stroke-width="0.12" 
       />
       <!-- RIGHT Rectangle -->
       <rect 
@@ -51,8 +52,8 @@
           :width="materialThickness" 
           :height="height + (materialThickness * 2)" 
           :fill="rightRectColor" 
-          stroke="none" 
-          stroke-width="0.02" 
+          stroke="black" 
+          stroke-width="0.12" 
       />
       <!-- LEFT Rectangle -->
       <rect 
@@ -61,15 +62,15 @@
           :width="materialThickness" 
           :height="height + (materialThickness * 2)" 
           :fill="leftRectColor" 
-          stroke="none" 
-          stroke-width="0.02" 
+          stroke="black" 
+          stroke-width="0.12" 
       />
       <!-- Polygon -->
       <polyline
         :points="polygonPoints" 
         :fill="color" 
         stroke="black" 
-        stroke-width="0.02" 
+        stroke-width="0.12" 
       />  
       <!-- Circles -->
       <circle
@@ -81,6 +82,16 @@
         :r="matrix.diameter / 2" 
         fill="black"
       />
+      <!-- STROKE RECTANGLE -->
+      <!-- <rect 
+        :x="0" 
+        :y="0" 
+        :width="(width + materialThickness * 2)" 
+        :height="(height + materialThickness * 2)"
+        fill="none" 
+        stroke="black" 
+        stroke-width="0.2" 
+      /> -->
     </svg>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-purple-900 mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier)}px`}" >
+    <div class="mt-10" :style="{paddingTop: `${((dimensions.depth + (materialThickness.value * 2)) * visualSizeModifier)}px`}" >
       <!-- VISIUAL REPRESENTATION OF THE BOX -->
       <div v-if="submitted" class="relative ">
         <!-- TOP -->
@@ -54,7 +54,7 @@
           :showCircles="false" :width="dimensions.height"
           :height="dimensions.depth"
           color="tomato"
-          colorTopRect="green" 
+          colorTopRect="forestgreen" 
           colorBottomRect="purple"
           colorRightRect="gray"
           colorLeftRect="orange"

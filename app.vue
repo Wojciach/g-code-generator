@@ -24,12 +24,12 @@
       />
       <section
         :class="{
-          'flex flex-col justify-center w-full bg-red-800': true,
-          'md:flex-row': (dimensions.width < 35),
+          'flex flex-col justify-center w-full': true,
+          'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
         }"
       >
         <NewVisualisation3d
-          class="bg-red-300"
+          class=""
           :matrix="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness.value"
@@ -59,9 +59,7 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
 
 const theSVG = ref<SVGSVGElement | null>(null);
-
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 1, 1, 1, 1, 1));
-
 const visualSizeModifier = reactive({
   value: 10
 });
