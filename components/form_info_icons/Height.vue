@@ -1,8 +1,8 @@
 <template>
-  <div class="relative w-full h-full flex items-center justify-center bg-red-300">
+  <div class="relative w-full h-full flex items-center justify-center" :style="{backgroundColor: colors.bg}">
     <div class="absolute z-10">
       <NewVisualisation3d
-            class="bg-red-300 positionAdjustment"
+            class="positionAdjustment"
             :numberOfSteps="numberOfSteps"
             :materialThickness="materialThickness"
             :visualSizeModifier="5"
@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { usePolygons } from '~/utils/composables/usePolygons';
 import DashedLinesAndArrow from './DashedLinesAndArrow.vue';
+import { colors } from '@/utils/colors';
 
 const materialThickness = 0;
 const dimensions = {width: 5, height: 5, depth: 5}

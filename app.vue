@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full bg-slate-400 flex flex-col items-start justify-start">
-    <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full z-100">
+  <div class="w-full flex flex-col items-start justify-start relative bg-transparent z-10">
+    <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
       <div class="flex flex-row space-x-4 items-center">
         <h2>Current dimensions:</h2>
         <div>Width: {{ dimensions.width }} mm</div>
@@ -8,28 +8,31 @@
         <div>Height: {{ dimensions.height }} mm</div>
       </div>
       <div class="flex flex-row justify-center space-x-4">
-        <DownloadSVG :svgRef="theSVG" />
+        <!-- <DownloadSVG :svgRef="theSVG" />
         <DownloadDXF :matrix="matrixTopAndBottom" />
-        <DownloadG_CODE :matrix="matrixTopAndBottom" />
+        <DownloadG_CODE :matrix="matrixTopAndBottom" /> -->
       </div>
     </article>
-    <article class="flex flex-row space-x-4 items-start">
-      <TheForm
-        @update:visualSizeModifier="updateVisualSizeModifier"
-        :matrixTopAndBottom="matrixTopAndBottom"
-        :numberOfSteps="numberOfSteps"
-        :materialThickness="materialThickness"
-        :visualSizeModifier="visualSizeModifier"
-        :dimensions="dimensions"
-      />
+    <article class="flex flex-row w-full space-x-4 items-start">
+      <section class="bg-blue-200 p-4 rounded-md shadow-md w-fit-content">
+        <TheForm
+          @update:visualSizeModifier="updateVisualSizeModifier"
+          :matrixTopAndBottom="matrixTopAndBottom"
+          :numberOfSteps="numberOfSteps"
+          :materialThickness="materialThickness"
+          :visualSizeModifier="visualSizeModifier"
+          :dimensions="dimensions"
+          class="bg-slate-400 shadow-md"
+        />
+      </section>
       <section
         :class="{
-          'flex flex-col justify-center w-full': true,
+          'flex flex-col justify-left w-full h-full relative': true,
           'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
         }"
       >
         <NewVisualisation3d
-          class=""
+          class="m-0"
           :matrix="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness.value"
@@ -40,16 +43,17 @@
           showInfo="height"
         />
         <Representation_2D
+          class="m-0"
           :matrix="matrixTopAndBottom"
           :dimensions="dimensions"
           :polygons="polygons"
           :visualSizeModifier="visualSizeModifier.value"
           :materialThickness="materialThickness.value"
         />
+        <Grid :gridFactor="gridFactor" />
       </section>
     </article>
   </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -59,14 +63,18 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
 
 const theSVG = ref<SVGSVGElement | null>(null);
-const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 1, 1, 1, 1, 1));
+const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 10, 10, 10, 10, 10));
 const visualSizeModifier = reactive({
-  value: 10
+  value: 1
+});
+
+const gridFactor = computed(() => {
+  return visualSizeModifier.value  * 10;
 });
  
 const dimensions = reactive<Dimensions>({
   width: matrixTopAndBottom.width,
-  height: 20,
+  height: 200,
   depth: matrixTopAndBottom.height,
 });
 
@@ -77,7 +85,7 @@ const numberOfSteps = reactive<Dimensions>({
 });
 
 const materialThickness = reactive({
-  value: 2
+  value: 20
 });
 
 const stepSizes = computed(() => {

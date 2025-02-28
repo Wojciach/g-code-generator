@@ -9,10 +9,12 @@
         <rect x="0" y="25" width="75" height="150" fill="none" stroke="none" stroke-width="22" />
         
         <!-- Dashed Lines -->
-        <!-- TOP -->
-        <line x1="80" y1="25" x2="170" y2="25" stroke="black" stroke-width="12" stroke-dasharray="16,16" />
-        <!-- BOTTOM -->
-        <line x1="80" y1="175" x2="170" y2="175" stroke="black" stroke-width="12" stroke-dasharray="16,16" />
+        <g v-if="props.dashedLines">
+          <!-- TOP -->
+          <line x1="80" y1="25" x2="170" y2="25" stroke="black" stroke-width="12" stroke-dasharray="16,16" />
+          <!-- BOTTOM -->
+          <line x1="80" y1="175" x2="170" y2="175" stroke="black" stroke-width="12" stroke-dasharray="16,16" />
+        </g>
         <!-- Arrow -->
         <g class="arrow" transform="translate(-15,0) scale(0.8)">
           <!-- Arrowheads -->
@@ -20,8 +22,8 @@
           <polygon points="150,140 250,140 200,200" :fill="colors.arrow" stroke="black" stroke-width="7"/>
           <!-- Arrow shaft -->
           <line x1="200" y1="50" x2="200" y2="150" :stroke="colors.arrow" stroke-width="40" />
-          <line x1="180" y1="60" x2="180" y2="140" stroke="black" stroke-width="6" />
-          <line x1="220" y1="60" x2="220" y2="140" stroke="black" stroke-width="6" />
+          <line x1="180" y1="56.5" x2="180" y2="143.5" stroke="black" stroke-width="6" />
+          <line x1="220" y1="56.5" x2="220" y2="143.5" stroke="black" stroke-width="6" />
         </g>
       </g>
     </svg>
@@ -30,6 +32,12 @@
 
 <script lang="ts" setup>
 import { colors } from '@/utils/colors'
+
+const props = withDefaults(defineProps<{
+  dashedLines: boolean;
+}>(), {
+  dashedLines : true,
+});
 
 
 </script>

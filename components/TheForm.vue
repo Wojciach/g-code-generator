@@ -36,12 +36,12 @@
           />
         </fieldset>
         <fieldset class="fieldSetStyleClass bg-green-600">
-          <legend class="text-lg font-semibold">Margins</legend>
+          <legend class="text-lg font-semibold">Side margins (mm)</legend>
           <!-- x Margin -->
           <FormField
             v-model="matrixTopAndBottom.xMargin"
             :iconComponent="Xmargins"
-            displayName="X Margin (mm)"
+            displayName="X axis Margin"
             shortName="xMargin"
             placeholder="X Margin"
           />
@@ -49,17 +49,18 @@
           <FormField
             v-model="matrixTopAndBottom.yMargin"
             :iconComponent="Ymargins"
-            displayName="Y Margin (mm)"
+            displayName="Y axis Margin"
             shortName="yMargin"
             placeholder="Y Margin"
           />
         </fieldset>
         <fieldset class="fieldSetStyleClass">
+          <legend class="text-lg font-semibold">Other dimensions (mm)</legend>
           <!-- Hole Diameter -->
           <FormField
               v-model="matrixTopAndBottom.diameter"
               :iconComponent="HoleDiameter"
-              displayName="Hole Diameter (mm)"
+              displayName="Hole Diameter"
               shortName="holeDiameter"
               placeholder="Enter hole diameter"
           />
@@ -81,7 +82,7 @@
           />
         </fieldset>
         <fieldset class="fieldSetStyleClass bg-slate-500">
-          <legend class="text-lg font-semibold">Number of steps (notches)</legend>
+          <legend class="text-lg font-semibold">Number of notches</legend>
           <!-- Number of horizontal steps -->
           <FormField
             v-model="numberOfSteps.width"
@@ -116,7 +117,7 @@
             :value="visualSizeModifier.value"
             @input="$emit('update:visualSizeModifier', Number($event.target.value))"
             :min="1"
-            :max="20"
+            :max="5"
             :step="1"
           />
         </div>

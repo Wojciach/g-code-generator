@@ -1,17 +1,17 @@
 <template>
     <div
-      class="relative"
+      class="relative flex justify-left items-center"
       :style="{
         // width: `${((dimensions.width + (materialThickness * 2)) * visualSizeModifier)}px`,
        // height: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`,
-        width: '1px',
-        height: '1px',
+        width: 'fit-content',
+        height: '100%',
         //padding: '100px',
         paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * visualSizeModifier) / 2) + padding}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * visualSizeModifier) + padding}px`,
         paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * visualSizeModifier)/2) + padding}px`,
         paddingLeft: `${padding}px`,
-        margin: 'auto',
+        margin: '0',
         marginTop: '0',
         bottom: '0px'
       }"

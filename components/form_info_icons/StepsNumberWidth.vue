@@ -1,10 +1,11 @@
 <template>
   <div class="w-full h-full flex items-center justify-center">
     <!-- alternative viewBox value in case you want three steps visible on the icon instead of two: 20 100 ${200} ${200} -->
-    <svg :viewBox="`20 75 ${200} ${220}`" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" :width="`${size}`" :height="`${size}`" :fill="wallColors.top" stroke="none" stroke-width="0" />
+    <svg :viewBox="`20 75 ${200} ${220}`" xmlns="http://www.w3.org/2000/svg" stroke="black" stroke-width="2">
+      <rect x="0" y="0" :width="`${size}`" :height="`${size}`" :fill="colors.bg" stroke="none" stroke-width="0" />
+      <rect x="0" :y="topOfStep" :width="`${size}`" :height="`${size}`" :fill="propColorConst.topWall" stroke="black" stroke-width="5" />
       <!-- Steps -->
-      <polygon :points="steps" fill="red"  stroke="black" stroke-width="4"/>
+      <polygon :points="steps" :fill="propColorConst.steps"  stroke="black" stroke-width="4"/>
       <!-- Text -->
       <text v-for="(step, index) in textXposition"
         :key="index"
@@ -37,10 +38,12 @@ import { wallColors } from '@/utils/wallColors'
 const props = defineProps<{
   rotateLettersBy?: number;
   skewText?: boolean;
+  propColor?: {steps: string, topWall: string}
 }>();
 
 const rotationAngle = props.rotateLettersBy || 0;
 const fontSize = 60;
+const propColorConst = props.propColor || {steps: wallColors.front, topWall: wallColors.top}
 
 const size = 360;
 const stepWidth = size / 6;
