@@ -19,13 +19,13 @@
       </section>
       <section
         :class="{
-          'flex flex-row flex-wrap h-full justify-left relative ': true,
+          'flex flex-col flex-wrap h-full justify-left relative ': true,
           'flex-col ': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value >= 450),
           //'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
         }"
       >
         <NewVisualisation3d
-          class="m-0 bg-red-500 flex-grow justify-center"
+          class="m-0 bg-red-500 flex flex-grow justify-center"
           :matrix="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness.value"
