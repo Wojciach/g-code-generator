@@ -1,5 +1,5 @@
 <template>
-      <div v-if="true" class="columns-3 flex justify-center flex-nowrap">
+      <div v-if="true" class="flex flex-col sm:flex-row justify-center flex-nowrap" :style="{width: 'fit-content', height: 'fit-content'}">
         <div class="flex justify-end items-center" >
           <!-- LEFT -->
           <MySVG

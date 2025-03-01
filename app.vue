@@ -1,20 +1,12 @@
 <template>
-  <div class="w-full flex flex-col items-start justify-start relative bg-transparent z-10">
+  <main class="w-full flex flex-col items-start justify-start relative bg-transparent z-10">
     <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
-      <div class="flex flex-row space-x-4 items-center">
-        <h2>Current dimensions:</h2>
-        <div>Width: {{ dimensions.width }} mm</div>
-        <div>Depth: {{ dimensions.depth }} mm</div>
-        <div>Height: {{ dimensions.height }} mm</div>
-      </div>
-      <div class="flex flex-row justify-center space-x-4">
-        <!-- <DownloadSVG :svgRef="theSVG" />
-        <DownloadDXF :matrix="matrixTopAndBottom" />
-        <DownloadG_CODE :matrix="matrixTopAndBottom" /> -->
-      </div>
+      <Info :dimensions="dimensions" :formWidth="formWidth" />
+      <DownloadButtons class="hidden" />
+      {{ formWidth }}
     </article>
-    <article class="flex flex-row w-full space-x-4 items-start">
-      <section class="bg-blue-200 p-4 rounded-md shadow-md w-fit-content">
+    <article class="flex flex-row flex-wrap 2xl:flex-nowrap w-full h-full items-start">
+      <section ref="formRef" class="flex justify-center flex-grow md:flex-none p-4 rounded-md shadow-md w-fit-content z-50 bg-blue-500">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           :matrixTopAndBottom="matrixTopAndBottom"
@@ -27,12 +19,13 @@
       </section>
       <section
         :class="{
-          'flex flex-col justify-left w-full h-full relative': true,
-          'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
+          'flex flex-row flex-wrap h-full justify-left relative ': true,
+          'flex-col ': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value >= 450),
+          //'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
         }"
       >
         <NewVisualisation3d
-          class="m-0"
+          class="m-0 bg-red-500 flex-grow justify-center"
           :matrix="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness.value"
@@ -43,7 +36,7 @@
           showInfo="height"
         />
         <Representation_2D
-          class="m-0"
+          class="m-0 bg-yellow-300 flex flex-grow"
           :matrix="matrixTopAndBottom"
           :dimensions="dimensions"
           :polygons="polygons"
@@ -53,7 +46,7 @@
         <Grid :gridFactor="gridFactor" />
       </section>
     </article>
-  </div>
+  </main>
 </template>
 
 <script lang="ts" setup>
@@ -61,6 +54,33 @@ import type { Dimensions } from '@/utils/types';
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
+
+const formRef = ref(null);
+const formWidth = ref(0);
+
+onMounted(() => {
+  if (formRef.value) {
+    const rect = formRef.value.getBoundingClientRect();
+    formWidth.value = rect.width;
+  }
+});
+
+const formWidth2 = reactive({
+  value: typeof window !== 'undefined' ? window.innerWidth : 0
+});
+
+
+const updateWidth2 = () => {
+  formWidth2.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth2);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWidth2);
+});
 
 const theSVG = ref<SVGSVGElement | null>(null);
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 10, 10, 10, 10, 10));
@@ -85,7 +105,7 @@ const numberOfSteps = reactive<Dimensions>({
 });
 
 const materialThickness = reactive({
-  value: 20
+  value: 10
 });
 
 const stepSizes = computed(() => {

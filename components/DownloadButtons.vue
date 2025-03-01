@@ -1,9 +1,9 @@
 <template>
-  <div class="flex w-full justify-between">
-    <Button class="btn">SVG</Button>
-    <Button class="btn">G-Code</Button>
-    <Button class="btn">DXF</Button>
-  </div>
+      <div class="flex flex-row justify-center space-x-4">
+        <DownloadSVG :svgRef="theSVG" />
+        <DownloadDXF :matrix="matrixTopAndBottom" />
+        <DownloadG_CODE :matrix="matrixTopAndBottom" />
+      </div>
 </template>
 
 <script lang="ts" setup>

@@ -116,9 +116,9 @@
             type="range"
             :value="visualSizeModifier.value"
             @input="$emit('update:visualSizeModifier', Number($event.target.value))"
-            :min="1"
-            :max="5"
-            :step="1"
+            :min="0.1"
+            :max="3"
+            :step="0.1"
           />
         </div>
       </form>
