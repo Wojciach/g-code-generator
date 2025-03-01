@@ -1,11 +1,11 @@
 <template>
     <div
-      class="relative flex justify-left items-center"
+      class="relative flex justify-center items-top"
       :style="{
         // width: `${((dimensions.width + (materialThickness * 2)) * visualSizeModifier)}px`,
        // height: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`,
         width: 'fit-content',
-        height: '100%',
+        height: 'fit-content',
         //padding: '100px',
         paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * visualSizeModifier) / 2) + padding}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * visualSizeModifier) + padding}px`,

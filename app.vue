@@ -5,8 +5,9 @@
       <DownloadButtons class="hidden" />
       {{ formWidth }}
     </article>
-    <article class="flex flex-row flex-wrap 2xl:flex-nowrap w-full h-full items-start">
-      <section ref="formRef" class="flex justify-center flex-grow md:flex-none p-4 rounded-md shadow-md w-fit-content z-50 bg-blue-500">
+    <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
+    <article class="flex flex-row flex-wrap justify-center w-fit-content bg-green-200">
+      
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           :matrixTopAndBottom="matrixTopAndBottom"
@@ -14,18 +15,11 @@
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="bg-slate-400 shadow-md"
+          class="bg-slate-400 "
         />
-      </section>
-      <section
-        :class="{
-          'flex flex-row flex-wrap h-full justify-left relative ': true,
-          'flex-col ': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value >= 450),
-          //'md:flex-row': ((dimensions.width + dimensions.depth + materialThickness.value) * visualSizeModifier.value < 450),
-        }"
-      >
+
         <NewVisualisation3d
-          class="m-0 bg-red-500 flex-grow justify-center"
+          class="m-0 bg-red-500 "
           :matrix="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness.value"
@@ -36,15 +30,15 @@
           showInfo="height"
         />
         <Representation_2D
-          class="m-0 bg-yellow-300 flex flex-grow"
+          class="m-0 bg-yellow-300"  
           :matrix="matrixTopAndBottom"
           :dimensions="dimensions"
           :polygons="polygons"
           :visualSizeModifier="visualSizeModifier.value"
           :materialThickness="materialThickness.value"
         />
-        <Grid :gridFactor="gridFactor" />
-      </section>
+        <!-- <Grid :gridFactor="gridFactor" /> -->
+     
     </article>
   </main>
 </template>
