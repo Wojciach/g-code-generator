@@ -87,13 +87,14 @@
           :materialThickness="materialThickness"
         />
       </div>
+      <ScaleButton v-if="showScaleButton" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { Dimensions, Polygons } from '@/utils/types';
-import HeightFocusInfo from './on_focus_info/HeightFocusInfo.vue';
 import { wallColors } from '@/utils/wallColors.ts'
+import ScaleButton from './buttonSets/ScaleButton.vue';
 
 const props = defineProps<{
   matrix?: MatrixOfHoles;
@@ -104,6 +105,7 @@ const props = defineProps<{
   polygons: Polygons;
   padding: number;
   showInfo?: string;
+  showScaleButton?: boolean;
 }>();
 
 const outsideDimensions = computed(() => {

@@ -6,8 +6,7 @@
       {{ formWidth }}
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex flex-row flex-wrap justify-center w-fit-content bg-green-200">
-      
+    <article class="flex flex-row flex-wrap justify-left w-fit-content bg-green-200">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           :matrixTopAndBottom="matrixTopAndBottom"
@@ -15,30 +14,29 @@
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="bg-slate-400 "
+          class="m-0 bg-slate-400 "
         />
-
-        <NewVisualisation3d
-          class="m-0 bg-red-500 "
-          :matrix="matrixTopAndBottom"
-          :numberOfSteps="numberOfSteps"
-          :materialThickness="materialThickness.value"
-          :visualSizeModifier="visualSizeModifier.value"
-          :dimensions="dimensions"
-          :polygons="polygons"
-          :padding="50"
-          showInfo="height"
-        />
-        <Representation_2D
-          class="m-0 bg-yellow-300"  
-          :matrix="matrixTopAndBottom"
-          :dimensions="dimensions"
-          :polygons="polygons"
-          :visualSizeModifier="visualSizeModifier.value"
-          :materialThickness="materialThickness.value"
-        />
-        <!-- <Grid :gridFactor="gridFactor" /> -->
-     
+          <NewVisualisation3d
+            class="m-0 bg-red-500 "
+            :matrix="matrixTopAndBottom"
+            :numberOfSteps="numberOfSteps"
+            :materialThickness="materialThickness.value"
+            :visualSizeModifier="visualSizeModifier.value"
+            :dimensions="dimensions"
+            :polygons="polygons"
+            :padding="50"
+            showInfo="height"
+            :showScaleButton="true"
+          />
+          <Representation_2D
+            class="m-0 bg-yellow-300"
+            :matrix="matrixTopAndBottom"
+            :dimensions="dimensions"
+            :polygons="polygons"
+            :visualSizeModifier="visualSizeModifier.value"
+            :materialThickness="materialThickness.value"
+          />
+        <Grid :gridFactor="gridFactor" />
     </article>
   </main>
 </template>

@@ -1,5 +1,5 @@
 <template>
-      <div v-if="true" class="flex flex-row items-center" :style="{width: 'fit-content', height: 'fit-content'}">
+      <div v-if="true" class="relative flex flex-row items-center" :style="{width: 'fit-content', height: 'fit-content'}">
         <div class="flex justify-end items-center" >
           <!-- LEFT -->
           <MySVG
@@ -86,11 +86,13 @@
             :materialThickness="materialThickness"
           />
         </div>
+        <ScaleButton />
       </div>
 </template>
 
 <script lang="ts" setup>
 import { wallColors } from '@/utils/wallColors';
+import ScaleButton from './buttonSets/ScaleButton.vue';
 
 const props = defineProps<{
   matrix: MatrixOfHoles,

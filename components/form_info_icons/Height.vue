@@ -9,6 +9,7 @@
             :dimensions="dimensions"
             :polygons="polygons"
             :padding="1"
+            :showScaleButton="false"
       />
     </div>
     <div class="absolute z-10 w-full h-full positionAdjustment2">
