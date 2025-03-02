@@ -2,14 +2,14 @@
     <div
       class="relative flex justify-center items-top"
       :style="{
-        // width: `${((dimensions.width + (materialThickness * 2)) * visualSizeModifier)}px`,
-       // height: `${((dimensions.depth + (materialThickness * 2)) * visualSizeModifier)}px`,
+        // width: `${((dimensions.width + (materialThickness * 2)) * scale.value)}px`,
+       // height: `${((dimensions.depth + (materialThickness * 2)) * scale.value)}px`,
         width: 'fit-content',
         height: 'fit-content',
         //padding: '100px',
-        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * visualSizeModifier) / 2) + padding}px`,
-        paddingBottom: `${((dimensions.height + (materialThickness * 2)) * visualSizeModifier) + padding}px`,
-        paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * visualSizeModifier)/2) + padding}px`,
+        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
+        paddingBottom: `${((dimensions.height + (materialThickness * 2)) * scale.value) + padding}px`,
+        paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * scale.value)/2) + padding}px`,
         paddingLeft: `${padding}px`,
         margin: '0',
         marginTop: '0',
@@ -33,7 +33,7 @@
           :colorRightRect="wallColors.right"
           :colorLeftRect="wallColors.left"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier"
+          :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
         <!-- FRONT -->
@@ -51,7 +51,7 @@
           :colorRightRect="wallColors.right"
           :colorLeftRect="wallColors.left"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier"
+          :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
         <div class="absolute z-20">
@@ -59,7 +59,7 @@
             v-if="showInfo && showInfo.includes('height')"
             :width="dimensions.width"
             :height="dimensions.height"
-            :viusaSizeModifier="visualSizeModifier"
+            :viusaSizeModifier="scale.value"
             :materialThickness="materialThickness"
           /> -->
         </div>
@@ -83,11 +83,11 @@
           :colorRightRect="wallColors.top"
           :colorLeftRect="wallColors.bottom"
           bgColor="#aaaaff"
-          :viusaSizeModifier="visualSizeModifier"
+          :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
       </div>
-      <ScaleButton v-if="showScaleButton" />
+      <ScaleButton @update:scale="updateScale" v-if="showScaleButton" />
     </div>
 </template>
 
@@ -108,18 +108,27 @@ const props = defineProps<{
   showScaleButton?: boolean;
 }>();
 
+const updateScale = (value) => {
+  console.log('updateScale');
+  scale.value = value;
+}
+
+const scale = reactive({
+  value: 1
+})
+
 const outsideDimensions = computed(() => {
   return {
-    width: (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier,
-    depth: (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier,
-    height: (props.dimensions.height + (props.materialThickness * 2)) * props.visualSizeModifier,
+    width: (props.dimensions.width + (props.materialThickness * 2)) * scale.value,
+    depth: (props.dimensions.depth + (props.materialThickness * 2)) * scale.value,
+    height: (props.dimensions.height + (props.materialThickness * 2)) * scale.value,
   };
 });
 
 //TOP SIDE WALL DIV
 const computedStyleTop = computed(() => {
-  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * props.visualSizeModifier;
-  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * props.visualSizeModifier;
+  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * scale.value;
+  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * scale.value;
   const translateValueX = outsideDimensions.value.depth / 4;
   const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4) ;
   return {
