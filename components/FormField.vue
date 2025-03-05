@@ -1,7 +1,7 @@
 <template>
   <!-- Number of Holes -->
 <div class="singleInputField flex justify-start items-center">
-  <div class="w-10 h-10 m-1 flex items-center justify-center bg-blue-500 overflow-hidden">
+  <div class="w-10 h-10 m-1 flex items-center justify-center bg-blue-500 overflow-hidden rounded-lg border-2 border-gray-900">
     <component :is="iconComponent"/>
   </div>
   <div class="flex flex-row items-center">

@@ -2,11 +2,11 @@
   <main class="w-full flex flex-col items-start justify-start relative bg-transparent z-10">
     <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
       <Info :dimensions="dimensions" :formWidth="formWidth" />
-      <DownloadButtons class="hidden" />
+      <DownloadButtons v-if="false" class="hidden" />
       {{ formWidth }}
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex flex-row flex-wrap justify-left w-fit-content bg-green-200">
+    <article class="flex flex-row flex-wrap justify-left w-fit-content mt-8">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           :matrixTopAndBottom="matrixTopAndBottom"
@@ -14,29 +14,29 @@
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="m-0 bg-slate-400 "
+          class="m-0 "
         />
           <NewVisualisation3d
-            class="m-0 bg-red-500 "
+            class="m-0  "
             :matrix="matrixTopAndBottom"
             :numberOfSteps="numberOfSteps"
             :materialThickness="materialThickness.value"
-            :visualSizeModifier="visualSizeModifier.value"
             :dimensions="dimensions"
             :polygons="polygons"
             :padding="50"
             showInfo="height"
-            :showScaleButton="true"
+            :showScaleButton="false"
+            :visualSizeModifier="visualSizeModifier.value"
           />
           <Representation_2D
-            class="m-0 bg-yellow-300"
+            class="m-0 "
             :matrix="matrixTopAndBottom"
             :dimensions="dimensions"
             :polygons="polygons"
-            :visualSizeModifier="visualSizeModifier.value"
             :materialThickness="materialThickness.value"
+            :visualSizeModifier="visualSizeModifier.value"
           />
-        <Grid :gridFactor="gridFactor" />
+        <Grid :gridFactor="(gridFactor * 5)"/>
     </article>
   </main>
 </template>

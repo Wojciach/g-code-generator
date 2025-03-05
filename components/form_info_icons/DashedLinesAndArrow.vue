@@ -34,7 +34,7 @@
 import { colors } from '@/utils/colors'
 
 const props = withDefaults(defineProps<{
-  dashedLines: boolean;
+  dashedLines?: boolean;
 }>(), {
   dashedLines : true,
 });

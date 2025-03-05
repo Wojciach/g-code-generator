@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset-0 w-full h-full z-[-1]" :style="{ backgroundColor: 'transparent' }">
+    <div class="absolute inset-0 w-full h-full z-[-1]" :style="{ backgroundColor: 'transparent' }">
       <svg class="bg-transparent w-full h-full">
         <defs>
           <pattern id="grid" :width="gridFactor" :height="gridFactor" patternUnits="userSpaceOnUse">

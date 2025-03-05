@@ -1,8 +1,8 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 pt-0">
     <form @submit.prevent="submitForm" class="flex flex-col">
-        <fieldset class="fieldSetStyleClass bg-red-500">
-          <legend class="text-lg font-semibold text-white">Number of holes</legend>
+        <fieldset class="fieldSetStyleClass bg-red-500 border-red-900">
+          <legend class="bg-red-900">Number of holes</legend>
           <FormField
             v-model="matrixTopAndBottom.holes"
             :iconComponent="Rows"
@@ -18,8 +18,8 @@
             placeholder="Enter number of hole"
           />
         </fieldset>
-        <fieldset class="fieldSetStyleClass bg-blue-500">
-          <legend class="text-lg font-semibold text-white">Spacing betweeen holes (mm)</legend>
+        <fieldset class="fieldSetStyleClass bg-blue-500 border-blue-900">
+          <legend class="bg-blue-900">Spacing betweeen holes (mm)</legend>
           <FormField
             v-model="matrixTopAndBottom.xSpacing"
             :iconComponent="Xspacing"
@@ -35,8 +35,8 @@
             placeholder="Enter spacing between holes in Y"
           />
         </fieldset>
-        <fieldset class="fieldSetStyleClass bg-green-600">
-          <legend class="text-lg font-semibold">Side margins (mm)</legend>
+        <fieldset class="fieldSetStyleClass bg-green-600 border-green-900">
+          <legend class="bg-green-900">Side margins (mm)</legend>
           <!-- x Margin -->
           <FormField
             v-model="matrixTopAndBottom.xMargin"
@@ -54,8 +54,8 @@
             placeholder="Y Margin"
           />
         </fieldset>
-        <fieldset class="fieldSetStyleClass">
-          <legend class="text-lg font-semibold">Other dimensions (mm)</legend>
+        <fieldset class="fieldSetStyleClass bg-purple-500 border-purple-900">
+          <legend class="legendStyleClass bg-purple-900">Other dimensions (mm)</legend>
           <!-- Hole Diameter -->
           <FormField
               v-model="matrixTopAndBottom.diameter"
@@ -81,8 +81,8 @@
               placeholder="Material thickness?"
           />
         </fieldset>
-        <fieldset class="fieldSetStyleClass bg-slate-500">
-          <legend class="text-lg font-semibold">Number of notches</legend>
+        <fieldset class="fieldSetStyleClass bg-slate-500 border-gray-900">
+          <legend class="bg-gray-900">Number of notches</legend>
           <!-- Number of horizontal steps -->
           <FormField
             v-model="numberOfSteps.width"
@@ -110,7 +110,7 @@
         </fieldset>
         <!-- Visual Size Modifier -->
         <div>
-          <label for="visualSizeModifier">Visual Size Modifier: {{ visualSizeModifier.value }}</label>
+          <label for="visualSizeModifier">Grid scale: {{ Math.round(visualSizeModifier.value * 6.36 )}}</label>
           <input
             id="visualSizeModifier"
             type="range"
@@ -155,7 +155,12 @@ const emit = defineEmits(['update:visualSizeModifier']);
 </script>
 
 <style scoped>
-  .fieldSetStyleClass {
-    @apply rounded-md p-2 mt-2 border border-gray-100;
+
+  legend {
+    @apply text-lg font-semibold text-white p-1 px-3 rounded-xl border-gray-900 border-2;
+  }
+
+  fieldset {
+    @apply border-2 rounded-md p-2 mb-2;
   }
 </style>

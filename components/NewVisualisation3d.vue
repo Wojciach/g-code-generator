@@ -7,7 +7,8 @@
         width: 'fit-content',
         height: 'fit-content',
         //padding: '100px',
-        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
+        //paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
+        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + 0}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * scale.value) + padding}px`,
         paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * scale.value)/2) + padding}px`,
         paddingLeft: `${padding}px`,
@@ -87,7 +88,8 @@
           :materialThickness="materialThickness"
         />
       </div>
-      <ScaleButton @update:scale="updateScale" v-if="showScaleButton" />
+      <ScaleButton @update:scale="updateScale" v-if="showScaleButton || false" />
+      <Grid :gridFactor="80" class="absolute"  v-if="false"/>
     </div>
 </template>
 
@@ -100,7 +102,7 @@ const props = defineProps<{
   matrix?: MatrixOfHoles;
   numberOfSteps: Dimensions;
   materialThickness: number;
-  visualSizeModifier: number;
+  visualSizeModifier?: number;
   dimensions: Dimensions;
   polygons: Polygons;
   padding: number;
@@ -113,8 +115,12 @@ const updateScale = (value) => {
   scale.value = value;
 }
 
+watch(() => props.visualSizeModifier, (value) => {
+  scale.value = value || 1;
+})
+
 const scale = reactive({
-  value: 1
+  value: props.visualSizeModifier || 1
 })
 
 const outsideDimensions = computed(() => {
