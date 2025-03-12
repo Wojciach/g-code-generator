@@ -1,8 +1,16 @@
 <template>
       <div class="flex flex-row justify-center space-x-4">
-        <DownloadSVG :svgRef="theSVG" />
+        <DownloadSVG />
         <DownloadDXF :matrix="matrixTopAndBottom" />
         <DownloadG_CODE :matrix="matrixTopAndBottom" />
+        <div 
+    :style="{
+      width: widthCalc + 'px',
+      height: heightCalc + 'px'
+    }"
+  >
+
+  </div>
       </div>
 </template>
 

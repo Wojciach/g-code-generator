@@ -10,4 +10,14 @@ export default defineNuxtConfig({
     '~/components', // Default components directory
     { path: '~/components/form_info_icons/', extensions: ['vue'] }, // Nested directory
   ],
+  app: {
+    head: {
+      meta: [
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        }
+      ]
+    }
+  }
 })

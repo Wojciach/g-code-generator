@@ -5,7 +5,7 @@
         <!-- Inside of the box -->
         <rect x="0" y="100" width="220" height="140" :fill="wallColors.front" stroke="none" stroke-width="6" />
         <!-- Background -->
-        <rect x="0" y="0" width="220" height="100" :fill="colors.bg" stroke="none" stroke-width="6" />
+        <rect x="0" y="0" width="220" height="100" :fill="colors.mainBg" stroke="none" stroke-width="6" />
         <!-- Wall of the box to show wall thickness -->
         <rect x="-20" y="30" width="220" height="140" :fill="wallColors.right" stroke="black" stroke-width="6" />
       </svg>

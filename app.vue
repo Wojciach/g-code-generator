@@ -1,23 +1,26 @@
 <template>
-  <main class="w-full flex flex-col items-start justify-start relative bg-transparent z-10">
-    <article class="flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
+  <main ref="main" class="w-full flex flex-col items-start justify-start relative z-10" :style="{backgroundColor: colors.mainBg}">
+    <article ref="info" class="z-50 fixed top-0 flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
       <Info :dimensions="dimensions" :formWidth="formWidth" />
-      <DownloadButtons v-if="false" class="hidden" />
-      {{ formWidth }}
+      <DownloadButtons v-if="true" :polygons="polygons" />
+      <VisualSizeModifier class="fixed bg-gray-300 p-2 rounded-lg bottom-0 right-0 w-fit-content" @update:visualSizeModifier="updateVisualSizeModifier" :visualSizeModifier="visualSizeModifier.value" />
+      {{ infoHeight }}
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex flex-row flex-wrap justify-left w-fit-content mt-8">
+    <article class="flex flex-col md:flex-row flex-wrap justify-left w-fit-content m-8">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
+          @update:throughHoles="updateThroughHoles"
           :matrixTopAndBottom="matrixTopAndBottom"
           :numberOfSteps="numberOfSteps"
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="m-0 "
+          class="m-0"
+          :v-model="myNumber"
         />
           <NewVisualisation3d
-            class="m-0  "
+            class="m-0"
             :matrix="matrixTopAndBottom"
             :numberOfSteps="numberOfSteps"
             :materialThickness="materialThickness.value"
@@ -35,6 +38,7 @@
             :polygons="polygons"
             :materialThickness="materialThickness.value"
             :visualSizeModifier="visualSizeModifier.value"
+            :throughHoles="throughHoles.value"
           />
         <Grid :gridFactor="(gridFactor * 5)"/>
     </article>
@@ -46,14 +50,27 @@ import type { Dimensions } from '@/utils/types';
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
+import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 
+const main = ref(null);
+const info = ref(null);
+const infoHeight = ref(0);
 const formRef = ref(null);
 const formWidth = ref(0);
+const myNumber = ref(true);
 
 onMounted(() => {
   if (formRef.value) {
     const rect = formRef.value.getBoundingClientRect();
     formWidth.value = rect.width;
+  }
+});
+
+onMounted(() => {
+  if (info.value) {
+    const infoDetails = info.value.getBoundingClientRect();
+    infoHeight.value = infoDetails.height;
+    updatePadding();
   }
 });
 
@@ -66,19 +83,34 @@ const updateWidth2 = () => {
   formWidth2.value = window.innerWidth;
 };
 
+const updatePadding = () => {
+  if(main.value) {
+    main.value.style.paddingTop = infoHeight.value + 'px';
+  }
+  
+};
+
 onMounted(() => {
   window.addEventListener('resize', updateWidth2);
+  window.addEventListener('resize', updatePadding)
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateWidth2);
 });
 
-const theSVG = ref<SVGSVGElement | null>(null);
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 10, 10, 10, 10, 10));
+provide('providedMatrix', matrixTopAndBottom);
+
 const visualSizeModifier = reactive({
   value: 1
 });
+provide('providedVisualSizeModifier', visualSizeModifier);
+
+const throughHoles = reactive({
+  value: false
+});
+provide('providedThroughHoles', throughHoles);
 
 const gridFactor = computed(() => {
   return visualSizeModifier.value  * 10;
@@ -89,6 +121,7 @@ const dimensions = reactive<Dimensions>({
   height: 200,
   depth: matrixTopAndBottom.height,
 });
+provide('providedDimensions', dimensions);
 
 const numberOfSteps = reactive<Dimensions>({
   width: 3,
@@ -99,6 +132,8 @@ const numberOfSteps = reactive<Dimensions>({
 const materialThickness = reactive({
   value: 10
 });
+
+provide('providedMaterialThickness', materialThickness);
 
 const stepSizes = computed(() => {
   return {
@@ -119,8 +154,14 @@ const polygons = computed(() => {
   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
 });
 
+provide('providedPolygons', polygons);
+
 const updateVisualSizeModifier = (value) => {
   visualSizeModifier.value = value;
+};
+const updateThroughHoles = (value) => {
+  throughHoles.value = value;
+  console.log('throughHoles', throughHoles.value);
 };
 
 </script>

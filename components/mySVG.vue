@@ -7,7 +7,7 @@
   >
   <!-- :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))" -->
     <svg
-      ref="theSVG"
+      :id="c_id"
       :viewBox="'0 0 ' + (width + (materialThickness * 2)) + ' ' + (height + (materialThickness * 2))"
       xmlns="http://www.w3.org/2000/svg"
       class="w-full h-full"
@@ -15,18 +15,20 @@
       preserveAspectRatio="none"
     >
     <!-- MAIN RECTANGLE -->
-    <rect 
+    <rect
+        v-if="showThis"
         :x="materialThickness" 
         :y="materialThickness" 
         :width="width" 
         :height="height"
         fill="none" 
-        stroke="red" 
+        stroke="red"
         stroke-width="0.02" 
       />
 
       <!-- TOP Rectangle -->
-      <rect 
+      <rect
+          v-if="showThis"
           :x="materialThickness" 
           :y="0" 
           :width="width" 
@@ -36,7 +38,8 @@
           stroke-width="0.12" 
       />
       <!-- BOTTOM Rectangle -->
-      <rect 
+      <rect
+          v-if="showThis"
           :x="materialThickness" 
           :y="height + materialThickness" 
           :width="width" 
@@ -46,7 +49,8 @@
           stroke-width="0.12" 
       />
       <!-- RIGHT Rectangle -->
-      <rect 
+      <rect
+          v-if="showThis"
           :x="width + materialThickness" 
           :y="0" 
           :width="materialThickness" 
@@ -56,7 +60,8 @@
           stroke-width="0.12" 
       />
       <!-- LEFT Rectangle -->
-      <rect 
+      <rect
+          v-if="showThis"
           :x="0" 
           :y="0" 
           :width="materialThickness" 
@@ -82,16 +87,7 @@
         :r="matrix.diameter / 2" 
         fill="black"
       />
-      <!-- STROKE RECTANGLE -->
-      <!-- <rect 
-        :x="0" 
-        :y="0" 
-        :width="(width + materialThickness * 2)" 
-        :height="(height + materialThickness * 2)"
-        fill="none" 
-        stroke="black" 
-        stroke-width="0.2" 
-      /> -->
+
     </svg>
   </div>
 </template>
@@ -101,7 +97,7 @@
   const props = defineProps<{
     showCircles: boolean;
     matrix?: MatrixOfHoles;
-    //steps: StepsGenerator; //TODO: remove
+    customID?: string;
     polygonPoints: string;
     width: number;
     height: number;
@@ -113,6 +109,7 @@
     bgColor?: string;
     viusaSizeModifier: number | string;
     materialThickness: number;
+    versionForDownload?: boolean;
   }>();
 
   const color = props.color ?? 'none';
@@ -121,6 +118,8 @@
   const bottomRectColor = props.colorBottomRect ?? 'green';
   const rightRectColor = props.colorRightRect ?? 'red';
   const leftRectColor = props.colorLeftRect ?? 'blue';
+  const c_id = props.customID ?? 'svg_id';
+  const showThis = props.versionForDownload ? false : true;
 
   const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
   const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));

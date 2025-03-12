@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-full flex items-center justify-center" :style="{backgroundColor: colors.bg}">
+  <div class="relative w-full h-full flex items-center justify-center" :style="{backgroundColor: colors.mainBg}">
     <div class="absolute z-10">
       <NewVisualisation3d
             class="positionAdjustment"

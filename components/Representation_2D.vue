@@ -5,7 +5,7 @@
               class="border-2 border-black"
               :matrix="matrix"
               :polygonPoints="polygons.topAndBottom"
-              :showCircles="true"
+              :showCircles="throughHoles"
               :width="dimensions.width"
               :height="dimensions.depth"
               :color="wallColors.bottom"
@@ -56,6 +56,7 @@
             <!-- CENTER CENTER (MIDDLE) -->
             <MySVG
               class="border-2 border-black"
+              customID="center_center_svg"
               :matrix="matrix"
               :polygonPoints="polygons.topAndBottom"
               :showCircles="true"
@@ -121,6 +122,7 @@ const props = defineProps<{
   dimensions: Dimensions,
   materialThickness: number,
   visualSizeModifier: number,
+  throughHoles: boolean
 }>()
 
 watch(() => props.visualSizeModifier, (value) => {

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "pregenerate": "node write-timestamp.js",
+    "generate": "npm run pregenerate && nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

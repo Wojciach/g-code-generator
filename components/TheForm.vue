@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 pt-0">
+  <div class="p-0">
     <form @submit.prevent="submitForm" class="flex flex-col">
         <fieldset class="fieldSetStyleClass bg-red-500 border-red-900">
           <legend class="bg-red-900">Number of holes</legend>
@@ -109,8 +109,8 @@
           />
         </fieldset>
         <!-- Visual Size Modifier -->
-        <div>
-          <label for="visualSizeModifier">Grid scale: {{ Math.round(visualSizeModifier.value * 6.36 )}}</label>
+        <!-- <div>
+          <label for="visualSizeModifier">Scale: {{ Math.round(visualSizeModifier.value * 6.36 )}}</label>
           <input
             id="visualSizeModifier"
             type="range"
@@ -120,7 +120,16 @@
             :max="3"
             :step="0.1"
           />
-        </div>
+        </div> -->
+        <div class="flex items-center">
+          <input
+            @input="$emit('update:throughHoles', $event.target.checked)"
+            id="checkbox"
+            type="checkbox"
+            class="form-checkbox h-8 w-8 text-blue-600"
+          />
+          <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
+      </div>
       </form>
   </div>
   
@@ -149,8 +158,7 @@ const props = defineProps<{
     dimensions: { width: number; depth: number; height: number };
   }>();
 
-
-const emit = defineEmits(['update:visualSizeModifier']);
+const emit = defineEmits(['update:visualSizeModifier', 'update:throughHoles']);
 
 </script>
 
