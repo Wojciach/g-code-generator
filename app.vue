@@ -2,12 +2,13 @@
   <main ref="main" class="w-full flex flex-col items-start justify-start relative z-10" :style="{backgroundColor: colors.mainBg}">
     <article ref="info" class="z-50 fixed top-0 flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
       <Info :dimensions="dimensions" :formWidth="formWidth" />
-      <DownloadButtons v-if="true" :polygons="polygons" />
+      <DownloadButtons v-if="false" :polygons="polygons" />
       <VisualSizeModifier class="fixed bg-gray-300 p-2 rounded-lg bottom-0 right-0 w-fit-content" @update:visualSizeModifier="updateVisualSizeModifier" :visualSizeModifier="visualSizeModifier.value" />
       {{ infoHeight }}
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex flex-col md:flex-row flex-wrap justify-left w-fit-content m-8">
+    <article class="flex landscape:flex-row portrait:flex-col flex-wrap justify-left w-full h-fit-content m-8">
+      <section class="flex w-fit-content">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           @update:throughHoles="updateThroughHoles"
@@ -19,8 +20,11 @@
           class="m-0"
           :v-model="myNumber"
         />
-          <NewVisualisation3d
-            class="m-0"
+      </section>
+      <section class="relative flex flex-grow min-h-[inherit]">
+        <NewVisualisation3d
+            v-show="selectedView === '3D'"
+            class="bg-blue-600 flex flex-grow m-0"
             :matrix="matrixTopAndBottom"
             :numberOfSteps="numberOfSteps"
             :materialThickness="materialThickness.value"
@@ -32,6 +36,7 @@
             :visualSizeModifier="visualSizeModifier.value"
           />
           <Representation_2D
+            v-show="selectedView === '2D'"
             class="m-0 "
             :matrix="matrixTopAndBottom"
             :dimensions="dimensions"
@@ -40,7 +45,13 @@
             :visualSizeModifier="visualSizeModifier.value"
             :throughHoles="throughHoles.value"
           />
-        <Grid :gridFactor="(gridFactor * 5)"/>
+          <DownloadSVG
+            class="relative w-1/2"
+            v-show="selectedView === 'Download'"
+          />
+          <SelectViewButtons v-model="selectedView" class="z-40" />
+          <Grid :gridFactor="(gridFactor * 5)"/>
+      </section>
     </article>
   </main>
 </template>
@@ -51,6 +62,9 @@ import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
 import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
+import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
+
+const selectedView = ref('3D')
 
 const main = ref(null);
 const info = ref(null);

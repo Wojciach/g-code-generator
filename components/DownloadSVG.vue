@@ -1,7 +1,6 @@
 <template>
-    <div id='downloadSVG'>
-      <button class="btn" @click="handleClick">Download SVG</button>
-      <div class="relative">
+    <div class="bg-red-200" id='downloadSVG'>
+      <div class="relative flex flex-wrap justify-center items-center gap-4">
         <MySVG
           customID="frontAndBackWall"
           :showCircles="false"
@@ -43,6 +42,7 @@
           :materialThickness="materialThickness"
         />
       </div>
+      <button class="btn" @click="handleClick">Download SVG</button>
     </div>
     
 </template>
