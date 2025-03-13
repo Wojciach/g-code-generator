@@ -7,7 +7,7 @@
   >
   <!-- :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))" -->
     <svg
-      :id="c_id"
+      :id="customID"
       :viewBox="'0 0 ' + (width + (materialThickness * 2)) + ' ' + (height + (materialThickness * 2))"
       xmlns="http://www.w3.org/2000/svg"
       class="w-full h-full"
@@ -79,13 +79,15 @@
       />  
       <!-- Circles -->
       <circle
-        v-if="(showCircles && matrix)"
+        v-if="(showCircles)"
         v-for="n in matrix.xyPositions"
         :key="`${n[0]}-${n[1]}`"
         :cx="(n[0] + materialThickness)"
         :cy="(n[1] + materialThickness)" 
         :r="matrix.diameter / 2" 
-        fill="black"
+        :fill="versionForDownload ? 'none' : 'black'"
+        stroke="black"
+        stroke-width="0.12"
       />
 
     </svg>
@@ -93,6 +95,8 @@
 </template>
 
 <script lang="ts" setup>
+
+  const reff = ref<HTMLElement | null>(null);
 
   const props = defineProps<{
     showCircles: boolean;
@@ -110,6 +114,7 @@
     viusaSizeModifier: number | string;
     materialThickness: number;
     versionForDownload?: boolean;
+    reff?: Ref<HTMLElement | null>;
   }>();
 
   const color = props.color ?? 'none';
@@ -118,8 +123,11 @@
   const bottomRectColor = props.colorBottomRect ?? 'green';
   const rightRectColor = props.colorRightRect ?? 'red';
   const leftRectColor = props.colorLeftRect ?? 'blue';
-  const c_id = props.customID ?? 'svg_id';
+// const c_id = props.customID ?? 'svg_id';
   const showThis = props.versionForDownload ? false : true;
+
+  const injectedMatrix: any = inject('providedMatrix');
+  const matrix = injectedMatrix;
 
   const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
   const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));

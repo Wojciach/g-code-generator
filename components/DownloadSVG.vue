@@ -3,7 +3,7 @@
       <button class="btn" @click="handleClick">Download SVG</button>
       <div class="relative">
         <MySVG
-          ref="frontAndBackWall"
+          customID="frontAndBackWall"
           :showCircles="false"
           :versionForDownload="true"
           :width="width"
@@ -13,7 +13,7 @@
           :materialThickness="materialThickness"
         />
         <MySVG
-          ref="leftAndRighWall"
+          customID="leftAndRighWall"
           :showCircles="false"
           :versionForDownload="true"
           :width="height"
@@ -23,7 +23,7 @@
           :materialThickness="materialThickness"
         />
         <MySVG
-          ref="topWall"
+          customID="topWall"
           :showCircles="true"
           :versionForDownload="true"
           :width="width"
@@ -33,7 +33,7 @@
           :materialThickness="materialThickness"
         />
         <MySVG
-          ref="bottomWall"
+          customID="bottomWall"
           :showCircles="throughHoles"
           :versionForDownload="true"
           :width="width"
@@ -49,8 +49,6 @@
 
 <script lang="ts" setup>
 
-  const topOfTheBox = ref(null);
-
   const injectedComputedPolygons: any = inject('providedPolygons');
   const polygonPoints = computed(() => injectedComputedPolygons.value);
 
@@ -60,11 +58,11 @@
   const injectedDimensions: any = inject('providedDimensions');
   const {width, height, depth} = injectedDimensions;
 
-  const injectedMatrix: any = inject('providedMatrix');
-  const matrix = injectedMatrix;
+  // const injectedMatrix: any = inject('providedMatrix');
+  // const matrix = injectedMatrix;
 
   const injectedThroughHoles: any = inject('providedThroughHoles');
-  const throughHoles = injectedThroughHoles.value;
+  const throughHoles = computed(() => injectedThroughHoles.value);
 
   // this or scale can be visualScaleModifier passed or injected
   const scale = reactive({
@@ -74,19 +72,24 @@
   // const widthCalc = computed(() => ((width + (Number(materialThickness) * 2)) * (1)));
   // const heightCalc = computed(() => ((height + (Number(materialThickness) * 2)) * (1)));
 
-    const handleClick = () => {
-      console.log('click handled');
-      console.log(topOfTheBox.value);
-      if(topOfTheBox.value) {
-        console.log('click handled');
-        const blob = new Blob([topOfTheBox.value.outerHTML], { type: "image/svg+xml" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "topOfTheBox.svg";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
+  const downloadSVG = (id: string, fileName: string) => {
+    const svgElement = document.getElementById(id);
+  if (svgElement) {
+    const blob = new Blob([svgElement.outerHTML], { type: 'image/svg+xml' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
+};
+
+const handleClick = () => {
+  downloadSVG('frontAndBackWall', 'frontAndBackWall.svg');
+  downloadSVG('leftAndRighWall', 'leftAndRighWall.svg');
+  downloadSVG('topWall', 'topWall.svg');
+  downloadSVG('bottomWall', 'bottomWall.svg');
+};
 
 </script>
 
