@@ -1,24 +1,24 @@
 <template>
     <div
-      class="relative flex justify-center items-top"
+      class="relative flex justify-center items-center"
       :style="{
         // width: `${((dimensions.width + (materialThickness * 2)) * scale.value)}px`,
-       // height: `${((dimensions.depth + (materialThickness * 2)) * scale.value)}px`,
-        width: 'fit-content',
-        height: 'fit-content',
+        // height: `${((dimensions.depth + (materialThickness * 2)) * scale.value)}px`,
+        width: `fit-content`,
+        height: `fit-content`,
         //padding: '100px',
         //paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
         paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + 0}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * scale.value) + padding}px`,
         paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * scale.value)/2) + padding}px`,
         paddingLeft: `${padding}px`,
-        margin: '0',
-        marginTop: '0',
-        bottom: '0px'
+        //margin: '100px',
+        //bottom: '0px'
+        margin: 'auto'
       }"
       >
       <!-- VISIUAL REPRESENTATION OF THE BOX -->
-      <div class="relative">
+      <div class="relative w-full h-full bg-red-400">
         <!-- TOP -->
         <MySVG
           class="absolute border-black border-1 border-b-0"

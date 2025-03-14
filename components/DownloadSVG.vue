@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-red-200" id='downloadSVG'>
-      <div class="relative flex flex-wrap justify-center items-center gap-4">
+    <div class="flex flex-col justify-center items-center bg-red-200 " id='downloadSVG'>
+      <div class="relative flex flex-wrap justify-center items-center gap-4 bg-blue-400 ">
         <MySVG
           customID="frontAndBackWall"
           :showCircles="false"

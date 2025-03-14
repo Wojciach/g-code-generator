@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute z-50 flex flex-row h-8 w-fit-content w-32 items-center top-0 left-0 bg-blue-500 ">
+    <div class="">
       <button @click="decrease" class="buttonClass h-full">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
           <rect x="5" y="5" width="90" height="90" :fill="bgColor" rx="17" ry="17" stroke-width="8" :stroke="signColor"/>

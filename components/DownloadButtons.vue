@@ -1,5 +1,5 @@
 <template>
-      <div class="flex flex-row justify-center space-x-4">
+      <div class="">
         <DownloadSVG />
         <DownloadDXF :matrix="matrixTopAndBottom" />
         <DownloadG_CODE :matrix="matrixTopAndBottom" />

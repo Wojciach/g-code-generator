@@ -1,14 +1,12 @@
 <template>
-  <main ref="main" class="w-full flex flex-col items-start justify-start relative z-10" :style="{backgroundColor: colors.mainBg}">
-    <article ref="info" class="z-50 fixed top-0 flex flex-row justify-between p-6 bg-gray-200 shadow-md rounded-md w-full">
+  <main ref="main" class="" :style="{backgroundColor: colors.mainBg}">
+    <article ref="info" class="flex justify-center p-4">
       <Info :dimensions="dimensions" :formWidth="formWidth" />
       <DownloadButtons v-if="false" :polygons="polygons" />
-      <VisualSizeModifier class="fixed bg-gray-300 p-2 rounded-lg bottom-0 right-0 w-fit-content" @update:visualSizeModifier="updateVisualSizeModifier" :visualSizeModifier="visualSizeModifier.value" />
-      {{ infoHeight }}
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex landscape:flex-row portrait:flex-col flex-wrap justify-left w-full h-fit-content m-8">
-      <section class="flex w-fit-content">
+    <article class="flex landscape:flex-row portrait:flex-col-reverse h-fit-content">
+      <section class="flex landscape:w-fit-content">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           @update:throughHoles="updateThroughHoles"
@@ -17,40 +15,49 @@
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="m-0"
+          class="mt-2 flex flex-grow items-center justify-center portrait:mx-20"
           :v-model="myNumber"
         />
       </section>
-      <section class="relative flex flex-grow min-h-[inherit]">
-        <NewVisualisation3d
-            v-show="selectedView === '3D'"
-            class="bg-blue-600 flex flex-grow m-0"
-            :matrix="matrixTopAndBottom"
-            :numberOfSteps="numberOfSteps"
-            :materialThickness="materialThickness.value"
-            :dimensions="dimensions"
-            :polygons="polygons"
-            :padding="50"
-            showInfo="height"
-            :showScaleButton="false"
-            :visualSizeModifier="visualSizeModifier.value"
-          />
-          <Representation_2D
-            v-show="selectedView === '2D'"
-            class="m-0 "
-            :matrix="matrixTopAndBottom"
-            :dimensions="dimensions"
-            :polygons="polygons"
-            :materialThickness="materialThickness.value"
-            :visualSizeModifier="visualSizeModifier.value"
-            :throughHoles="throughHoles.value"
-          />
-          <DownloadSVG
-            class="relative w-1/2"
-            v-show="selectedView === 'Download'"
-          />
-          <SelectViewButtons v-model="selectedView" class="z-40" />
-          <Grid :gridFactor="(gridFactor * 5)"/>
+      <section class="flex flex-col justify-center items-center bg-yellow-700 flex-grow">
+          <div id="intercheangeableVisualisation" class="flex flex-grow flex-col justify-center items-center bg-red-900 h-full w-full">
+            <NewVisualisation3d
+                v-show="selectedView === '3D'"
+                class="bg-blue-600 flex m-0"
+                :matrix="matrixTopAndBottom"
+                :numberOfSteps="numberOfSteps"
+                :materialThickness="materialThickness.value"
+                :dimensions="dimensions"
+                :polygons="polygons"
+                :padding="50"
+                showInfo="height"
+                :showScaleButton="false"
+                :visualSizeModifier="visualSizeModifier.value"
+              />
+              <Representation_2D
+                v-show="selectedView === '2D'"
+                class="m-0 "
+                :matrix="matrixTopAndBottom"
+                :dimensions="dimensions"
+                :polygons="polygons"
+                :materialThickness="materialThickness.value"
+                :visualSizeModifier="visualSizeModifier.value"
+                :throughHoles="throughHoles.value"
+              />
+              <DownloadSVG
+                class=""
+                v-show="selectedView === 'Download'"
+              />
+          </div>
+          <div class="p-2">
+            <SelectViewButtons v-model="selectedView" class="" />
+            <VisualSizeModifier
+              class="flex justify-center items-center bg-gray-200"
+              @update:visualSizeModifier="updateVisualSizeModifier"
+              :visualSizeModifier="visualSizeModifier.value"
+            />
+          </div>
+          <Grid :gridFactor="(gridFactor * 5)" />
       </section>
     </article>
   </main>
@@ -73,45 +80,45 @@ const formRef = ref(null);
 const formWidth = ref(0);
 const myNumber = ref(true);
 
-onMounted(() => {
-  if (formRef.value) {
-    const rect = formRef.value.getBoundingClientRect();
-    formWidth.value = rect.width;
-  }
-});
+// onMounted(() => {
+//   if (formRef.value) {
+//     const rect = formRef.value.getBoundingClientRect();
+//     formWidth.value = rect.width;
+//   }
+// });
 
-onMounted(() => {
-  if (info.value) {
-    const infoDetails = info.value.getBoundingClientRect();
-    infoHeight.value = infoDetails.height;
-    updatePadding();
-  }
-});
+// onMounted(() => {
+//   if (info.value) {
+//     const infoDetails = info.value.getBoundingClientRect();
+//     infoHeight.value = infoDetails.height;
+//     updatePadding();
+//   }
+// });
 
 const formWidth2 = reactive({
   value: typeof window !== 'undefined' ? window.innerWidth : 0
 });
 
 
-const updateWidth2 = () => {
-  formWidth2.value = window.innerWidth;
-};
+// const updateWidth2 = () => {
+//   formWidth2.value = window.innerWidth;
+// };
 
-const updatePadding = () => {
-  if(main.value) {
-    main.value.style.paddingTop = infoHeight.value + 'px';
-  }
+// const updatePadding = () => {
+//   if(main.value) {
+//     main.value.style.paddingTop = infoHeight.value + 'px';
+//   }
   
-};
+// };
 
-onMounted(() => {
-  window.addEventListener('resize', updateWidth2);
-  window.addEventListener('resize', updatePadding)
-});
+// onMounted(() => {
+//   window.addEventListener('resize', updateWidth2);
+//   window.addEventListener('resize', updatePadding)
+// });
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateWidth2);
-});
+// onBeforeUnmount(() => {
+//   window.removeEventListener('resize', updateWidth2);
+// });
 
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 10, 10, 10, 10, 10));
 provide('providedMatrix', matrixTopAndBottom);

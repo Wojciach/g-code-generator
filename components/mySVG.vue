@@ -1,8 +1,10 @@
 <template>
   <div 
     :style="{
+      // width: widthCalc + 'px',
+      // height: heightCalc + 'px',
       width: widthCalc + 'px',
-      height: heightCalc + 'px'
+      height: heightCalc + 'px',
     }"
   >
   <!-- :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))" -->

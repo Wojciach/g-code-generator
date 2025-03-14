@@ -1,8 +1,8 @@
 <template>
-        <div>
-          <label for="visualSizeModifier">{{global.value}}Scale: {{ Math.round(Number(visualSizeModifier) * 6.36 )}}</label>
+        <div class="flex w-full">
+          <label for="visualSizeModifier" class="w-16">Scale: {{ Math.round(Number(visualSizeModifier) * 6.36 )}}</label>
           <input
-            class="w-64"
+            class="flex-grow"
             id="visualSizeModifier"
             type="range"
             :value="visualSizeModifier"
