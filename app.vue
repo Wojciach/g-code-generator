@@ -1,7 +1,12 @@
 <template>
   <main ref="main" class="flex flex-col justify-center" :style="{backgroundColor: colors.mainBg}">
     <article ref="info" class="flex justify-center p-4">
-      <Info :dimensions="dimensions" :formWidth="formWidth" />
+      <Info
+        :materialThickness="materialThickness.value"
+        :dimensions="dimensions"
+        :formWidth="formWidth"
+        :matrixTopAndBottom="matrixTopAndBottom"
+      />
       <DownloadButtons v-if="false" :polygons="polygons" />
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
@@ -19,11 +24,11 @@
           :v-model="myNumber"
         />
       </section>
-      <section class="flex flex-col justify-center items-center bg-yellow-700 flex-grow">
-          <div id="intercheangeableVisualisation" class="flex flex-grow flex-col justify-center items-center bg-red-900 h-full w-full">
+      <section class="flex flex-col justify-center items-center flex-grow">
+          <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full">
             <NewVisualisation3d
                 v-show="selectedView === '3D'"
-                class="bg-blue-600 flex m-0"
+                class="z-20 flex m-0"
                 :matrix="matrixTopAndBottom"
                 :numberOfSteps="numberOfSteps"
                 :materialThickness="materialThickness.value"
@@ -36,7 +41,7 @@
               />
               <Representation_2D
                 v-show="selectedView === '2D'"
-                class="m-0 "
+                class="m-0 z-20"
                 :matrix="matrixTopAndBottom"
                 :dimensions="dimensions"
                 :polygons="polygons"
@@ -45,9 +50,10 @@
                 :throughHoles="throughHoles.value"
               />
               <DownloadSVG
-                class=""
+                class="z-20"
                 v-show="selectedView === 'Download'"
               />
+              <Grid :gridFactor="(gridFactor * 5)" class="bg-red-900 z-10"/>
           </div>
           <div class="p-2 pb-4 flex flex-row w-full flex-wrap justify-center items-center bg-gray-300">
             <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
@@ -57,7 +63,6 @@
               :visualSizeModifier="visualSizeModifier.value"
             />
           </div>
-          <Grid :gridFactor="(gridFactor * 5)" />
       </section>
     </article>
   </main>
