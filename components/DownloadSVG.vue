@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-center items-center bg-red-200 " id='downloadSVG'>
-      <div class="relative flex flex-wrap justify-center items-center gap-4 bg-blue-400 ">
+      <div class="relative flex flex-wrap justify-center items-center p-5 gap-4 bg-blue-400 ">
         <MySVG
           customID="frontAndBackWall"
           :showCircles="false"
@@ -99,43 +99,11 @@ const handleClick = () => {
   @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition;
 }
 
+#topWall {
+  margin: 4px;
+}
+
+#topWall polyline {
+  stroke-width: 4;
+}
 </style>
-
-
-      <!-- <div 
-        :style="{
-          width: widthCalc + 'px',
-          height: heightCalc + 'px'
-        }"
-      >
-        <svg
-          v-if="true"
-          ref="topOfTheBox"
-          :id="'www'"
-          :viewBox="'0 0 ' + (width + (materialThickness * 2)) + ' ' + (height + (materialThickness * 2))"
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-full h-full hidden"
-          :style="{ backgroundColor: 'transparent'}"
-          preserveAspectRatio="yes"
-          >
-         Polygon 
-            <polyline
-              :points="polygonPoints" 
-              fill="none" 
-              stroke="black" 
-              stroke-width="0.12" 
-            />  
-           Circles 
-            <circle
-              v-if="(true)"
-              v-for="n in matrix.xyPositions"
-              :key="`${n[0]}-${n[1]}`"
-              :cx="(n[0] + materialThickness)"
-              :cy="(n[1] + materialThickness)" 
-              :r="matrix.diameter / 2" 
-              fill="none"
-              stroke="black"
-              stroke-width="0.12"
-            />
-          </svg>
-      </div> -->

@@ -8,7 +8,7 @@
         height: `fit-content`,
         //padding: '100px',
         //paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
-        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + 0}px`,
+        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * scale.value) + padding}px`,
         paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * scale.value)/2) + padding}px`,
         paddingLeft: `${padding}px`,

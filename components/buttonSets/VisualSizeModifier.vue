@@ -1,5 +1,5 @@
 <template>
-        <div class="flex w-full">
+        <div class="w-full flex flex-row flex-wrap justify-center items-center">
           <label for="visualSizeModifier" class="w-16">Scale: {{ Math.round(Number(visualSizeModifier) * 6.36 )}}</label>
           <input
             class="flex-grow"

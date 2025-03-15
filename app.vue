@@ -1,5 +1,5 @@
 <template>
-  <main ref="main" class="" :style="{backgroundColor: colors.mainBg}">
+  <main ref="main" class="flex flex-col justify-center" :style="{backgroundColor: colors.mainBg}">
     <article ref="info" class="flex justify-center p-4">
       <Info :dimensions="dimensions" :formWidth="formWidth" />
       <DownloadButtons v-if="false" :polygons="polygons" />
@@ -15,7 +15,7 @@
           :materialThickness="materialThickness"
           :visualSizeModifier="visualSizeModifier"
           :dimensions="dimensions"
-          class="mt-2 flex flex-grow items-center justify-center portrait:mx-20"
+          class="flex flex-grow items-center justify-center mt-2 mb-5 mx-5 portrait:mx-20"
           :v-model="myNumber"
         />
       </section>
@@ -49,10 +49,10 @@
                 v-show="selectedView === 'Download'"
               />
           </div>
-          <div class="p-2">
-            <SelectViewButtons v-model="selectedView" class="" />
+          <div class="p-2 pb-4 flex flex-row w-full flex-wrap justify-center items-center bg-gray-300">
+            <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
             <VisualSizeModifier
-              class="flex justify-center items-center bg-gray-200"
+              class="flex flex-row flex-wrap justify-center items-center bg-gray-200 py-2"
               @update:visualSizeModifier="updateVisualSizeModifier"
               :visualSizeModifier="visualSizeModifier.value"
             />
