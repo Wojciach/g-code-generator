@@ -6,3 +6,11 @@ export const wallColors = {
   front: 'oklch(0.457 0.24 277.023)',
   back: 'oklch(0.511 0.096 186.391)'
 }
+// export const wallColors = {
+//   top: '#0400FA',
+//   bottom: '#FFFA00',
+//   left: '#00FDFF',
+//   right: '#FE6F00',
+//   front: '#01F51A',
+//   back: 'oklch(0.511 0.096 186.391)'
+// }

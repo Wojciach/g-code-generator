@@ -1,8 +1,9 @@
 <template>
-    <div class="flex flex-col justify-center items-center bg-red-200 " id='downloadSVG'>
-      <div class="relative flex flex-wrap justify-center items-center p-5 gap-4 bg-blue-400 ">
+    <div class="flex flex-col justify-center items-center transparent " id='downloadSVG'>
+      <div class="relative flex flex-wrap justify-center items-center p-5 gap-4 transparent ">
         <MySVG
           customID="frontAndBackWall"
+          :color="'lightblue'"
           :showCircles="false"
           :versionForDownload="true"
           :width="width"
@@ -13,6 +14,7 @@
         />
         <MySVG
           customID="leftAndRighWall"
+          :color="'lightblue'"
           :showCircles="false"
           :versionForDownload="true"
           :width="height"
@@ -23,6 +25,7 @@
         />
         <MySVG
           customID="topWall"
+          :color="'lightblue'"
           :showCircles="true"
           :versionForDownload="true"
           :width="width"
@@ -33,6 +36,7 @@
         />
         <MySVG
           customID="bottomWall"
+          :color="'lightblue'"
           :showCircles="throughHoles"
           :versionForDownload="true"
           :width="width"
@@ -42,7 +46,11 @@
           :materialThickness="materialThickness"
         />
       </div>
-      <button class="btn" @click="handleClick">Download SVG</button>
+      <div class="flex flex-row flex-wrap justify-center items-center gap-4 transparent mb-4">
+        <button class="btn" @click="handleClick">Download SVG</button>
+        <DownloadDXF />
+        <DownloadG_CODE v-if="true"  />
+      </div>
     </div>
     
 </template>
@@ -56,7 +64,10 @@
   const materialThickness = computed(() => injectedMaterialThickness.value);
 
   const injectedDimensions: any = inject('providedDimensions');
-  const {width, height, depth} = injectedDimensions;
+  const dims =  injectedDimensions;
+  const width = computed(() => dims.width);
+  const height = computed(()=>dims.height);
+  const depth = computed(() => dims.depth);
 
   // const injectedMatrix: any = inject('providedMatrix');
   // const matrix = injectedMatrix;
@@ -96,14 +107,11 @@ const handleClick = () => {
 <style>
 
 .btn {
-  @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition;
+  @apply px-6 py-3 border-2 border-blue-600 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition;
 }
 
-#topWall {
-  margin: 4px;
+#topWall *, #bottomWall *, #leftAndRighWall *, #frontAndBackWall * {
+  stroke-width: 1.2;
 }
 
-#topWall polyline {
-  stroke-width: 4;
-}
 </style>

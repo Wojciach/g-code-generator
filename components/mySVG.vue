@@ -10,7 +10,7 @@
   <!-- :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))" -->
     <svg
       :id="customID"
-      :viewBox="'0 0 ' + (width + (materialThickness * 2)) + ' ' + (height + (materialThickness * 2))"
+      :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))"
       xmlns="http://www.w3.org/2000/svg"
       class="w-full h-full"
       :style="{ backgroundColor: bgColor}"
@@ -37,7 +37,7 @@
           :height="materialThickness" 
           :fill="topRectColor" 
           stroke="black" 
-          stroke-width="0.12" 
+          stroke-width="0.12"
       />
       <!-- BOTTOM Rectangle -->
       <rect
@@ -78,7 +78,7 @@
         :fill="color" 
         stroke="black" 
         stroke-width="0.12" 
-      />  
+      />
       <!-- Circles -->
       <circle
         v-if="(showCircles)"
@@ -87,11 +87,10 @@
         :cx="(n[0] + materialThickness)"
         :cy="(n[1] + materialThickness)" 
         :r="matrix.diameter / 2" 
-        :fill="versionForDownload ? 'none' : 'black'"
+        :fill="versionForDownload ? 'white' : 'black'"
         stroke="black"
         stroke-width="0.12"
       />
-
     </svg>
   </div>
 </template>
@@ -127,6 +126,7 @@
   const leftRectColor = props.colorLeftRect ?? 'blue';
 // const c_id = props.customID ?? 'svg_id';
   const showThis = props.versionForDownload ? false : true;
+  const modifyViewBoX = showThis ? 0 : 10;
 
   const injectedMatrix: any = inject('providedMatrix');
   const matrix = injectedMatrix;

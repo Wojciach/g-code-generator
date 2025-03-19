@@ -27,41 +27,38 @@
       <section class="flex flex-col justify-center items-center flex-grow">
           <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full">
             <NewVisualisation3d
-                v-show="selectedView === '3D'"
-                class="z-20 flex m-0"
-                :matrix="matrixTopAndBottom"
-                :numberOfSteps="numberOfSteps"
-                :materialThickness="materialThickness.value"
-                :dimensions="dimensions"
-                :polygons="polygons"
-                :padding="50"
-                showInfo="height"
-                :showScaleButton="false"
-                :visualSizeModifier="visualSizeModifier.value"
-              />
-              <Representation_2D
-                v-show="selectedView === '2D'"
-                class="m-0 z-20"
-                :matrix="matrixTopAndBottom"
-                :dimensions="dimensions"
-                :polygons="polygons"
-                :materialThickness="materialThickness.value"
-                :visualSizeModifier="visualSizeModifier.value"
-                :throughHoles="throughHoles.value"
-              />
-              <DownloadSVG
-                class="z-20"
-                v-show="selectedView === 'Download'"
-              />
-              <Grid :gridFactor="(gridFactor * 5)" class="bg-red-900 z-10"/>
+              v-show="selectedView === '3D'"
+              class="z-20 flex m-0"
+              :matrix="matrixTopAndBottom"
+              :numberOfSteps="numberOfSteps"
+              :materialThickness="materialThickness.value"
+              :dimensions="dimensions"
+              :polygons="polygons"
+              :padding="50"
+              showInfo="height"
+              :showScaleButton="false"
+              :visualSizeModifier="visualSizeModifier.value"
+            />
+            <Representation_2D
+              v-show="selectedView === '2D'"
+              class="m-0 z-20"
+              :matrix="matrixTopAndBottom"
+              :dimensions="dimensions"
+              :polygons="polygons"
+              :materialThickness="materialThickness.value"
+              :visualSizeModifier="visualSizeModifier.value"
+              :throughHoles="throughHoles.value"
+            />
+            <DownloadSVG class="z-20" v-show="selectedView === 'Download'" />
+            <Grid :gridFactor="gridFactor" class="bg-red-900 z-10"/>
           </div>
           <div class="p-2 pb-4 flex flex-row w-full flex-wrap justify-center items-center bg-gray-300">
-            <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
             <VisualSizeModifier
-              class="flex flex-row flex-wrap justify-center items-center bg-gray-200 py-2"
+              class="flex flex-row flex-wrap justify-center items-center bg-gray-200 p-2 px-4 rounded-2xl"
               @update:visualSizeModifier="updateVisualSizeModifier"
               :visualSizeModifier="visualSizeModifier.value"
             />
+            <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
           </div>
       </section>
     </article>
@@ -75,6 +72,7 @@ import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
 import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
+import DownloadSection from './components/DownloadSection.vue';
 
 const selectedView = ref('3D')
 
@@ -125,7 +123,7 @@ const formWidth2 = reactive({
 //   window.removeEventListener('resize', updateWidth2);
 // });
 
-const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 3, 10, 10, 10, 10, 10));
+const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 5, 10, 10, 10, 10, 10));
 provide('providedMatrix', matrixTopAndBottom);
 
 const visualSizeModifier = reactive({
@@ -139,7 +137,7 @@ const throughHoles = reactive({
 provide('providedThroughHoles', throughHoles);
 
 const gridFactor = computed(() => {
-  return visualSizeModifier.value  * 10;
+  return visualSizeModifier.value  * 50;
 });
  
 const dimensions = reactive<Dimensions>({
@@ -179,7 +177,6 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
 const polygons = computed(() => {
   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
 });
-
 provide('providedPolygons', polygons);
 
 const updateVisualSizeModifier = (value) => {

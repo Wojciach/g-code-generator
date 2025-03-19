@@ -13,3 +13,9 @@ export type Polygons = {
   frontAndBack: string;
   leftAndRight: string;
 }
+
+export type Coordinates = {
+  x: number;
+  y: number;
+  z?: number;
+};

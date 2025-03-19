@@ -2,9 +2,9 @@
       <div class="flex flex-row space-x-4 items-center">
         <h2>Current dimensions:</h2>
         <div>Width: <b>{{ dimensions.width + (materialThickness * 2)}} mm</b></div>
-        <div>Depth: <b>{{ dimensions.depth }} mm</b></div>
-        <div>Height: <b>{{ dimensions.height }} mm</b></div>
-        <div class="bg-red-400">WINDOW WIDTH: {{ widthInfo.value }}</div>
+        <div>Depth: <b>{{ dimensions.depth + (materialThickness * 2)}} mm</b></div>
+        <div>Height: <b>{{ dimensions.height + (materialThickness * 2)}} mm</b></div>
+        <!-- <div class="bg-red-400">WINDOW WIDTH: {{ widthInfo.value }}</div> -->
       </div>
 </template>
 

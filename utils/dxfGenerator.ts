@@ -1,6 +1,7 @@
 import type { MatrixOfHoles } from "./matrixOfHoles";
+import type { Coordinates } from "./types";
 
-export function generateDXF(props: MatrixOfHoles): string {
+export function generateDXF(polygonCoordinates: Coordinates[], matrix?: MatrixOfHoles): string {
   // Generate DXF content
   let dxfContent = `
 0
@@ -52,69 +53,47 @@ POLYLINE
 66
 1
 70
-1
+1`;
+polygonCoordinates.forEach(vertex => {
+    dxfContent += `
 0
 VERTEX
 8
 0
 10
-0.0
+${vertex.x}
 20
-0.0
-0
-VERTEX
-8
-0
-10
-${props.width}
-20
-0.0
-0
-VERTEX
-8
-0
-10
-${props.width}
-20
-${props.height}
-0
-VERTEX
-8
-0
-10
-0.0
-20
-${props.height}
-0
-VERTEX
-8
-0
-10
-0.0
-20
-0.0
+${vertex.y}
+30
+${vertex.z || 0.0}
+`;
+  });
+
+dxfContent += `
 0
 SEQEND
 0
 `;
 
   // Add circles
-  props.xyPositions.forEach(hole => {
+  if(matrix) {
+  matrix.xyPositions.forEach(hole => {
     dxfContent += `
-0
-CIRCLE
-8
-0
-10
-${hole[0]}
-20
-${hole[1]}
-30
-0.0
-40
-${props.diameter / 2}
-`;
-  });
+      0
+      CIRCLE
+      8
+      0
+      10
+      ${hole[0]}
+      20
+      ${hole[1]}
+      30
+      0.0
+      40
+      ${matrix.diameter / 2}
+      `;
+        });
+}
 
   dxfContent += `
 0
