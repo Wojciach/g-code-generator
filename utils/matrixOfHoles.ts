@@ -14,8 +14,6 @@ export class MatrixOfHoles {
 
     constructor(holes: number, rows: number, diameter: number, xSpacing: number, ySpacing: number, xMargin: number, yMargin: number) {
         this.initialize(holes, rows, diameter, xSpacing, ySpacing, xMargin, yMargin);
-        console.log('constructor ran');
-        console.log(this.xPositions);
     }
   
     public initialize(holes: number, rows: number, diameter: number, xSpacing: number, ySpacing: number, xMargin: number, yMargin: number) {
@@ -56,10 +54,5 @@ export class MatrixOfHoles {
 
     public reCalculate(holes: number, rows: number, diameter: number, xSpacing: number, ySpacing: number, xMargin: number, yMargin: number) {
         this.initialize(holes, rows, diameter, xSpacing, ySpacing, xMargin, yMargin);
-        console.log('recalculate ran!');
-        console.log(this.yPositions);
-        console.log('that was Y positions');
-        console.log(this.xPositions);
-        console.log('that was X positions');
     }
 }

@@ -49,7 +49,7 @@
       <div class="flex flex-row flex-wrap justify-center items-center gap-4 transparent mb-4">
         <button class="btn" @click="handleClick">Download SVG</button>
         <DownloadDXF />
-        <DownloadG_CODE v-if="true"  />
+        <DownloadG_CODE v-if="false" />
       </div>
     </div>
     

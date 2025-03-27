@@ -1,5 +1,5 @@
 <template>
-  <main ref="main" class="flex flex-col justify-center" :style="{backgroundColor: colors.mainBg}">
+  <main ref="main" class="flex flex-col justify-center h-full w-fit-content bg-red-500" :style="{backgroundColor: colors.mainBg}">
     <article ref="info" class="flex justify-center p-4">
       <Info
         :materialThickness="materialThickness.value"
@@ -7,11 +7,10 @@
         :formWidth="formWidth"
         :matrixTopAndBottom="matrixTopAndBottom"
       />
-      <DownloadButtons v-if="false" :polygons="polygons" />
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
     <article class="flex landscape:flex-row portrait:flex-col-reverse h-fit-content">
-      <section class="flex landscape:w-fit-content">
+      <section class="flex landscape:w-fit-content ">
         <TheForm
           @update:visualSizeModifier="updateVisualSizeModifier"
           @update:throughHoles="updateThroughHoles"
@@ -24,7 +23,7 @@
           :v-model="myNumber"
         />
       </section>
-      <section class="flex flex-col justify-center items-center flex-grow">
+      <section class="flex flex-col justify-center items-center flex-grow w-full">
           <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full">
             <NewVisualisation3d
               v-show="selectedView === '3D'"
@@ -52,13 +51,24 @@
             <DownloadSVG class="z-20" v-show="selectedView === 'Download'" />
             <Grid :gridFactor="gridFactor" class="bg-red-900 z-10"/>
           </div>
-          <div class="p-2 pb-4 flex flex-row w-full flex-wrap justify-center items-center bg-gray-300">
+          <div class="p-2 pb-4 flex flex-col w-full  justify-center items-center bg-gray-300">
             <VisualSizeModifier
               class="flex flex-row flex-wrap justify-center items-center bg-gray-200 p-2 px-4 rounded-2xl"
               @update:visualSizeModifier="updateVisualSizeModifier"
               :visualSizeModifier="visualSizeModifier.value"
             />
             <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
+              <AlternativeForm
+              @update:visualSizeModifier="updateVisualSizeModifier"
+              @update:throughHoles="updateThroughHoles"
+              :matrixTopAndBottom="matrixTopAndBottom"
+              :numberOfSteps="numberOfSteps"
+              :materialThickness="materialThickness"
+              :visualSizeModifier="visualSizeModifier"
+              :dimensions="dimensions"
+              class="flex flex-row flex-grow items-center justify-center mt-2 mb-5 mx-5 portrait:mx-20"
+              :v-model="myNumber"
+            />
           </div>
       </section>
     </article>
@@ -83,45 +93,9 @@ const formRef = ref(null);
 const formWidth = ref(0);
 const myNumber = ref(true);
 
-// onMounted(() => {
-//   if (formRef.value) {
-//     const rect = formRef.value.getBoundingClientRect();
-//     formWidth.value = rect.width;
-//   }
-// });
-
-// onMounted(() => {
-//   if (info.value) {
-//     const infoDetails = info.value.getBoundingClientRect();
-//     infoHeight.value = infoDetails.height;
-//     updatePadding();
-//   }
-// });
-
 const formWidth2 = reactive({
   value: typeof window !== 'undefined' ? window.innerWidth : 0
 });
-
-
-// const updateWidth2 = () => {
-//   formWidth2.value = window.innerWidth;
-// };
-
-// const updatePadding = () => {
-//   if(main.value) {
-//     main.value.style.paddingTop = infoHeight.value + 'px';
-//   }
-  
-// };
-
-// onMounted(() => {
-//   window.addEventListener('resize', updateWidth2);
-//   window.addEventListener('resize', updatePadding)
-// });
-
-// onBeforeUnmount(() => {
-//   window.removeEventListener('resize', updateWidth2);
-// });
 
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 5, 10, 10, 10, 10, 10));
 provide('providedMatrix', matrixTopAndBottom);

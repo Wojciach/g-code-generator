@@ -8,10 +8,16 @@
 <script lang="ts" setup>
 import type { Coordinates } from '@/utils/types';
 import { generateDXF } from '../utils/dxfGenerator';
-import type { MatrixOfHoles } from '@/utils/matrixOfHoles'; 
+import { MatrixOfHoles } from '@/utils/matrixOfHoles'; 
 
 const injectedMatrix = inject('providedMatrix');
 const matrix = computed(() => injectedMatrix);
+
+const injectedThroughHoles = inject('providedThroughHoles');
+const throughHoles = computed(() => injectedThroughHoles);
+
+const injectedMaterialThickness = inject('providedMaterialThickness');
+const materialThickness = computed(() => injectedMaterialThickness);
 
 const injectedComputedPolygons: any = inject('providedPolygons');
 const polygonPoints = computed(() => injectedComputedPolygons.value);
@@ -20,16 +26,22 @@ console.log('polygons', polygonPoints.value.topAndBottom);
 
 const singlePolygonCoordinatesForDXFCreation = (stringPolygon: string) => {
   const array = stringPolygon.trim().split(" ");
-  const coordinates = array.map((pair: string) => {
+  const coordinates = array.map((pair) => {
     const [x, y] = pair.split(",").map(Number);
     return { x, y };
   });
   return coordinates;
 }
 
-const downloadDXF = (arrayOfCords: Coordinates[], fileName: string) => {
-
-    const dxfContent = generateDXF(arrayOfCords, matrix.value?);
+const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles: boolean) => {
+    console.log(materialThickness.value.value)
+    var dxfContent;
+    if (throughHoles) {
+       dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number, matrix.value as MatrixOfHoles);
+    } else {
+      dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number);
+    }
+    
   if (dxfContent) {
     const blob = new Blob([dxfContent], { type: "application/dxf" });
     const a = document.createElement("a");
@@ -41,10 +53,10 @@ const downloadDXF = (arrayOfCords: Coordinates[], fileName: string) => {
 };
 
 const handleClick = () => {
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.frontAndBack), 'frontAndBackWall.dxf');
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.leftAndRight), 'leftAndRighWall.dxf');
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'topWall.dxf');
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'bottomWall.dxf');
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.frontAndBack), 'frontAndBackWall.dxf', false);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.leftAndRight), 'leftAndRighWall.dxf', false);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'topWall.dxf', true);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'bottomWall.dxf', throughHoles.value.value);
 }
 
 </script>
