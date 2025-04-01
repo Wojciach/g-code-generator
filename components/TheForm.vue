@@ -79,6 +79,7 @@
               displayName="Wall thickness"
               shortName="materialThickness"
               placeholder="Material thickness?"
+              :step="0.05"
           />
         </fieldset>
         <fieldset class="fieldSetStyleClass bg-slate-500 border-gray-900">
@@ -108,28 +109,18 @@
             placeholder="How many vertical steps in Z axis?"
           />
         </fieldset>
-        <!-- Visual Size Modifier -->
-        <!-- <div>
-          <label for="visualSizeModifier">Scale: {{ Math.round(visualSizeModifier.value * 6.36 )}}</label>
-          <input
-            id="visualSizeModifier"
-            type="range"
-            :value="visualSizeModifier.value"
-            @input="$emit('update:visualSizeModifier', Number($event.target.value))"
-            :min="0.1"
-            :max="3"
-            :step="0.1"
-          />
-        </div> -->
-        <div class="flex items-center">
-          <input
-            @input="$emit('update:throughHoles', $event.target.checked)"
-            id="checkbox"
-            type="checkbox"
-            class="form-checkbox h-8 w-8 text-blue-600"
-          />
-          <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
-      </div>
+        <div class="flex flex-row justify-between items-center">
+          <div class="flex items-center">
+            <input
+              @input="$emit('update:throughHoles', $event.target.checked)"
+              id="checkbox"
+              type="checkbox"
+              class="form-checkbox h-8 w-8 text-blue-600"
+            />
+            <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
+            </div>
+            <FormChange changeTo="alternativeForm" class="right-0"/>
+        </div>
       </form>
   </div>
   
@@ -149,6 +140,7 @@ import HoleDiameter from './form_info_icons/HoleDiameter.vue';
 import StepsNumberWidth from './form_info_icons/StepsNumberWidth.vue';
 import StepsNumberHeight from './form_info_icons/StepsNumberHeight.vue';
 import StepsNumberDepth from './form_info_icons/StepsNumberDepth.vue';
+import FormChange from './form_info_icons/formChange.vue';
   
 const props = defineProps<{
     matrixTopAndBottom: MatrixOfHoles;
@@ -159,6 +151,9 @@ const props = defineProps<{
   }>();
 
 const emit = defineEmits(['update:visualSizeModifier', 'update:throughHoles']);
+
+
+
 
 </script>
 

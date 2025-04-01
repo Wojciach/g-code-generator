@@ -15,7 +15,8 @@
         :id="shortName"
         type="number"
         min="1"
-        class="w-11 h-8 mx-0.5 p-2 border border-gray-300 rounded-md text-center"
+        :step="step"
+        class="w-14 h-8 mx-0.5 p-2 border border-gray-300 rounded-md text-center"
         :placeholder="placeholder"
         required
       />
@@ -34,25 +35,31 @@
 // Dynamically import the component based on the iconComponent prop
 const asyncIconComponent = defineAsyncComponent(() => import(`@/components/form_info_icons/${props.iconComponent}.vue`));
 
-const props = defineProps<{
+const props = withDefaults(
+  defineProps<{
     displayName: string;
     shortName: string;
     placeholder: string;
     iconComponent: any;
     modelValue: number | string;
-  }>();
+    step: number;
+  }>(),
+  {
+    step: 1,
+  }
+);
 
 const emit = defineEmits(['update:modelValue']);
 
 const decrease = () => {
   let number = Number(props.modelValue);
   if (number > 1) {
-    emit('update:modelValue', number - 1);
+    emit('update:modelValue', number - props.step);
   }
 };
 const increase = () => {
   let number = Number(props.modelValue);
-    emit('update:modelValue', number + 1);
+    emit('update:modelValue', number + props.step);
 };
 
 
@@ -72,5 +79,9 @@ input[type="number"] {
 .buttonClass {
   background-color: transparent;
   @apply w-3 h-6;
+}
+
+label {
+  @apply min-w-24;
 }
 </style>

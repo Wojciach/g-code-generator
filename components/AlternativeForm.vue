@@ -1,14 +1,14 @@
 <template>
   <div class="p-0 w-full">
-    <form @submit.prevent="submitForm" class="flex flex-col w-full">
-      <section class="flex flex-row z-50">
+    <form @submit.prevent="submitForm" class="flex flex-col w-full min-w-fit">
+      <section class="relative flex flex-row z-50">
         <legend @click="setVisiblleTo('holes')" :class="['legendStyleClass bg-red-500 border-red-900', {'-mb-0.5': (visibleFieldSet.value === 'holes')}]"><button>Number of holes</button></legend>
         <legend @click="setVisiblleTo('holeSpacing')" :class="['legendStyleClass bg-blue-500 border-blue-900', {'-mb-0.5': (visibleFieldSet.value === 'holeSpacing')}]"><button>Spacing betweeen holes (mm)</button></legend>
         <legend @click="setVisiblleTo('margins')" :class="['legendStyleClass bg-green-600 border-green-900', {'-mb-0.5': (visibleFieldSet.value === 'margins')}]"><button>Side margins (mm)</button></legend>
         <legend @click="setVisiblleTo('otherVaribles')" :class="['legendStyleClass bg-purple-500 border-purple-900', {'-mb-0.5': (visibleFieldSet.value === 'otherVaribles')}]"><button>Other dimensions (mm)</button></legend>
         <legend @click="setVisiblleTo('steps')" :class="['legendStyleClass bg-gray-500 border-gray-900', {'-mb-0.5': (visibleFieldSet.value === 'steps')}]"><button>Number of notches</button></legend>
       </section>
-      <section class="flex flex-col w-full z-0">
+      <section class="relative flex flex-col w-full z-0">
         <fieldset v-if="visibleFieldSet.value === 'holes'" class="fieldSetStyleClass bg-red-500 border-red-900">
           <FormField
             class="formFieldStyleClass"
@@ -92,9 +92,10 @@
               displayName="Wall thickness"
               shortName="materialThickness"
               placeholder="Material thickness?"
+              :step="0.05"
           />
         </fieldset>
-        <fieldset v-if="visibleFieldSet.value === 'steps'" class="fieldSetStyleClass bg-gray-500 border-gray-900">
+        <fieldset v-if="visibleFieldSet.value === 'steps'" class="fieldSetStyleClass bg-gray-500 border-gray-900 rounded-tr-none">
           <!-- Number of horizontal steps/notches -->
           <FormField
 					  class="formFieldStyleClass"
@@ -123,15 +124,18 @@
             placeholder="How many vertical steps in Z axis?"
           />
         </fieldset>
-        <div class="flex items-center">
-          <input
-            @input="$emit('update:throughHoles', $event.target.checked)"
-            id="checkbox"
-            type="checkbox"
-            class="form-checkbox h-8 w-8 text-blue-600"
-          />
-          <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
-              </div>
+        <div class="flex flex-row justify-between items-center">
+          <div class="flex items-center">
+            <input
+              @input="$emit('update:throughHoles', $event.target.checked)"
+              id="checkbox"
+              type="checkbox"
+              class="form-checkbox h-8 w-8 text-blue-600"
+            />
+            <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
+          </div>
+          <FormChange changeTo="TheForm" class="size-10 absolute right-0 bottom-0 rotate-90 z-50" />
+        </div>
       </section>
     </form>
   </div>
@@ -180,7 +184,7 @@ const setVisiblleTo = (value: string) => {
   }
 
   fieldset {
-    @apply flex flex-row items-center justify-center border-2 rounded-md rounded-tl-none p-2 mb-2 w-full;
+    @apply flex landscape:flex-row portrait:flex-col items-center justify-center border-2 rounded-md rounded-t-none p-2 mb-2 w-full;
   }
 
   .formFieldStyleClass {

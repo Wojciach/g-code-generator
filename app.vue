@@ -10,8 +10,9 @@
     </article>
     <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
     <article class="flex landscape:flex-row portrait:flex-col-reverse h-fit-content">
-      <section class="flex landscape:w-fit-content ">
+      <section class="flex landscape:w-fit-content">
         <TheForm
+          v-show="(formType.value === 'TheForm')"
           @update:visualSizeModifier="updateVisualSizeModifier"
           @update:throughHoles="updateThroughHoles"
           :matrixTopAndBottom="matrixTopAndBottom"
@@ -24,7 +25,7 @@
         />
       </section>
       <section class="flex flex-col justify-center items-center flex-grow w-full">
-          <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full">
+          <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full min-h-[600px]">
             <NewVisualisation3d
               v-show="selectedView === '3D'"
               class="z-20 flex m-0"
@@ -59,6 +60,7 @@
             />
             <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
               <AlternativeForm
+              v-show="(formType.value === 'alternativeForm')"
               @update:visualSizeModifier="updateVisualSizeModifier"
               @update:throughHoles="updateThroughHoles"
               :matrixTopAndBottom="matrixTopAndBottom"
@@ -85,6 +87,11 @@ import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
 import DownloadSection from './components/DownloadSection.vue';
 
 const selectedView = ref('3D')
+const formType = reactive({value: 'TheForm'});
+const changeFormType = (type: string) => {
+  formType.value = type;
+};
+provide('changeFormType', changeFormType);
 
 const main = ref(null);
 const info = ref(null);
