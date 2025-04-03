@@ -4,7 +4,7 @@ export class StepsGeneratorStatic {
   public static goRightXplusYzero = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number, materialThickness: number): string => {
     let result = '';
 
-    // Move down by material thickness
+    // Move up by material thickness
     currentPosition.y -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
@@ -12,7 +12,7 @@ export class StepsGeneratorStatic {
     currentPosition.x += stepSizeHorizontal;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move up by material thickness
+    // Move down by material thickness
     currentPosition.y += materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
@@ -48,19 +48,19 @@ export class StepsGeneratorStatic {
   public static goLeftXminusYzero = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number, materialThickness: number): string => {
     let result = '';
 
-    // Move right by material thickness
+    // Move down by material thickness
     currentPosition.y += materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move down by step size
+    // Move left by step size
     currentPosition.x -= stepSizeHorizontal;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move left by material thickness
+    // Move up by material thickness
     currentPosition.y -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move down by step size
+    // Move left by step size
     currentPosition.x -= stepSizeHorizontal;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
@@ -96,7 +96,7 @@ export class StepsGeneratorStatic {
     currentPosition.x -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move up by step size
+    // Move up by material thickness
     currentPosition.y -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
@@ -119,10 +119,11 @@ export class StepsGeneratorStatic {
     return result;
   }
 
+  //this spuposed to be called XplusYplus because it is moving down and SVG Y axis is pointing down
   public static makeCornerXplusYminus = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number, materialThickness: number): string => {
     let result = '';
 
-    // Move top by material thickness
+    // Move up by material thickness
     currentPosition.y -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
@@ -168,7 +169,7 @@ export class StepsGeneratorStatic {
     currentPosition.x -= stepSizeHorizontal;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move top by material thickness 
+    // Move up by material thickness 
     currentPosition.y -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 

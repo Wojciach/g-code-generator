@@ -42,7 +42,7 @@ const props = withDefaults(
     placeholder: string;
     iconComponent: any;
     modelValue: number | string;
-    step: number;
+    step?: number;
   }>(),
   {
     step: 1,
