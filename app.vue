@@ -33,7 +33,7 @@
               :numberOfSteps="numberOfSteps"
               :materialThickness="materialThickness.value"
               :dimensions="dimensions"
-              :polygons="polygons"
+              :polygons="{top: polygons.top, front: polygons.frontAndBack, right: polygons.leftAndRight}"
               :padding="50"
               showInfo="height"
               :showScaleButton="false"
@@ -82,6 +82,7 @@ import type { Dimensions } from '@/utils/types';
 import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
+import { usePolygonsForOpenTop } from '@/utils/composables/usePolygonsForOpenTop';
 import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
 import DownloadSection from './components/DownloadSection.vue';
@@ -137,7 +138,6 @@ const numberOfSteps = reactive<Dimensions>({
 const materialThickness = reactive({
   value: 10
 });
-
 provide('providedMaterialThickness', materialThickness);
 
 const stepSizes = computed(() => {
@@ -156,8 +156,11 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
 }, { deep: true });
 
 const polygons = computed(() => {
-  return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
+  return usePolygonsForOpenTop(numberOfSteps, stepSizes.value, materialThickness.value);
 });
+// const polygons = computed(() => {
+//   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
+// });
 provide('providedPolygons', polygons);
 
 const updateVisualSizeModifier = (value) => {

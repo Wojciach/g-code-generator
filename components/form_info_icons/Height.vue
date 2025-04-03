@@ -7,7 +7,7 @@
             :materialThickness="materialThickness"
             :visualSizeModifier="5"
             :dimensions="dimensions"
-            :polygons="polygons"
+            :polygons="{top: polygons.topAndBottom, front: polygons.frontAndBack, right: polygons.leftAndRight}"
             :padding="1"
             :showScaleButton="false"
       />
@@ -23,6 +23,7 @@ import { usePolygons } from '~/utils/composables/usePolygons';
 import DashedLinesAndArrow from './DashedLinesAndArrow.vue';
 import { colors } from '@/utils/colors';
 
+//these are mock values for icon generation purpose only
 const materialThickness = 0;
 const dimensions = {width: 5, height: 5, depth: 5}
 const numberOfSteps = {width: 2, height: 2, depth: 1};
@@ -34,9 +35,11 @@ const stepSizes = computed(()=> {
     depth: (dimensions.depth / numberOfSteps.depth) /2
   }});
 
+// polygosn created by mock values for icon generation purpose only (see above for mock values)
 const polygons = computed(() => {
   return usePolygons(numberOfSteps, stepSizes.value, materialThickness);
 });
+
 
 </script>
 
