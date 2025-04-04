@@ -55,8 +55,8 @@ const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles
 const handleClick = () => {
   downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.frontAndBack), 'frontAndBackWall.dxf', false);
   downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.leftAndRight), 'leftAndRighWall.dxf', false);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'topWall.dxf', true);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.topAndBottom), 'bottomWall.dxf', throughHoles.value.value);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.top), 'topWall.dxf', true);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.bottom), 'bottomWall.dxf', throughHoles.value.value);
 }
 
 </script>

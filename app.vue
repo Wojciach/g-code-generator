@@ -44,7 +44,7 @@
               class="m-0 z-20"
               :matrix="matrixTopAndBottom"
               :dimensions="dimensions"
-              :polygons="polygons"
+              :polygons="{top: polygons.top, bottom: polygons.bottom, front: polygons.frontAndBack, back: polygons.frontAndBack, left: polygons.leftAndRight, right: polygons.leftAndRight}"
               :materialThickness="materialThickness.value"
               :visualSizeModifier="visualSizeModifier.value"
               :throughHoles="throughHoles.value"

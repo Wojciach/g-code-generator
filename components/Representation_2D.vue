@@ -4,7 +4,7 @@
           <MySVG
               class="border-2 border-black"
               :matrix="matrix"
-              :polygonPoints="polygons.topAndBottom"
+              :polygonPoints="polygons.bottom"
               :showCircles="throughHoles"
               :width="dimensions.width"
               :height="dimensions.depth"
@@ -23,7 +23,7 @@
             <MySVG
               class="border-2 border-black border-r-0"
               :matrix="matrix"
-              :polygonPoints="polygons.leftAndRight"
+              :polygonPoints="polygons.left"
               :showCircles="false"
               :width="dimensions.height"
               :height="dimensions.depth"
@@ -41,7 +41,7 @@
             <MySVG
               class="border-2 border-black border-y-0"
               :matrix="matrix"
-              :polygonPoints="polygons.frontAndBack"
+              :polygonPoints="polygons.back"
               :showCircles="false"
               :width="dimensions.width"
               :height="dimensions.height"
@@ -58,7 +58,7 @@
               class="border-2 border-black"
               customID="center_center_svg"
               :matrix="matrix"
-              :polygonPoints="polygons.topAndBottom"
+              :polygonPoints="polygons.top"
               :showCircles="true"
               :width="dimensions.width"
               :height="dimensions.depth"
@@ -74,7 +74,7 @@
             <MySVG
               class="border-2 border-black border-t-0"
               :matrix="matrix"
-              :polygonPoints="polygons.frontAndBack"
+              :polygonPoints="polygons.front"
               :showCircles="false"
               :width="dimensions.width"
               :height="dimensions.height"
@@ -92,7 +92,7 @@
             <MySVG
               class="border-2 border-black border-l-0"
               :matrix="matrix"
-              :polygonPoints="polygons.leftAndRight"
+              :polygonPoints="polygons.right"
               :showCircles="false"
               :width="dimensions.height"
               :height="dimensions.depth"

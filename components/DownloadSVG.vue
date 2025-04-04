@@ -30,7 +30,7 @@
           :versionForDownload="true"
           :width="width"
           :height="depth"
-          :polygonPoints="polygonPoints.topAndBottom"
+          :polygonPoints="polygonPoints.top"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
@@ -41,7 +41,7 @@
           :versionForDownload="true"
           :width="width"
           :height="depth"
-          :polygonPoints="polygonPoints.topAndBottom"
+          :polygonPoints="polygonPoints.bottom"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
