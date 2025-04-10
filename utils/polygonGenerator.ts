@@ -62,6 +62,7 @@ export class polygonGenerator {
         materialThickness:number,
     ):string => {
         let points = '';
+
         const currentPosition = { x: materialThickness, y: materialThickness };
       
         points += `${currentPosition.x},${currentPosition.y} `;
@@ -81,7 +82,7 @@ export class polygonGenerator {
           points += `${StepsGeneratorStatic.goLeftXminusYzero(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
         }
       
-        points +=`${StepsGeneratorStatic.makeCornerXminusYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
+        points +=`${StepsGeneratorStatic.makeCornerXminusYminus(currentPosition, stepSize.vertical, materialThickness)}`;
         for(let i = 0; i < (numberOfSteps.vertical -1); i++) {
           points += `${StepsGeneratorStatic.goUpXzeroYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
         }

@@ -7,7 +7,7 @@
             :materialThickness="materialThickness"
             :visualSizeModifier="5"
             :dimensions="dimensions"
-            :polygons="{top: polygons.topAndBottom, front: polygons.frontAndBack, right: polygons.leftAndRight}"
+            :polygons="{top: polygons.top, front: polygons.front, right: polygons.left}"
             :padding="1"
             :showScaleButton="false"
       />

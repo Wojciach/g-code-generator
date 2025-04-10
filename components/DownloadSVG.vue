@@ -8,7 +8,7 @@
           :versionForDownload="true"
           :width="width"
           :height="height"
-          :polygonPoints="polygonPoints.frontAndBack"
+          :polygonPoints="polygonPoints.front"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
@@ -19,11 +19,13 @@
           :versionForDownload="true"
           :width="height"
           :height="depth"
-          :polygonPoints="polygonPoints.leftAndRight"
+          :polygonPoints="polygonPoints.left"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
+          :class="{'-rotate-90': boxTypeValue === 'openTop'}"
         />
         <MySVG
+          v-if="boxTypeValue !== 'openTop'" 
           customID="topWall"
           :color="'lightblue'"
           :showCircles="true"
@@ -57,6 +59,9 @@
 
 <script lang="ts" setup>
 
+  const injectedBoxType: any = inject('providedBoxType');
+  const boxTypeValue = computed(() => injectedBoxType.value);
+
   const injectedComputedPolygons: any = inject('providedPolygons');
   const polygonPoints = computed(() => injectedComputedPolygons.value);
 
@@ -66,7 +71,7 @@
   const injectedDimensions: any = inject('providedDimensions');
   const dims =  injectedDimensions;
   const width = computed(() => dims.width);
-  const height = computed(()=>dims.height);
+  const height = computed(() => dims.height);
   const depth = computed(() => dims.depth);
 
   // const injectedMatrix: any = inject('providedMatrix');
@@ -98,7 +103,9 @@
 const handleClick = () => {
   downloadSVG('frontAndBackWall', 'frontAndBackWall.svg');
   downloadSVG('leftAndRighWall', 'leftAndRighWall.svg');
-  downloadSVG('topWall', 'topWall.svg');
+  if (boxTypeValue.value !== 'openTop') {
+    downloadSVG('topWall', 'topWall.svg');
+  }
   downloadSVG('bottomWall', 'bottomWall.svg');
 };
 

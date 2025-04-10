@@ -21,6 +21,8 @@
       <div class="relative w-full h-full bg-red-400">
         <!-- TOP -->
         <MySVG
+          :view3D = "true"
+          customID="top_wall_svg"
           class="absolute border-black border-1 border-b-0"
           :style="computedStyleTop"
           :matrix="matrix"
@@ -39,6 +41,8 @@
         />
         <!-- FRONT -->
         <MySVG
+          :view3D = "true"
+          customID="front_wall_svg"
           class="absolute border-black border-1 border-t-0"
           :style="computedStyleFront"
           :matrix="matrix"
@@ -71,6 +75,8 @@
         <!-- left is bottom  -->
         <!-- right is top  -->
         <MySVG
+          :view3D = "true"
+          customID="right_wall_svg"
           class="absolute border-black border-2 border-b-4"
           :style="computedStyleRight"
           :matrix="matrix"

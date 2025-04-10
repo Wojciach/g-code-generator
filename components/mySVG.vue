@@ -12,8 +12,8 @@
       :id="customID"
       :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))"
       xmlns="http://www.w3.org/2000/svg"
-      class="w-full h-full"
-      :style="{ backgroundColor: bgColor}"
+      :class="{'w-full h-full': true}"
+      :style="{ backgroundColor: wallColors.leftButDarker }"
       preserveAspectRatio="xMidYMid slice"
     >
     <!-- MAIN RECTANGLE -->
@@ -23,33 +23,32 @@
         :y="materialThickness" 
         :width="width" 
         :height="height"
-        fill="none" 
-        stroke="red"
-        stroke-width="0.02" 
-      />
+        :fill="view3D ? 'none' : wallColors.bottom"
+      /> 
+
+      <!-- MOCK BOX INSIDE -->
+      <rect
+        v-if="view3D === true"
+        :x="materialThickness /2"
+        :y="materialThickness"
+        :width="width"
+        :height="height"
+        stroke="black"
+        stroke-width="0.4"
+        :fill="wallColors.backButDarker"
+        transform="skewX(26.4)"
+      /> 
 
       <!-- TOP Rectangle -->
       <rect
-          v-if="showThis"
-          :x="materialThickness" 
-          :y="0" 
-          :width="width" 
-          :height="materialThickness" 
-          :fill="topRectColor" 
-          stroke="black" 
-          stroke-width="0.12"
+        v-if="showThis"
+        :x="materialThickness" 
+        :y="0" 
+        :width="false? width : (width + materialThickness)" 
+        :height="materialThickness" 
+        :fill="topRectColor" 
       />
-      <!-- BOTTOM Rectangle -->
-      <rect
-          v-if="showThis"
-          :x="materialThickness" 
-          :y="height + materialThickness" 
-          :width="width" 
-          :height="materialThickness" 
-          :fill="bottomRectColor" 
-          stroke="black" 
-          stroke-width="0.12" 
-      />
+
       <!-- RIGHT Rectangle -->
       <rect
           v-if="showThis"
@@ -58,30 +57,92 @@
           :width="materialThickness" 
           :height="height + (materialThickness * 2)" 
           :fill="rightRectColor" 
-          stroke="black" 
-          stroke-width="0.12" 
       />
+
       <!-- LEFT Rectangle -->
       <rect
-          v-if="showThis"
-          :x="0" 
-          :y="0" 
-          :width="materialThickness" 
-          :height="height + (materialThickness * 2)" 
-          :fill="leftRectColor" 
-          stroke="black" 
-          stroke-width="0.12" 
+        v-if="showThis"
+        :x="0" 
+        :y="0" 
+        :width="materialThickness" 
+        :height="height + (materialThickness * 2)" 
+        :fill="leftRectColor" 
       />
+
+      <!-- BOTTOM Rectangle -->
+      <rect
+        v-if="showThis"
+        :x="true? materialThickness : 0" 
+        :y="height + materialThickness" 
+        :width="true? width : (width + materialThickness)" 
+        :height="materialThickness" 
+        :fill="bottomRectColor" 
+      />
+
+      <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CORNERS <<<<<<<<<<<<<<<<<<<<< -->
+       
+      <!-- LEFT BOTTOM CORNER Rectangle -->
+      <rect
+        v-if="(showThis && (boxType.value === 'openTop') && (customID === 'top_wall_svg'))"
+        :x="0" 
+        :y="height + materialThickness" 
+        :width="materialThickness" 
+        :height="materialThickness" 
+        :fill="bottomRectColor" 
+      />
+
+      <!-- RIGHT BOTTOM CORNER Rectangle -->
+      <rect
+        v-if="(showThis && (boxType.value === 'openTop') && ((customID === 'left_wall_svg') || (customID === 'right_wall_svg')) )"
+        :x="width + materialThickness" 
+        :y="height + materialThickness" 
+        :width="materialThickness" 
+        :height="materialThickness" 
+        :fill="bottomRectColor" 
+      />
+
+      <!-- LEFT TOP CORNER Rectangle -->
+      <rect
+        v-if="(showThis && (boxType.value === 'openTop') && (customID === 'right_wall_svg'))"
+        :x="0" 
+        :y="0" 
+        :width="materialThickness" 
+        :height="materialThickness" 
+        :fill="topRectColor" 
+      />
+
+      <!-- RIGHT TOP CORNER Rectangle -->
+      <rect
+        v-if="(showThis && (boxType.value === 'openTop') && (customID === 'top_wall_svg'))"
+        :x="width + materialThickness" 
+        :y="0" 
+        :width="materialThickness" 
+        :height="materialThickness" 
+        :fill="topRectColor" 
+      />
+
+    <!-- MAIN RECTANGLE INSIDE STROKE -->
+    <rect
+        v-if="showThis && (customID === 'top_wall_svg') && (boxType.value === 'openTop')"
+        :x="materialThickness" 
+        :y="materialThickness"
+        :width="width" 
+        :height="height"
+        fill="none"
+        stroke="black"
+        stroke-width="0.5"
+      /> 
+
       <!-- Polygon -->
       <polyline
         :points="polygonPoints" 
         :fill="color" 
         stroke="black" 
-        stroke-width="0.12" 
+        stroke-width="0.32"
       />
       <!-- Circles -->
       <circle
-        v-if="(showCircles)"
+        v-if="showCircles"
         v-for="n in matrix.xyPositions"
         :key="`${n[0]}-${n[1]}`"
         :cx="(n[0] + materialThickness)"
@@ -96,6 +157,7 @@
 </template>
 
 <script lang="ts" setup>
+import { wallColors } from '@/utils/wallColors';
 
   const reff = ref<HTMLElement | null>(null);
 
@@ -103,6 +165,7 @@
     showCircles: boolean;
     matrix?: MatrixOfHoles;
     customID?: string;
+    view3D?: boolean;
     polygonPoints: string;
     width: number;
     height: number;
@@ -130,6 +193,9 @@
 
   const injectedMatrix: any = inject('providedMatrix');
   const matrix = injectedMatrix;
+
+  const injectedBoxType: any = inject('providedBoxType');
+  const boxType = injectedBoxType;
 
   const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
   const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));

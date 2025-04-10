@@ -33,7 +33,7 @@
               :numberOfSteps="numberOfSteps"
               :materialThickness="materialThickness.value"
               :dimensions="dimensions"
-              :polygons="{top: polygons.top, front: polygons.frontAndBack, right: polygons.leftAndRight}"
+              :polygons="{top: polygons.top, front: polygons.front, right: polygons.left}"
               :padding="50"
               showInfo="height"
               :showScaleButton="false"
@@ -44,7 +44,7 @@
               class="m-0 z-20"
               :matrix="matrixTopAndBottom"
               :dimensions="dimensions"
-              :polygons="{top: polygons.top, bottom: polygons.bottom, front: polygons.frontAndBack, back: polygons.frontAndBack, left: polygons.leftAndRight, right: polygons.leftAndRight}"
+              :polygons="{top: polygons.top, bottom: polygons.bottom, front: polygons.front, back: polygons.back, left: polygons.left, right: polygons.right}"
               :materialThickness="materialThickness.value"
               :visualSizeModifier="visualSizeModifier.value"
               :throughHoles="throughHoles.value"
@@ -85,7 +85,7 @@ import { usePolygons } from '@/utils/composables/usePolygons';
 import { usePolygonsForOpenTop } from '@/utils/composables/usePolygonsForOpenTop';
 import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
-import DownloadSection from './components/DownloadSection.vue';
+//import DownloadSection from './components/DownloadSection.vue';
 
 const selectedView = ref('3D')
 const formType = reactive({value: 'TheForm'});
@@ -96,14 +96,14 @@ provide('changeFormType', changeFormType);
 
 const main = ref(null);
 const info = ref(null);
-const infoHeight = ref(0);
-const formRef = ref(null);
+// const infoHeight = ref(0);
+// const formRef = ref(null);
 const formWidth = ref(0);
 const myNumber = ref(true);
 
-const formWidth2 = reactive({
-  value: typeof window !== 'undefined' ? window.innerWidth : 0
-});
+// const formWidth2 = reactive({
+//   value: typeof window !== 'undefined' ? window.innerWidth : 0
+// });
 
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 5, 10, 10, 10, 10, 10));
 provide('providedMatrix', matrixTopAndBottom);
@@ -155,8 +155,17 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
   dimensions.depth = matrixTopAndBottom.height;
 }, { deep: true });
 
+const boxType = reactive({
+  value: ''
+});
+provide('providedBoxType', boxType);
+
 const polygons = computed(() => {
-  return usePolygonsForOpenTop(numberOfSteps, stepSizes.value, materialThickness.value);
+  if (boxType.value === 'openTop') {
+    return usePolygonsForOpenTop(numberOfSteps, stepSizes.value, materialThickness.value);
+  } else {
+    return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
+  }
 });
 // const polygons = computed(() => {
 //   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);

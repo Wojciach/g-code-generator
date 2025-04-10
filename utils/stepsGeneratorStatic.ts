@@ -180,7 +180,7 @@ export class StepsGeneratorStatic {
     return result;
   }
 
-  public static makeCornerXminusYminus = (currentPosition: Position, stepSizeHorizontal: number, stepSizeVertical: number, materialThickness: number): string => {
+  public static makeCornerXminusYminus = (currentPosition: Position, stepSizeVertical: number, materialThickness: number): string => {
     let result = '';
 
     // Move down by material thickness

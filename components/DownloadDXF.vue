@@ -8,7 +8,10 @@
 <script lang="ts" setup>
 import type { Coordinates } from '@/utils/types';
 import { generateDXF } from '../utils/dxfGenerator';
-import { MatrixOfHoles } from '@/utils/matrixOfHoles'; 
+import { MatrixOfHoles } from '@/utils/matrixOfHoles';
+
+const injectedBoxType: any = inject('providedBoxType');
+const boxTypeValue = computed(() => injectedBoxType.value);
 
 const injectedMatrix = inject('providedMatrix');
 const matrix = computed(() => injectedMatrix);
@@ -42,20 +45,23 @@ const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles
       dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number);
     }
     
-  if (dxfContent) {
-    const blob = new Blob([dxfContent], { type: "application/dxf" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = fileName;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  }
+    if (dxfContent) {
+      const blob = new Blob([dxfContent], { type: "application/dxf" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
 };
 
 const handleClick = () => {
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.frontAndBack), 'frontAndBackWall.dxf', false);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.leftAndRight), 'leftAndRighWall.dxf', false);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.top), 'topWall.dxf', true);
+  console.log('handleClick', boxTypeValue);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.front), 'frontAndBackWall.dxf', false);
+  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.left), 'leftAndRighWall.dxf', false);
+  if (boxTypeValue.value !== 'openTop') {
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.top), 'topWall.dxf', true);
+  }
   downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.bottom), 'bottomWall.dxf', throughHoles.value.value);
 }
 

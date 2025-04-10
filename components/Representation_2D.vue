@@ -2,6 +2,7 @@
       <div v-if="true" class="relative flex flex-col items-center" :style="{width: 'fit-content', height: 'fit-content'}">
         <div>
           <MySVG
+              customID="bottom_wall_svg"
               class="border-2 border-black"
               :matrix="matrix"
               :polygonPoints="polygons.bottom"
@@ -21,6 +22,7 @@
           <div class="flex justify-end items-center" >
             <!-- LEFT -->
             <MySVG
+              customID="left_wall_svg"
               class="border-2 border-black border-r-0"
               :matrix="matrix"
               :polygonPoints="polygons.left"
@@ -33,12 +35,14 @@
               :colorBottomRect="wallColors.front"
               :colorLeftRect="wallColors.bottom"
               :viusaSizeModifier="scale.value"
-              :materialThickness="materialThickness" />
+              :materialThickness="materialThickness"
+            />
           </div>
           <!-- CENTER -->
           <div class="">
             <!-- CENTER TOP -->
             <MySVG
+              customID="back_wall_svg"
               class="border-2 border-black border-y-0"
               :matrix="matrix"
               :polygonPoints="polygons.back"
@@ -55,11 +59,11 @@
             />
             <!-- CENTER CENTER (MIDDLE) -->
             <MySVG
+              customID="top_wall_svg"
               class="border-2 border-black"
-              customID="center_center_svg"
               :matrix="matrix"
               :polygonPoints="polygons.top"
-              :showCircles="true"
+              :showCircles="(boxTypeValue === 'openTop') ? throughHoles : true"
               :width="dimensions.width"
               :height="dimensions.depth"
               :color="wallColors.top"
@@ -72,6 +76,7 @@
             />
             <!-- CENTER BOTTOM-->
             <MySVG
+              customID="front_wall_svg"
               class="border-2 border-black border-t-0"
               :matrix="matrix"
               :polygonPoints="polygons.front"
@@ -90,6 +95,7 @@
           <!-- RIGHT -->
           <div class="flex justify-start items-center">
             <MySVG
+              customID="right_wall_svg"
               class="border-2 border-black border-l-0"
               :matrix="matrix"
               :polygonPoints="polygons.right"
@@ -124,6 +130,9 @@ const props = defineProps<{
   visualSizeModifier: number,
   throughHoles: boolean
 }>()
+
+const boxType: any = inject('providedBoxType');
+const boxTypeValue = computed(() => boxType.value)
 
 watch(() => props.visualSizeModifier, (value) => {
   scale.value = value;
