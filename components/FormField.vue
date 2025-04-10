@@ -54,12 +54,14 @@ const emit = defineEmits(['update:modelValue']);
 const decrease = () => {
   let number = Number(props.modelValue);
   if (number > 1) {
-    emit('update:modelValue', number - props.step);
+    const result = number - props.step;
+    emit('update:modelValue', parseFloat(result.toFixed(2)));
   }
 };
 const increase = () => {
   let number = Number(props.modelValue);
-    emit('update:modelValue', number + props.step);
+    const result = number + props.step;
+    emit('update:modelValue', parseFloat(result.toFixed(2)));
 };
 
 

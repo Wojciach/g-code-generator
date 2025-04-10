@@ -13,7 +13,7 @@
       :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))"
       xmlns="http://www.w3.org/2000/svg"
       :class="{'w-full h-full': true}"
-      :style="{ backgroundColor: wallColors.leftButDarker }"
+      :style="{ backgroundColor: 'none' }"
       preserveAspectRatio="xMidYMid slice"
     >
     <!-- MAIN RECTANGLE -->
@@ -23,13 +23,13 @@
         :y="materialThickness" 
         :width="width" 
         :height="height"
-        :fill="view3D ? 'none' : wallColors.bottom"
+        :fill="view3D ? wallColors.leftButDarker : wallColors.bottom"
       /> 
 
       <!-- MOCK BOX INSIDE -->
       <rect
         v-if="view3D === true"
-        :x="materialThickness /2"
+        :x="materialThickness / 2"
         :y="materialThickness"
         :width="width"
         :height="height"

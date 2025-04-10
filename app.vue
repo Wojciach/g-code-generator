@@ -119,7 +119,7 @@ const throughHoles = reactive({
 provide('providedThroughHoles', throughHoles);
 
 const gridFactor = computed(() => {
-  return visualSizeModifier.value  * 50;
+  return visualSizeModifier.value * 50;
 });
  
 const dimensions = reactive<Dimensions>({

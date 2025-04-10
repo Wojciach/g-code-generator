@@ -27,7 +27,7 @@
           :style="computedStyleTop"
           :matrix="matrix"
           :polygonPoints="polygons.top"
-          :showCircles="true"
+          :showCircles="boxTypeValue === 'openTop' ? false : true"
           :width="dimensions.width"
           :height="dimensions.depth"
           :color="wallColors.top"
@@ -115,6 +115,9 @@ const props = defineProps<{
   showInfo?: string;
   showScaleButton?: boolean;
 }>();
+
+const boxType: any = inject('providedBoxType');
+const boxTypeValue = computed(() => boxType.value)
 
 const updateScale = (value) => {
   console.log('updateScale');

@@ -8,10 +8,8 @@
     >
       <option value="" disabled>Choose Box Type</option>
       <option value="openTop">Open top</option>
-      <option value="option2" selected>Option 2</option>
-      <option value="option3">Option 3</option>
+      <option value="holes" selected>Holes</option>
     </select>
-    {{ boxx.value }}
   </div>
 </template>
 
