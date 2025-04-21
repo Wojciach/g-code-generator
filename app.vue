@@ -1,6 +1,6 @@
 <template>
-  <main ref="main" class="flex flex-col justify-center h-full w-fit-content bg-red-500" :style="{backgroundColor: colors.mainBg}">
-    <article ref="info" class="flex justify-center p-4">
+  <main ref="appWindow" class="flex flex-col justify-center h-full w-full bg-red-500 min-w-min" :style="{backgroundColor: colors.mainBg}">
+    <article ref="info" class="flex justify-center p-4 w-full">
       <Info
         :materialThickness="materialThickness.value"
         :dimensions="dimensions"
@@ -8,9 +8,8 @@
         :matrixTopAndBottom="matrixTopAndBottom"
       />
     </article>
-    <!-- <article class="grid grid-cols-[auto,auto,auto] gap-0 justify-center w-fit-content bg-green-200"> -->
-    <article class="flex landscape:flex-row portrait:flex-col-reverse h-fit-content">
-      <section class="flex landscape:w-fit-content">
+    <article class="flex landscape:flex-row portrait:flex-col-reverse justify-center h-fit-content w-fit-content">
+      <section class="flex landscape:w-fit-content justify-center">
         <TheForm
           v-show="(formType.value === 'TheForm')"
           @update:visualSizeModifier="updateVisualSizeModifier"
@@ -24,53 +23,59 @@
           :v-model="myNumber"
         />
       </section>
-      <section class="flex flex-col justify-center items-center flex-grow w-full">
-          <div id="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full min-h-[600px]">
-            <NewVisualisation3d
-              v-show="selectedView === '3D'"
-              class="z-20 flex m-0"
-              :matrix="matrixTopAndBottom"
-              :numberOfSteps="numberOfSteps"
-              :materialThickness="materialThickness.value"
-              :dimensions="dimensions"
-              :polygons="{top: polygons.top, front: polygons.front, right: polygons.left}"
-              :padding="50"
-              showInfo="height"
-              :showScaleButton="false"
-              :visualSizeModifier="visualSizeModifier.value"
-            />
-            <Representation_2D
-              v-show="selectedView === '2D'"
-              class="m-0 z-20"
-              :matrix="matrixTopAndBottom"
-              :dimensions="dimensions"
-              :polygons="{top: polygons.top, bottom: polygons.bottom, front: polygons.front, back: polygons.back, left: polygons.left, right: polygons.right}"
-              :materialThickness="materialThickness.value"
-              :visualSizeModifier="visualSizeModifier.value"
-              :throughHoles="throughHoles.value"
-            />
-            <DownloadSVG class="z-20" v-show="selectedView === 'Download'" />
-            <Grid :gridFactor="gridFactor" class="bg-red-900 z-10"/>
+      <section ref="visualisationDisplaySection" class="flex flex-col justify-center items-center flex-grow w-full">
+          <div ref="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full min-h-[600px] bg-yellow-200">
+            <div ref="visualisationSizeContoler" class="relative flex w-fit h-fit bg-red-200">
+              <NewVisualisation3d
+                v-show="selectedView === '3D'"
+                class="z-20 flex m-0"
+                :matrix="matrixTopAndBottom"
+                :numberOfSteps="numberOfSteps"
+                :materialThickness="materialThickness.value"
+                :dimensions="dimensions"
+                :polygons="{top: polygons.top, front: polygons.front, right: polygons.left}"
+                :padding="50"
+                showInfo="height"
+                :showScaleButton="false"
+                :visualSizeModifier="visualSizeModifier.value"
+              />
+              <Representation_2D
+                v-show="selectedView === '2D'"
+                class="m-0 z-20"
+                :matrix="matrixTopAndBottom"
+                :dimensions="dimensions"
+                :polygons="{top: polygons.top, bottom: polygons.bottom, front: polygons.front, back: polygons.back, left: polygons.left, right: polygons.right}"
+                :materialThickness="materialThickness.value"
+                :visualSizeModifier="visualSizeModifier.value"
+                :throughHoles="throughHoles.value"
+              />
+              <DownloadSVG class="z-20" v-show="selectedView === 'Download'" />
+            </div>
+              <Grid :gridFactor="gridFactor" class="bg-red-900 z-10"/>
           </div>
           <div class="p-2 pb-4 flex flex-col w-full  justify-center items-center bg-gray-300">
             <VisualSizeModifier
               class="flex flex-row flex-wrap justify-center items-center bg-gray-200 p-2 px-4 rounded-2xl"
               @update:visualSizeModifier="updateVisualSizeModifier"
               :visualSizeModifier="visualSizeModifier.value"
+              :visualisationDisplaySection="visualisationDisplaySection"
+              :intercheangeableVisualisation="intercheangeableVisualisation"
+              :visualisationSizeContoler="visualisationSizeContoler"
+              :appWindow="appWindow"
             />
             <SelectViewButtons v-model="selectedView" class="flex flex-row flex-wrap justify-center items-center py-2" />
               <AlternativeForm
-              v-show="(formType.value === 'alternativeForm')"
-              @update:visualSizeModifier="updateVisualSizeModifier"
-              @update:throughHoles="updateThroughHoles"
-              :matrixTopAndBottom="matrixTopAndBottom"
-              :numberOfSteps="numberOfSteps"
-              :materialThickness="materialThickness"
-              :visualSizeModifier="visualSizeModifier"
-              :dimensions="dimensions"
-              class="flex flex-row flex-grow items-center justify-center mt-2 mb-5 mx-5 portrait:mx-20"
-              :v-model="myNumber"
-            />
+                v-show="(formType.value === 'alternativeForm')"
+                @update:visualSizeModifier="updateVisualSizeModifier"
+                @update:throughHoles="updateThroughHoles"
+                :matrixTopAndBottom="matrixTopAndBottom"
+                :numberOfSteps="numberOfSteps"
+                :materialThickness="materialThickness"
+                :visualSizeModifier="visualSizeModifier"
+                :dimensions="dimensions"
+                class="flex flex-row flex-grow items-center justify-center mt-2 mb-5 mx-5 portrait:mx-20"
+                :v-model="myNumber"
+              />
           </div>
       </section>
     </article>
@@ -87,6 +92,11 @@ import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
 //import DownloadSection from './components/DownloadSection.vue';
 
+const visualisationDisplaySection = ref(null);
+const intercheangeableVisualisation = ref(null);
+const visualisationSizeContoler = ref(null);
+const appWindow = ref(null);
+
 const selectedView = ref('3D')
 const formType = reactive({value: 'TheForm'});
 const changeFormType = (type: string) => {
@@ -94,16 +104,9 @@ const changeFormType = (type: string) => {
 };
 provide('changeFormType', changeFormType);
 
-const main = ref(null);
 const info = ref(null);
-// const infoHeight = ref(0);
-// const formRef = ref(null);
 const formWidth = ref(0);
 const myNumber = ref(true);
-
-// const formWidth2 = reactive({
-//   value: typeof window !== 'undefined' ? window.innerWidth : 0
-// });
 
 const matrixTopAndBottom = reactive(new MatrixOfHoles(8, 5, 10, 10, 10, 10, 10));
 provide('providedMatrix', matrixTopAndBottom);
@@ -167,9 +170,6 @@ const polygons = computed(() => {
     return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
   }
 });
-// const polygons = computed(() => {
-//   return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
-// });
 provide('providedPolygons', polygons);
 
 const updateVisualSizeModifier = (value) => {

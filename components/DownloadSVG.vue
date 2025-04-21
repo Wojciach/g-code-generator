@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col justify-center items-center transparent " id='downloadSVG'>
-      <div class="relative flex flex-wrap justify-center items-center p-5 gap-4 transparent ">
+    <div class="flex flex-col justify-center items-center transparent h-fit w-fit" id='downloadSVG'>
+      <div class="relative flex flex-wrap justify-center items-center p-4 gap-4 transparent h-fit w-fit">
         <MySVG
           customID="frontAndBackWall"
           :color="'lightblue'"

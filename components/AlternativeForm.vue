@@ -185,9 +185,9 @@ const setVisiblleTo = (value: string) => {
   }
 
   fieldset {
-    @apply flex landscape:flex-row portrait:flex-col items-center justify-center border-2 rounded-md rounded-t-none p-2 mb-2 w-full;
+    @apply flex flex-row flex-wrap items-center justify-center border-2 rounded-md rounded-t-none p-2 mb-2 w-full;
   }
-
+  /* landscape:flex-row portrait:flex-col */
   .formFieldStyleClass {
     @apply mx-6;
   }
