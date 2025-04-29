@@ -120,7 +120,6 @@
             <label for="checkbox" class="ml-2 text-gray-700">Through holes</label>
             <BoxTypeChange class="mx-4"/>
             </div>
-            
             <FormChange changeTo="alternativeForm" class="right-0"/>
         </div>
       </form>

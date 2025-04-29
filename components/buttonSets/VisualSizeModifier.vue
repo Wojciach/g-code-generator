@@ -26,6 +26,7 @@
 const props = defineProps<{
   visualSizeModifier: number,
   visualisationDisplaySection: any,
+  formSection: any,
   visualisationSizeContoler: any,
   intercheangeableVisualisation: any,
   appWindow: any
@@ -45,40 +46,64 @@ const dimensions = computed(() => injectedDimensions);
 const injectedVisualSizeModifier: any = inject('providedVisualSizeModifier');
 const visualSizeModifier = computed(() => injectedVisualSizeModifier);
 
+const injectedFormType: any = inject('providedFormType');
+const formType = computed(() => injectedFormType);
+
 function automaticResize() {
   console.log('automaticResize called');
+
+  const formSectionWidth: number = (window.innerWidth >= window.innerHeight)? props.formSection.getBoundingClientRect().width : 0;
+  const visualisationDisplaySection: number = props.visualisationDisplaySection.getBoundingClientRect().width;
+  const currentWindow: {width: number, height: number} = {width: window.innerWidth, height: window.innerHeight};
+
   const visualisationSizeContoler = props.visualisationSizeContoler.getBoundingClientRect();
   const visualisationSizeContolerPriority = Math.max(visualisationSizeContoler.width, visualisationSizeContoler.height);
-  const sizeControlerWidthOrHeight: string = visualisationSizeContolerPriority === visualisationSizeContoler.width ? 'width' : 'height';
+  const sizeControlerWidthOrHeight: 'width' | 'height' = visualisationSizeContolerPriority === visualisationSizeContoler.width ? 'width' : 'height';
+  const isFormNeeded: boolean = ((sizeControlerWidthOrHeight === 'height') || (formType.value.value === 'alternativeForm') ? false : true);
+  const potetnialFormSubtraction = isFormNeeded ? formSectionWidth : 0;
 
   const appWindow = props.appWindow.getBoundingClientRect();
   const appWindowPriority = Math.max(appWindow.width, appWindow.height);
-  const appWidthOrHeight: string = visualisationSizeContolerPriority === visualisationSizeContoler.width ? 'width' : 'height';
+  const appWidthOrHeight: 'width' | 'height' = visualisationSizeContolerPriority === visualisationSizeContoler.width ? 'width' : 'height';
 
   const intercheangeableVisualisation = props.intercheangeableVisualisation.getBoundingClientRect();
 
-  const windowPriotity = (window.innerWidth >= window.innerHeight) ? window.innerHeight : window.innerWidth;
+  const windowPriotity = ((window.innerWidth - potetnialFormSubtraction) >= window.innerHeight) ? window.innerWidth : window.innerHeight;
   const windowPriotityWidthOrHeight: string = windowPriotity === window.innerWidth ? 'width' : 'height';
-  
-  console.log('visualisationSizeContoler', visualisationSizeContoler.width);
-  console.log('intercheangeableVisualisation', intercheangeableVisualisation.width);
+  console.log('THW WINDOW IS: ' + ((windowPriotityWidthOrHeight === 'width')? 'HORIZONTAL' : 'VERTICAL'));
 
-  if (visualisationSizeContoler[windowPriotityWidthOrHeight] + 100 <= windowPriotity) {
-    console.log('condition for UPSIZE met');
+  //neet to change this condition
+  // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+  // console.log('SIZE CONTROLER PRIORITY: ' + sizeControlerWidthOrHeight)
+  // console.log('SIZE CONTROLER SIZE: ' + visualisationSizeContoler[sizeControlerWidthOrHeight])
+  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+  // console.log('WINDOW PRIORIT: ' + sizeControlerWidthOrHeight)
+  // console.log('WINDOW PRIORITY SIZE: ' + currentWindow[sizeControlerWidthOrHeight])
+  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+  // console.log('POTENTIAL FORM SUBTRACTION: ' + potetnialFormSubtraction)
+  // console.log('FORM WIDTH: ' + formSectionWidth)
+  // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+  if ((visualisationSizeContoler[sizeControlerWidthOrHeight] * 1.5) < (currentWindow[sizeControlerWidthOrHeight] - potetnialFormSubtraction)) {
+    // visualisationSizeContoler[windowPriotityWidthOrHeight] + 100 <= windowPriotity
+    // console.log('visualisation size contorler: ' + visualisationSizeContoler[sizeControlerWidthOrHeight])
+    // console.log('THE SUM: ' + (currentWindow[sizeControlerWidthOrHeight] - formSectionWidth))
+    // console.log('FORM WIDTH: ' + (formSectionWidth))
+    // console.log('condition for UPSIZE met');
     const continueTheLoop = automaticUpsize();
     if (continueTheLoop) {
       console.log('continue the loop');
-      setTimeout(() => { automaticResize(); }, 500);
-    } else{
+      setTimeout(() => { automaticResize(); }, 0);
+    } else {
       console.log('stop upsizing loop');
     }
-  } else if (visualisationSizeContoler[windowPriotityWidthOrHeight] - 100 >= windowPriotity) {
+  } else if ((visualisationSizeContoler[sizeControlerWidthOrHeight]) >= ((currentWindow[sizeControlerWidthOrHeight] - potetnialFormSubtraction))) {
+    //visualisationSizeContoler[windowPriotityWidthOrHeight] - 100 >= windowPriotity
     console.log('condition for DOWNSIZE met');
     const continueTheLoop = automaticDownsize();
     if (continueTheLoop) {
       console.log('continue the loop');
-      setTimeout(() => { automaticResize(); }, 500);
-    } else{
+      setTimeout(() => { automaticResize(); }, 0);
+    } else {
       console.log('stop downsizing loop');
     }
   } else {
@@ -91,13 +116,13 @@ function automaticResize() {
 function automaticDownsize() {
   console.log('automaticDownsize called');
   // Exit condition: Prevent going below minimum size
-  if (injectedVisualSizeModifier.value <= 0.4) {
+  if (injectedVisualSizeModifier.value <= 0.2) {
     console.log('Reached minimum size. Stopping downsizing.');
     injectedVisualSizeModifier.value = 0.1; // Clamp to minimum value
     return false; // Stop the recursion
   } else {
     console.log('Downsizing...');
-    injectedVisualSizeModifier.value -= 0.3;
+    injectedVisualSizeModifier.value -= 0.1;
     return true; // Continue the recursion
   }
 }
@@ -111,7 +136,7 @@ const automaticUpsize = () => {
     return false; // Stop the recursion
   } else {
     console.log('Upsizing...');
-    injectedVisualSizeModifier.value += 0.3;
+    injectedVisualSizeModifier.value += 0.1;
     return true; // Continue the recursion
   }
 };
@@ -126,17 +151,17 @@ const plusSize = () => {
     injectedVisualSizeModifier.value = 3; // Clamp to maximum value
     return; // Stop the recursion
   }
-  injectedVisualSizeModifier.value += 0.3;
+  injectedVisualSizeModifier.value += 0.1;
   console.log(injectedVisualSizeModifier);
 };
 
 const minusSize = () => {
-  if (injectedVisualSizeModifier.value <= 0.4) {
+  if (injectedVisualSizeModifier.value <= 0.2) {
     console.log('Reached minimum size. Stopping downsizing.');
     injectedVisualSizeModifier.value = 0.1; // Clamp to minimum value
     return; // Stop the recursion
   }
-  injectedVisualSizeModifier.value -= 0.3;
+  injectedVisualSizeModifier.value -= 0.1;
   console.log(injectedVisualSizeModifier);
 };
 

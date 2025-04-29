@@ -9,7 +9,7 @@
       />
     </article>
     <article class="flex landscape:flex-row portrait:flex-col-reverse justify-center h-fit-content w-fit-content">
-      <section class="flex landscape:w-fit-content justify-center">
+      <section ref="formSection" class="flex landscape:w-fit-content justify-center">
         <TheForm
           v-show="(formType.value === 'TheForm')"
           @update:visualSizeModifier="updateVisualSizeModifier"
@@ -24,8 +24,8 @@
         />
       </section>
       <section ref="visualisationDisplaySection" class="flex flex-col justify-center items-center flex-grow w-full">
-          <div ref="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full min-h-[600px] bg-yellow-200">
-            <div ref="visualisationSizeContoler" class="relative flex w-fit h-fit bg-red-200">
+          <div ref="intercheangeableVisualisation" class="relative flex flex-grow flex-col justify-center items-center h-full w-full min-h-[600px]">
+            <div ref="visualisationSizeContoler" class="relative flex w-fit h-fit">
               <NewVisualisation3d
                 v-show="selectedView === '3D'"
                 class="z-20 flex m-0"
@@ -59,6 +59,7 @@
               @update:visualSizeModifier="updateVisualSizeModifier"
               :visualSizeModifier="visualSizeModifier.value"
               :visualisationDisplaySection="visualisationDisplaySection"
+              :formSection="formSection"
               :intercheangeableVisualisation="intercheangeableVisualisation"
               :visualisationSizeContoler="visualisationSizeContoler"
               :appWindow="appWindow"
@@ -93,12 +94,16 @@ import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
 //import DownloadSection from './components/DownloadSection.vue';
 
 const visualisationDisplaySection = ref(null);
+const formSection = ref(null);
 const intercheangeableVisualisation = ref(null);
 const visualisationSizeContoler = ref(null);
 const appWindow = ref(null);
 
 const selectedView = ref('3D')
+
 const formType = reactive({value: 'TheForm'});
+provide('providedFormType', formType);
+
 const changeFormType = (type: string) => {
   formType.value = type;
 };
