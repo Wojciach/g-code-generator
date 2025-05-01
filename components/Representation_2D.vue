@@ -20,7 +20,7 @@
         </div>
         <div v-if="true" class="relative flex flex-row items-center">
           <div class="flex justify-end items-center" >
-            <!-- LEFT -->
+            <!-- LEFT COLUMN -->
             <MySVG
               customID="left_wall_svg"
               class="border-2 border-black border-r-0"
@@ -38,7 +38,9 @@
               :materialThickness="materialThickness"
             />
           </div>
-          <!-- CENTER -->
+          <!-- CENTER COLUMN -->
+          <!-- CENTER COLUMN -->
+          <!-- CENTER COLUMN -->
           <div class="">
             <!-- CENTER TOP -->
             <MySVG
@@ -57,7 +59,7 @@
               :viusaSizeModifier="scale.value"
               :materialThickness="materialThickness"
             />
-            <!-- CENTER CENTER (MIDDLE) -->
+            <!-- CENTER CENTER (MIDDLE ONE) -->
             <MySVG
               customID="top_wall_svg"
               class="border-2 border-black"
@@ -66,7 +68,7 @@
               :showCircles="(boxTypeValue === 'openTop') ? throughHoles : true"
               :width="dimensions.width"
               :height="dimensions.depth"
-              :color="wallColors.top"
+              :color="(boxTypeValue === 'openTop') ? 'none' : wallColors.top"
               :colorRightRect="wallColors.right"
               :colorLeftRect="wallColors.left"
               :colorTopRect="wallColors.back"
@@ -119,6 +121,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Polygons } from '@/utils/types';
 import { wallColors } from '@/utils/wallColors';
 import ScaleButton from './buttonSets/ScaleButton.vue';
 
@@ -133,10 +136,19 @@ const props = defineProps<{
 
 const boxType: any = inject('providedBoxType');
 const boxTypeValue = computed(() => boxType.value)
+console.log('boxTypeValue!!!!!', boxTypeValue.value)
+console.log('wal color top: ', wallColors.top)
+console.log('wal color top after calc: ', ((boxTypeValue.value === 'openTop') ? 'none' : wallColors.top))
 
 watch(() => props.visualSizeModifier, (value) => {
   scale.value = value;
 })
+
+watch(boxTypeValue, (newValue, oldValue) => {
+  console.log('boxTypeValue changed from', oldValue, 'to', newValue);
+  console.log('wal color top: ', wallColors.top)
+  console.log('wal color top after calc: ', ((newValue === 'openTop') ? 'none' : wallColors.top))
+});
 
 const scale = reactive({
   value: props.visualSizeModifier || 1

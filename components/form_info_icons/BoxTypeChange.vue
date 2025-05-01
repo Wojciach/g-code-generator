@@ -9,6 +9,7 @@
       <option value="" disabled>Choose Box Type</option>
       <option value="openTop">Open top</option>
       <option value="holes" selected>Holes</option>
+      <option value="lid" selected>Lid</option>
     </select>
   </div>
 </template>

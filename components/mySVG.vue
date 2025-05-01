@@ -7,10 +7,10 @@
       height: heightCalc + 'px',
     }"
   >
-  <!-- :viewBox="'0 0 ' + (width + (steps.materialThickness * 2)) + ' ' + (height + (steps.materialThickness * 2))" -->
+  <!-- :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))" -->
     <svg
       :id="customID"
-      :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))"
+      :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (widthCalc) + ' ' + (heightCalc)"
       xmlns="http://www.w3.org/2000/svg"
       :class="{'w-full h-full': true}"
       :style="{ backgroundColor: 'none' }"
@@ -136,7 +136,7 @@
       <!-- Polygon -->
       <polyline
         :points="polygonPoints" 
-        :fill="color" 
+        :fill="color"
         stroke="black" 
         stroke-width="0.32"
       />
@@ -197,8 +197,32 @@ import { wallColors } from '@/utils/wallColors';
   const injectedBoxType: any = inject('providedBoxType');
   const boxType = injectedBoxType;
 
-  const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
-  const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
+  // const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
+  // const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
+  const widthCalc = computed(() => (getMaxCoordinates(props.polygonPoints).x));
+  const heightCalc = computed(() => (getMaxCoordinates(props.polygonPoints).y));
+
+  function getMaxCoordinates(polygonPoints: string) {
+    // Split the string into individual coordinate pairs
+    const coordinates = polygonPoints.split(' ');
+
+    // Initialize variables to track the maximum x and y values
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    // Iterate through each coordinate pair
+    for (const coordinate of coordinates) {
+      // Split the pair into x and y values
+      const [x, y] = coordinate.split(',').map(Number);
+
+      // Update maxX and maxY if the current values are greater
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+
+    // Return the result as an object with x and y properties
+    return { x: maxX, y: maxY };
+  }
 
 </script>
 

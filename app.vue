@@ -89,6 +89,7 @@ import { reactive, ref } from 'vue';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 import { usePolygons } from '@/utils/composables/usePolygons';
 import { usePolygonsForOpenTop } from '@/utils/composables/usePolygonsForOpenTop';
+import { usePolygonsLid } from '@/utils/composables/usePolygonsLid';
 import VisualSizeModifier from './components/buttonSets/VisualSizeModifier.vue';
 import SelectViewButtons from './components/buttonSets/SelectViewButtons.vue';
 //import DownloadSection from './components/DownloadSection.vue';
@@ -169,10 +170,15 @@ const boxType = reactive({
 provide('providedBoxType', boxType);
 
 const polygons = computed(() => {
-  if (boxType.value === 'openTop') {
-    return usePolygonsForOpenTop(numberOfSteps, stepSizes.value, materialThickness.value);
-  } else {
-    return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
+  switch (boxType.value) {
+    case 'openTop':
+      return usePolygonsForOpenTop(numberOfSteps, stepSizes.value, materialThickness.value);
+    case 'holes':
+      return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
+    case 'lid':
+      return usePolygonsLid(numberOfSteps, stepSizes.value, materialThickness.value);
+    default:
+      return usePolygons(numberOfSteps, stepSizes.value, materialThickness.value);
   }
 });
 provide('providedPolygons', polygons);

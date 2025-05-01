@@ -40,7 +40,7 @@ export function usePolygonsForOpenTop(numberOfSteps: Dimensions, stepSizes: Dime
     );
 
     return {
-      top: '',
+      top: top,
       bottom: bottom,
       front: front,
       back: back,
