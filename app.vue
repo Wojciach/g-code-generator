@@ -121,6 +121,9 @@ const visualSizeModifier = reactive({
   value: 1
 });
 provide('providedVisualSizeModifier', visualSizeModifier);
+watch (() => visualSizeModifier.value, (value) => {
+  console.log('visualSizeModifier from main app', value);
+});
 
 const throughHoles = reactive({
   value: false

@@ -1,5 +1,5 @@
 <template>
-      <div v-if="true" class="relative flex flex-col items-center" :style="{width: 'fit-content', height: 'fit-content'}">
+      <div v-if="true" class="relative flex flex-col justify-center items-center" :style="{width: 'fit-content', height: 'fit-content'}">
         <div>
           <MySVG
               customID="bottom_wall_svg"

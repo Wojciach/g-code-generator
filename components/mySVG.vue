@@ -3,14 +3,14 @@
     :style="{
       // width: widthCalc + 'px',
       // height: heightCalc + 'px',
-      width: widthCalc + 'px',
-      height: heightCalc + 'px',
+      width: (widthCalc * Number(props.viusaSizeModifier)).toFixed(1) + 'px',
+      height: (heightCalc * Number(props.viusaSizeModifier)).toFixed(1) + 'px',
     }"
   >
   <!-- :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (props.width + (Number(props.materialThickness) * 2) + (modifyViewBoX * 2) ) + ' ' + (props.height + (props.materialThickness * 2) + (modifyViewBoX * 2))" -->
     <svg
       :id="customID"
-      :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (widthCalc) + ' ' + (heightCalc)"
+      :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (widthCalc).toFixed(1) + ' ' + (heightCalc).toFixed(1)"
       xmlns="http://www.w3.org/2000/svg"
       :class="{'w-full h-full': true}"
       :style="{ backgroundColor: 'none' }"
@@ -136,7 +136,7 @@
       <!-- Polygon -->
       <polyline
         :points="polygonPoints" 
-        :fill="color"
+        :fill="props.color ?? 'none'"
         stroke="black" 
         stroke-width="0.32"
       />
@@ -196,6 +196,7 @@ import { wallColors } from '@/utils/wallColors';
 
   const injectedBoxType: any = inject('providedBoxType');
   const boxType = injectedBoxType;
+  console.log('boxTypeValue!!!!!', boxType.value)
 
   // const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
   // const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));

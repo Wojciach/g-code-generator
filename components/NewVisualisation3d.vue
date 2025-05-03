@@ -30,7 +30,7 @@
           :showCircles="boxTypeValue === 'openTop' ? false : true"
           :width="dimensions.width"
           :height="dimensions.depth"
-          :color="(boxTypeValue === 'openTop') ? 'none' : wallColors.top"
+          :color="(boxTypeValue === 'openTop') ? undefined : wallColors.top"
           :colorTopRect="wallColors.back"
           :colorBottomRect="wallColors.front"
           :colorRightRect="wallColors.right"

@@ -45,6 +45,10 @@ const dimensions = computed(() => injectedDimensions);
 
 const injectedVisualSizeModifier: any = inject('providedVisualSizeModifier');
 const visualSizeModifier = computed(() => injectedVisualSizeModifier);
+watch(visualSizeModifier.value, (value) => {
+  console.log('visualSizeModifier from Visialsize modifier component: ', value);
+})
+  
 
 const injectedFormType: any = inject('providedFormType');
 const formType = computed(() => injectedFormType);

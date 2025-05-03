@@ -79,4 +79,30 @@ export class lidBoxGeneratorStatic {
 
     return result;
   }
+
+  public static fromTopGoingDownOnRightSide = (currentPosition: Position, numberOfStepsVertical: number, stepSizeVertical: number, materialThickness: number, stepSizeHorizontal: number): string => {
+    let result = '';
+
+    // Move up by material 4x thickness
+    currentPosition.y -= (materialThickness * 4);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+    
+    // Move right by material thickness 3 times
+    currentPosition.x += (materialThickness * 3);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move down by material thickness 4 times
+    currentPosition.y += (materialThickness * 4);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move down by full depth (without material thickness)
+    currentPosition.y += (numberOfStepsVertical * stepSizeVertical * 2);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move left by material thickness 3 times
+    currentPosition.x -= (materialThickness * 3);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    return result;
+  }
 }

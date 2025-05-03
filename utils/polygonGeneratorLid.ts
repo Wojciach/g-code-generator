@@ -165,7 +165,7 @@ export class polygonGeneratorLid {
       materialThickness:number,
     ):string => {
       let points = '';
-      const currentPosition = { x: materialThickness, y: materialThickness };
+      const currentPosition = { x: materialThickness, y: materialThickness * 4 };
     
       points += `${currentPosition.x},${currentPosition.y} `;
 
@@ -176,7 +176,8 @@ export class polygonGeneratorLid {
       }
       
       //right wall going down
-      points +=`${FlatTopGeneratorStatic.fromTopGoingDown(currentPosition, stepSize.vertical, numberOfSteps.vertical, materialThickness)}`;
+      // points +=`${FlatTopGeneratorStatic.fromTopGoingDown(currentPosition, stepSize.vertical, numberOfSteps.vertical, materialThickness)}`;
+      points +=`${lidBoxGeneratorStatic.fromTopGoingDownOnRightSide(currentPosition, numberOfSteps.vertical, stepSize.vertical, materialThickness, stepSize.horizontal)}`;
 
 
       //bottom wall going left
