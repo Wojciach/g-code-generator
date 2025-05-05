@@ -13,7 +13,10 @@
       :viewBox="-modifyViewBoX + ' ' + -modifyViewBoX + ' ' + (widthCalc).toFixed(1) + ' ' + (heightCalc).toFixed(1)"
       xmlns="http://www.w3.org/2000/svg"
       :class="{'w-full h-full': true}"
-      :style="{ backgroundColor: 'none' }"
+      :style="{
+        backgroundColor: 'none',
+        transform: (view3D && (customID === 'right_wall_svg')) ? 'rotate(180deg)' : 'rotate(0deg)'
+      }"
       preserveAspectRatio="xMidYMid slice"
     >
     <!-- MAIN RECTANGLE -->
@@ -43,8 +46,8 @@
       <rect
         v-if="showThis"
         :x="materialThickness" 
-        :y="0" 
-        :width="false? width : (width + materialThickness)" 
+        :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg') ) ? (thicknessShiftBasedOnBoxType) : 0" 
+        :width="widthCalc - (materialThickness * 2)" 
         :height="materialThickness" 
         :fill="topRectColor" 
       />
@@ -52,18 +55,19 @@
       <!-- RIGHT Rectangle -->
       <rect
           v-if="showThis"
-          :x="width + materialThickness" 
-          :y="0" 
+          :x="widthCalc - materialThickness" 
+          :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg')) ? thicknessShiftBasedOnBoxType : 0" 
           :width="materialThickness" 
           :height="height + (materialThickness * 2)" 
           :fill="rightRectColor" 
       />
+      {{thicknessShiftBasedOnBoxType}}
 
       <!-- LEFT Rectangle -->
       <rect
         v-if="showThis"
         :x="0" 
-        :y="0" 
+        :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg')) ? thicknessShiftBasedOnBoxType : 0" 
         :width="materialThickness" 
         :height="height + (materialThickness * 2)" 
         :fill="leftRectColor" 
@@ -73,8 +77,8 @@
       <rect
         v-if="showThis"
         :x="true? materialThickness : 0" 
-        :y="height + materialThickness" 
-        :width="true? width : (width + materialThickness)" 
+        :y="heightCalc - materialThickness" 
+        :width="widthCalc - (materialThickness * 2)" 
         :height="materialThickness" 
         :fill="bottomRectColor" 
       />
@@ -197,6 +201,19 @@ import { wallColors } from '@/utils/wallColors';
   const injectedBoxType: any = inject('providedBoxType');
   const boxType = injectedBoxType;
   console.log('boxTypeValue!!!!!', boxType.value)
+  const forceUpdate = ref(0);
+
+watch(boxType, () => {
+  forceUpdate.value++; // Trigger reactivity
+});
+
+  const thicknessShiftBasedOnBoxType = computed(() => {
+    if (boxType.value === 'lid') {
+      return props.materialThickness * 3;
+    } else {
+      return 0;
+    }
+  });
 
   // const widthCalc = computed(() => ((props.width + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));
   // const heightCalc = computed(() => ((props.height + (props.materialThickness * 2)) * (props.viusaSizeModifier as number)));

@@ -91,16 +91,24 @@ export class lidBoxGeneratorStatic {
     currentPosition.x += (materialThickness * 3);
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move down by material thickness 4 times
-    currentPosition.y += (materialThickness * 4);
+    // Move down by material thickness 5 times
+    currentPosition.y += (materialThickness * 5);
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     // Move down by full depth (without material thickness)
     currentPosition.y += (numberOfStepsVertical * stepSizeVertical * 2);
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
-    // Move left by material thickness 3 times
-    currentPosition.x -= (materialThickness * 3);
+    // Move left by material thickness 2 times
+    currentPosition.x -= (materialThickness * 2);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move up by material thickness
+    currentPosition.y -= materialThickness;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move left by material thickness
+    currentPosition.x -= materialThickness;
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
     return result;

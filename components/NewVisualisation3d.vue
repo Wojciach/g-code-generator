@@ -70,10 +70,6 @@
         </div>
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
-        <!-- top is left  -->
-        <!-- bottom is right  -->
-        <!-- left is bottom  -->
-        <!-- right is top  -->
         <MySVG
           :view3D = "true"
           customID="right_wall_svg"
@@ -85,10 +81,10 @@
           :width="dimensions.height"
           :height="dimensions.depth"
           :color="wallColors.right"
-          :colorTopRect="wallColors.front"
-          :colorBottomRect="wallColors.back"
-          :colorRightRect="wallColors.top"
-          :colorLeftRect="wallColors.bottom"
+          :colorTopRect="wallColors.back"
+          :colorBottomRect="wallColors.front"
+          :colorRightRect="wallColors.bottom"
+          :colorLeftRect="wallColors.top"
           bgColor="#aaaaff"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"

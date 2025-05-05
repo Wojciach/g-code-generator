@@ -33,7 +33,7 @@
                 :numberOfSteps="numberOfSteps"
                 :materialThickness="materialThickness.value"
                 :dimensions="dimensions"
-                :polygons="{top: polygons.top, front: polygons.front, right: polygons.left}"
+                :polygons="{top: polygons.top, front: polygons.front, right: polygons.right}"
                 :padding="50"
                 showInfo="height"
                 :showScaleButton="false"
