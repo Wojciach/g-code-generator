@@ -16,7 +16,13 @@ export function usePolygonsLid(numberOfSteps: Dimensions, stepSizes: Dimensions,
         materialThickness
       );
 
-      const frontAndBack = polygonGeneratorForOpenTop.polygonPointsFront(
+      const front = polygonGeneratorForOpenTop.polygonPointsFront(
+        { horizontal: numberOfSteps.width, vertical: numberOfSteps.height },
+        { horizontal: stepSizes.width, vertical: stepSizes.height },
+        materialThickness
+      );
+  
+      const back = polygonGeneratorLid.polygonPointsBack(
         { horizontal: numberOfSteps.width, vertical: numberOfSteps.height },
         { horizontal: stepSizes.width, vertical: stepSizes.height },
         materialThickness
@@ -37,8 +43,8 @@ export function usePolygonsLid(numberOfSteps: Dimensions, stepSizes: Dimensions,
     return {
       top: top,
       bottom: bottom,
-      front: frontAndBack,
-      back: frontAndBack,
+      front: front,
+      back: back,
       left: left,
       right: right
     };

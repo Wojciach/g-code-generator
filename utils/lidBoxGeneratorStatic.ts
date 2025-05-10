@@ -59,6 +59,7 @@ export class lidBoxGeneratorStatic {
     currentPosition.x += (materialThickness * 3);
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
 
+
     // Move down by material thickness 3 times
     currentPosition.y += (materialThickness * 3);
     result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
@@ -113,4 +114,30 @@ export class lidBoxGeneratorStatic {
 
     return result;
   }
+
+  public static fromRightToLeft = (currentPosition: Position, stepSizeHorizontal: number, numberOfStepsHotizontal: number, materialThickness: number): string => {
+    let result = '';
+
+    // Move right by material thickness
+    // currentPosition.x += materialThickness;
+    // result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move down by material thickness
+    currentPosition.y += materialThickness;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move left by material thickness
+    // currentPosition.x -= materialThickness;
+    // result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move left by full width (without material thickness)
+    currentPosition.x -= (numberOfStepsHotizontal * stepSizeHorizontal * 2);
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    // Move up by material thickness
+    currentPosition.y -= materialThickness;
+    result += `${currentPosition.x.toFixed(1)},${currentPosition.y.toFixed(1)} `;
+
+    return result;
+  };
 }

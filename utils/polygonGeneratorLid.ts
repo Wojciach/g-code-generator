@@ -20,7 +20,7 @@ export class polygonGeneratorLid {
         points += `${lidBoxGeneratorStatic.createLidHinge(currentPosition, stepSize.horizontal, numberOfSteps.horizontal, materialThickness)}`;
        
         //right wall going down
-        currentPosition.y += (numberOfSteps.vertical * stepSize.vertical * 2);
+        currentPosition.y += ((numberOfSteps.vertical * stepSize.vertical * 2) + materialThickness * 3);
         points += `${currentPosition.x},${currentPosition.y} `;
 
         //bottom wall going left
@@ -29,7 +29,7 @@ export class polygonGeneratorLid {
         points += `${currentPosition.x},${currentPosition.y} `;
        
         //left wall going up
-        currentPosition.y -= (numberOfSteps.vertical * stepSize.vertical * 2);
+        currentPosition.y -= ((numberOfSteps.vertical * stepSize.vertical * 2) + materialThickness * 3);
         points += `${currentPosition.x},${currentPosition.y} `;
         
         return `${points}`;
@@ -116,7 +116,7 @@ export class polygonGeneratorLid {
         }
 
         //bottom wall going left
-        points += `${FlatTopGeneratorStatic.fromRightToLeft(currentPosition, stepSize.horizontal, numberOfSteps.horizontal, materialThickness)}`;
+        points += `${lidBoxGeneratorStatic.fromRightToLeft(currentPosition, stepSize.horizontal, numberOfSteps.horizontal, materialThickness)}`;
 
         //left wall going up
         for(let i = 0; i < numberOfSteps.vertical; i++) {

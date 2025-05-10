@@ -2,6 +2,7 @@
       <div v-if="true" class="relative flex flex-col justify-center items-center" :style="{width: 'fit-content', height: 'fit-content'}">
         <div>
           <MySVG
+              :view3D="false"
               customID="bottom_wall_svg"
               class="border-2 border-black"
               :matrix="matrix"
@@ -22,6 +23,7 @@
           <div class="flex justify-end items-center" >
             <!-- LEFT COLUMN -->
             <MySVG
+              :view3D="false"
               customID="left_wall_svg"
               class="border-2 border-black border-r-0"
               :matrix="matrix"
@@ -44,6 +46,7 @@
           <div class="">
             <!-- CENTER TOP -->
             <MySVG
+              :view3D="false"
               customID="back_wall_svg"
               class="border-2 border-black border-y-0"
               :matrix="matrix"
@@ -61,6 +64,7 @@
             />
             <!-- CENTER CENTER (MIDDLE ONE) -->
             <MySVG
+              :view3D="false"
               customID="top_wall_svg"
               class="border-2 border-black"
               :matrix="matrix"
@@ -78,6 +82,7 @@
             />
             <!-- CENTER BOTTOM-->
             <MySVG
+              :view3D="false"
               customID="front_wall_svg"
               class="border-2 border-black border-t-0"
               :matrix="matrix"
@@ -97,6 +102,7 @@
           <!-- RIGHT -->
           <div class="flex justify-start items-center">
             <MySVG
+              :view3D="false"
               customID="right_wall_svg"
               class="border-2 border-black border-l-0"
               :matrix="matrix"

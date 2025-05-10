@@ -39,11 +39,12 @@
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
+
         <!-- FRONT -->
         <MySVG
           :view3D = "true"
           customID="front_wall_svg"
-          class="absolute border-black border-1 border-t-0"
+          class="absolute"
           :style="computedStyleFront"
           :matrix="matrix"
           :polygonPoints="polygons.front"
@@ -59,21 +60,22 @@
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
-        <div class="absolute z-20">
-          <!-- <HeightFocusInfo
-            v-if="showInfo && showInfo.includes('height')"
-            :width="dimensions.width"
-            :height="dimensions.height"
-            :viusaSizeModifier="scale.value"
-            :materialThickness="materialThickness"
-          /> -->
+        <!-- Mock wall depth for the FRONT wall (RIGHT WALL FROM VIEWER POINT OF VIEW) -->
+        <div v-if="(boxTypeValue === 'lid')" :style="computedStyleFront_MockWallDepth" class="absolute z-50">
+          <div :style="inside" class="absolute z-50"></div>
         </div>
+        <!-- Mock wall depth for the FRONT wall (LEFT WALL FROM VIEWER POINT OF VIEW) -->
+        <div v-if="(boxTypeValue === 'lid')" :style="computedStyleFront_MockWallDepth_LEFT" class="absolute z-50">
+          <div :style="inside_LEFT" class="absolute z-50"></div>
+        </div>
+
+
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
         <MySVG
           :view3D = "true"
           customID="right_wall_svg"
-          class="absolute border-black border-2 border-b-4"
+          class="absolute"
           :style="computedStyleRight"
           :matrix="matrix"
           :polygonPoints="polygons.right"
@@ -89,6 +91,30 @@
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
+
+        <!-- LEFT -->
+        <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
+        <MySVG
+          v-if="(boxTypeValue === 'lid')"
+          :view3D = "true"
+          customID="left_wall_svg"
+          class="absolute"
+          :style="computedStyleLeft"
+          :matrix="matrix"
+          :polygonPoints="polygons.left"
+          :showCircles="false"
+          :width="dimensions.height"
+          :height="dimensions.depth"
+          :color="wallColors.left"
+          :colorTopRect="wallColors.back"
+          :colorBottomRect="wallColors.front"
+          :colorRightRect="wallColors.bottom"
+          :colorLeftRect="wallColors.top"
+          bgColor="#aaaaff"
+          :viusaSizeModifier="scale.value"
+          :materialThickness="materialThickness"
+        />
+        
       </div>
       <ScaleButton @update:scale="updateScale" v-if="showScaleButton || false" />
       <Grid :gridFactor="80" class="absolute"  v-if="false"/>
@@ -111,7 +137,7 @@ const props = defineProps<{
   showInfo?: string;
   showScaleButton?: boolean;
 }>();
-
+console.log('POLYGONS LEFT TYPE', typeof props.polygons.left, props.polygons.left) 
 const boxType: any = inject('providedBoxType');
 const boxTypeValue = computed(() => boxType.value)
 
@@ -138,12 +164,12 @@ const outsideDimensions = computed(() => {
 
 //TOP SIDE WALL DIV
 const computedStyleTop = computed(() => {
-  // const outsideWidth = (props.dimensions.width + (props.materialThickness * 2)) * scale.value;
-  // const outsideDepth = (props.dimensions.depth + (props.materialThickness * 2)) * scale.value;
   const translateValueX = outsideDimensions.value.depth / 4;
-  const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4) ;
+  const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4);
+  const matThic = (boxTypeValue.value === 'lid')? props.materialThickness * scale.value : 0;
   return {
-    transform: `translateY(-${translateValueY}px) translateX(${translateValueX}px) skewX(-45deg) scaleY(0.5)`,
+    transform: `translateY(-${translateValueY + (matThic * 2.6)}px) translateX(${translateValueX + (matThic * 0.7)}px) skewX(-45deg) scaleY(0.5)`,
+    clipPath: `inset(0px 0px 0px ${matThic}px)`
   };
 });
 
@@ -156,6 +182,58 @@ const computedStyleFront = computed(() => {
     zIndex: 10
   };
 });
+const computedStyleFront_MockWallDepth_LEFT = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = 0;
+  const translateValueY = matThic * 2;
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px)`,
+    transformOrigin: 'top center',
+    width: `${matThic}px`,
+    height : `${matThic * 2}px `,
+    backgroundColor: wallColors.left
+  };
+});
+const inside_LEFT = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = 0;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 3);
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
+    transformOrigin: 'bottom center',
+    width: `${matThic}px`,
+    height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
+    backgroundColor: wallColors.left,
+    border: '1px solid black'
+  };
+});
+
+const computedStyleFront_MockWallDepth = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = outsideDimensions.value.width - matThic;
+  const translateValueY = matThic * 2;
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px)`,
+    transformOrigin: 'top center',
+    width: `${matThic}px`,
+    height : `${matThic * 3}px`,
+    backgroundColor: wallColors.right,
+  };
+});
+const inside = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = 0;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 3);
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
+    transformOrigin: 'bottom center',
+    width: `${matThic}px`,
+    height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
+    backgroundColor: wallColors.right,
+    border: '1px solid black'
+  };
+});
+
 
 //RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
@@ -165,6 +243,16 @@ const computedStyleRight = computed(() => {
     transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg) scaleY(0.5)`,
     transformOrigin: 'top left',
     zIndex: 0
+  };
+});
+//LEFT SIDE WALL DIV
+const computedStyleLeft = computed(() => {
+  const translateValueX = props.materialThickness * scale.value;
+  const translateValueY = outsideDimensions.value.height; 
+  return {
+    transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg) scaleY(0.5)`,
+    transformOrigin: 'top left',
+    zIndex: -10
   };
 });
 
