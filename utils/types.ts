@@ -28,3 +28,10 @@ export type Coordinates = {
   y: number;
   z?: number;
 };
+
+export type HingeHoleCoordsDXF = {
+  x: number;
+  y: number;
+  z?: number;
+  radius: number;
+}

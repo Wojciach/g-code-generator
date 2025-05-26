@@ -1,7 +1,8 @@
 import type { MatrixOfHoles } from "./matrixOfHoles";
 import type { Coordinates } from "./types";
+import type { HingeHoleCoordsDXF } from "./types";
 
-export function generateDXF(polygonCoordinates: Coordinates[], materialThickness: number, matrix?: MatrixOfHoles): string {
+export function generateDXF(polygonCoordinates: Coordinates[], materialThickness: number, matrix?: MatrixOfHoles, hingeHole?: HingeHoleCoordsDXF): string {
   // Generate DXF content
   let dxfContent = `0
 SECTION
@@ -95,7 +96,6 @@ SEQEND
 
   // Add circles
   if(matrix) {
-    console.log('material th inside gen: ' + materialThickness)
   matrix.xyPositions.forEach(hole => {
     dxfContent += `0
 CIRCLE
@@ -111,6 +111,22 @@ ${hole[1] + materialThickness}
 ${matrix.diameter / 2}
 `;
 });
+}
+
+if(hingeHole) {
+  dxfContent += `0
+CIRCLE
+8
+0
+10
+${hingeHole.x}
+20
+${hingeHole.y}
+30
+0.0
+40
+${hingeHole.radius}
+`;
 }
 
   dxfContent += `0

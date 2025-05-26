@@ -153,9 +153,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visualSizeModifier', 'update:throughHoles']);
 
-
-
-
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Coordinates } from '@/utils/types';
+import type { Coordinates, HingeHoleCoordsDXF } from '@/utils/types';
 import { generateDXF } from '../utils/dxfGenerator';
 import { MatrixOfHoles } from '@/utils/matrixOfHoles';
 
@@ -19,28 +19,31 @@ const matrix = computed(() => injectedMatrix);
 const injectedThroughHoles = inject('providedThroughHoles');
 const throughHoles = computed(() => injectedThroughHoles);
 
-const injectedMaterialThickness = inject('providedMaterialThickness');
+const injectedMaterialThickness = inject<Ref<number>>('providedMaterialThickness');
 const materialThickness = computed(() => injectedMaterialThickness);
 
 const injectedComputedPolygons: any = inject('providedPolygons');
 const polygonPoints = computed(() => injectedComputedPolygons.value);
 
-console.log('polygons', polygonPoints.value.topAndBottom);
+const injectedDimensions: any = inject('providedDimensions');
+const dimensions = computed(() => injectedDimensions);
 
-const singlePolygonCoordinatesForDXFCreation = (stringPolygon: string) => {
+const singlePolygonCoordinatesForDXFCreation = (stringPolygon: string, Yshift?: number) => {
   const array = stringPolygon.trim().split(" ");
   const coordinates = array.map((pair) => {
-    const [x, y] = pair.split(",").map(Number);
+    let [x, y] = pair.split(",").map(Number);
+    y -= Yshift ? Yshift : 0;
     return { x, y };
   });
   return coordinates;
 }
 
-const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles: boolean) => {
-    console.log(materialThickness.value.value)
+const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles: boolean, hinge?: HingeHoleCoordsDXF) => {
     var dxfContent;
     if (throughHoles) {
-       dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number, matrix.value as MatrixOfHoles);
+      dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number, matrix.value as MatrixOfHoles);
+    } else if (hinge) {
+      dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number, undefined, hinge);
     } else {
       dxfContent = generateDXF(arrayOfCords, materialThickness.value.value as number);
     }
@@ -56,11 +59,39 @@ const downloadDXF = (arrayOfCords: Coordinates[], fileName: string, throughHoles
 };
 
 const handleClick = () => {
-  console.log('handleClick', boxTypeValue);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.front), 'frontAndBackWall.dxf', false);
-  downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.left), 'leftAndRighWall.dxf', false);
+
+  // olny for box type 'lid' left and right wall are different and also front and back wall are different (from each other)
+  if (boxTypeValue.value === 'lid') {
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.front), 'frontWall.dxf', false);
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.back), 'backWall.dxf', false);
+
+    const matThick = Number(materialThickness.value.value) as number;
+    const rad = Math.sqrt(Math.pow((matThick / 2), 2) + Math.pow((matThick), 2))
+    console.log(rad);
+
+    let leftHinge: HingeHoleCoordsDXF = {
+      x: (dimensions.value.height + (matThick * 2.5)),
+      y: (matThick * 1.5),
+      radius: rad
+    };
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.left), 'leftWall.dxf', false, leftHinge);
+
+    let rightHinge: HingeHoleCoordsDXF = {
+      x: (matThick * 1.5),
+      y: (matThick * 1.5), 
+      radius: rad
+    };
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.right), 'rightWall.dxf', false, rightHinge);
+
+  } else {
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.left), 'leftAndRighWall.dxf', false);
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.front), 'frontAndBackWall.dxf', false);
+  }
+
+  // top wal does not exist for box type 'openTop'
   if (boxTypeValue.value !== 'openTop') {
-    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.top), 'topWall.dxf', true);
+    const shift = (boxTypeValue.value === 'lid') ? (materialThickness.value.value * 2) : 0;
+    downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.top, shift), 'topWall.dxf', true);
   }
   downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.bottom), 'bottomWall.dxf', throughHoles.value.value);
 }

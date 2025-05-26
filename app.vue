@@ -168,7 +168,7 @@ watch([() => matrixTopAndBottom.holes, () => matrixTopAndBottom.rows, () => matr
 }, { deep: true });
 
 const boxType = reactive({
-  value: ''
+  value: 'lid'
 });
 provide('providedBoxType', boxType);
 

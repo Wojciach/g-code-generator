@@ -170,14 +170,14 @@ export class polygonGeneratorLid {
       points += `${currentPosition.x},${currentPosition.y} `;
 
       //top wall going right
-      points +=`${StepsGeneratorStatic.makeCornerXplusYplus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
+      points += `${StepsGeneratorStatic.makeCornerXplusYplus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
       for(let i = 0; i < (numberOfSteps.horizontal -1); i++) {
         points += `${StepsGeneratorStatic.goRightXplusYzero(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
       }
       
       //right wall going down
-      // points +=`${FlatTopGeneratorStatic.fromTopGoingDown(currentPosition, stepSize.vertical, numberOfSteps.vertical, materialThickness)}`;
-      points +=`${lidBoxGeneratorStatic.fromTopGoingDownOnRightSide(currentPosition, numberOfSteps.vertical, stepSize.vertical, materialThickness, stepSize.horizontal)}`;
+      //points +=`${FlatTopGeneratorStatic.fromTopGoingDown(currentPosition, stepSize.vertical, numberOfSteps.vertical, materialThickness)}`;
+      points += `${lidBoxGeneratorStatic.fromTopGoingDownOnRightSide(currentPosition, numberOfSteps.vertical, stepSize.vertical, materialThickness, stepSize.horizontal)}`;
 
 
       //bottom wall going left
@@ -185,6 +185,7 @@ export class polygonGeneratorLid {
         points += `${StepsGeneratorStatic.goLeftXminusYzero(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
       }
 
+      //left wall going up
       points +=`${StepsGeneratorStatic.makeCornerXminusYminus(currentPosition, stepSize.vertical, materialThickness)}`;
       for(let i = 0; i < (numberOfSteps.vertical -1); i++) {
         points += `${StepsGeneratorStatic.goUpXzeroYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;

@@ -2,7 +2,7 @@
     <div class="flex flex-col justify-center items-center transparent h-fit w-fit" id='downloadSVG'>
       <div class="relative flex flex-wrap justify-center items-center p-4 gap-4 transparent h-fit w-fit">
         <MySVG
-          customID="frontAndBackWall"
+          :customID="(boxTypeValue === 'lid') ? 'download_front_wall' : 'download_frontAndBackWall'"
           :color="'lightblue'"
           :showCircles="false"
           :versionForDownload="true"
@@ -13,20 +13,45 @@
           :materialThickness="materialThickness"
         />
         <MySVG
-          customID="leftAndRighWall"
+          v-if="boxTypeValue === 'lid'"
+          customID="download_back_wall"
           :color="'lightblue'"
           :showCircles="false"
+          :versionForDownload="true"
+          :width="width"
+          :height="height"
+          :polygonPoints="polygonPoints.back"
+          :viusaSizeModifier="scale.value"
+          :materialThickness="materialThickness"
+        />
+        <MySVG
+          :customID="(boxTypeValue === 'lid') ? 'download_left_wall' : 'download_leftAndRightWall'"
+          :color="'lightblue'"
+          :showCircles="false"
+          :hingeHoles="boxTypeValue === 'lid' ? true : false"
           :versionForDownload="true"
           :width="height"
           :height="depth"
           :polygonPoints="polygonPoints.left"
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
-          :class="{'-rotate-90': boxTypeValue === 'openTop'}"
+        />
+        <MySVG
+          v-if="boxTypeValue === 'lid'"
+          customID="download_right_wall"
+          :color="'lightblue'"
+          :showCircles="false"
+          :hingeHoles="boxTypeValue === 'lid' ? true : false"
+          :versionForDownload="true"
+          :width="height"
+          :height="depth"
+          :polygonPoints="polygonPoints.right"
+          :viusaSizeModifier="scale.value"
+          :materialThickness="materialThickness"
         />
         <MySVG
           v-if="boxTypeValue !== 'openTop'" 
-          customID="topWall"
+          customID="download_top_wall"
           :color="'lightblue'"
           :showCircles="true"
           :versionForDownload="true"
@@ -37,7 +62,7 @@
           :materialThickness="materialThickness"
         />
         <MySVG
-          customID="bottomWall"
+          customID="download_bottomWall"
           :color="'lightblue'"
           :showCircles="throughHoles"
           :versionForDownload="true"
@@ -74,9 +99,6 @@
   const height = computed(() => dims.height);
   const depth = computed(() => dims.depth);
 
-  // const injectedMatrix: any = inject('providedMatrix');
-  // const matrix = injectedMatrix;
-
   const injectedThroughHoles: any = inject('providedThroughHoles');
   const throughHoles = computed(() => injectedThroughHoles.value);
 
@@ -84,9 +106,6 @@
   const scale = reactive({
   value: 1
 })
-
-  // const widthCalc = computed(() => ((width + (Number(materialThickness) * 2)) * (1)));
-  // const heightCalc = computed(() => ((height + (Number(materialThickness) * 2)) * (1)));
 
   const downloadSVG = (id: string, fileName: string) => {
     const svgElement = document.getElementById(id);
@@ -101,12 +120,18 @@
 };
 
 const handleClick = () => {
-  downloadSVG('frontAndBackWall', 'frontAndBackWall.svg');
-  downloadSVG('leftAndRighWall', 'leftAndRighWall.svg');
-  if (boxTypeValue.value !== 'openTop') {
-    downloadSVG('topWall', 'topWall.svg');
-  }
-  downloadSVG('bottomWall', 'bottomWall.svg');
+  const parent = document.getElementById('downloadSVG');
+  if (!parent) return;
+  const svgChildren = parent.querySelectorAll('svg');
+  const ids = Array.from(svgChildren)
+    .map((svg) => svg.id)
+    .filter(id => id);
+  
+    ids.forEach(id => {
+      console.log(id);
+      downloadSVG(id, `${id}.svg`);
+    });
+
 };
 
 </script>
@@ -117,7 +142,7 @@ const handleClick = () => {
   @apply px-6 py-3 border-2 border-blue-600 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition;
 }
 
-#topWall *, #bottomWall *, #leftAndRighWall *, #frontAndBackWall * {
+#downloadSVG > div > * * {
   stroke-width: 1.2;
 }
 

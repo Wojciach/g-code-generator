@@ -21,12 +21,12 @@
         ? (customID === 'right_wall_svg' ? 'rotate(180deg)' : 'rotate(0deg)') +
           (customID === 'left_wall_svg' ? ' scaleY(-1)' : ' scaleY(1)')
         : 'rotate(0deg) scaleY(1)',
-            }"
+      }"
       preserveAspectRatio="xMidYMid slice"
     >
     <!-- MAIN RECTANGLE -->
     <rect
-        v-if="showThis && (customID === 'top_wall_svg') "
+        v-if="visOnlyNotForDownload && ((customID ?? '').includes('top')) "
         :x="materialThickness" 
         :y="materialThickness" 
         :width="width" 
@@ -36,7 +36,7 @@
 
       <!-- MOCK BOX INSIDE -->
       <rect
-        v-if="(view3D === true) && (customID === 'top_wall_svg') && (boxType.value === 'openTop')"
+        v-if="(view3D === true) && (customID ?? '').includes('top') && (boxType.value === 'openTop')"
         :x="materialThickness / 2"
         :y="materialThickness"
         :width="width"
@@ -47,37 +47,33 @@
         transform="skewX(26.4)"
       /> 
       <!-- >>>>>>>> RECTANGLES ON SIDES <<<<<<<<< -->
-      <g>
+      <g v-if="visOnlyNotForDownload">
         <!-- TOP Rectangle -->
         <rect
-          v-if="showThis"
           :x="materialThickness"
-          :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg') ) ? (thicknessShiftBasedOnBoxType) : 0"
+          :y="((customID ?? '').includes('right') || (customID ?? '').includes('left') ) ? (thicknessShiftBasedOnBoxType) : 0"
           :width="widthCalc - (materialThickness * 2)"
           :height="materialThickness"
           :fill="topRectColor"
         />
         <!-- RIGHT Rectangle -->
         <rect
-            v-if="showThis"
             :x="widthCalc - materialThickness"
-            :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg')) ? thicknessShiftBasedOnBoxType : 0"
+            :y="((customID ?? '').includes('right') || (customID ?? '').includes('left')) ? thicknessShiftBasedOnBoxType : 0"
             :width="materialThickness"
             :height="height + (materialThickness * 5)"
             :fill="rightRectColor"
         />
         <!-- LEFT Rectangle -->
         <rect
-          v-if="showThis"
           :x="0"
-          :y="((customID === 'right_wall_svg') || (customID === 'left_wall_svg')) ? thicknessShiftBasedOnBoxType : 0"
+          :y="((customID ?? '').includes('right') || (customID ?? '').includes('left')) ? thicknessShiftBasedOnBoxType : 0"
           :width="materialThickness"
           :height="height + (materialThickness * 5)"
           :fill="leftRectColor"
         />
         <!-- BOTTOM Rectangle -->
         <rect
-          v-if="showThis"
           :x="true? materialThickness : 0"
           :y="heightCalc - materialThickness"
           :width="widthCalc - (materialThickness * 2)"
@@ -87,91 +83,90 @@
       </g>
 
       <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CORNERS <<<<<<<<<<<<<<<<<<<<< -->
-<g>
-         
+      <g v-if="visOnlyNotForDownload">   
         <!-- LEFT BOTTOM CORNER Rectangle -->
         <rect
-   v-if="(showThis && (boxType.value === 'openTop') && (customID === 'top_wall_svg'))"
-   :x="0"
-   :y="height + materialThickness"
-   :width="materialThickness"
-   :height="materialThickness"
-   :fill="bottomRectColor" 
+        v-if="((boxType.value === 'openTop') && (customID === 'top_wall_svg'))"
+        :x="0"
+        :y="height + materialThickness"
+        :width="materialThickness"
+        :height="materialThickness"
+        :fill="bottomRectColor" 
         />
-  
+        
         <!-- RIGHT BOTTOM CORNER Rectangle -->
         <rect
-   v-if="(showThis && (boxType.value === 'openTop') && ((customID === 'left_wall_svg') || (customID === 'right_wall_svg')) )"
-   :x="width + materialThickness"
-   :y="height + materialThickness"
-   :width="materialThickness"
-   :height="materialThickness"
-   :fill="bottomRectColor" 
+          v-if="((boxType.value === 'openTop') && ((customID === 'left_wall_svg') || (customID === 'right_wall_svg')) )"
+          :x="width + materialThickness"
+          :y="height + materialThickness"
+          :width="materialThickness"
+          :height="materialThickness"
+          :fill="bottomRectColor" 
         />
-  
+        
         <!-- LEFT TOP CORNER Rectangle -->
         <rect
-   v-if="(showThis && (boxType.value === 'openTop') && (customID === 'right_wall_svg'))"
-   :x="0"
-   :y="0"
-   :width="materialThickness"
-   :height="materialThickness"
-   :fill="topRectColor" 
+          v-if="((boxType.value === 'openTop') && (customID === 'right_wall_svg'))"
+          :x="0"
+          :y="0"
+          :width="materialThickness"
+          :height="materialThickness"
+          :fill="topRectColor" 
         />
-  
+        
         <!-- RIGHT TOP CORNER Rectangle -->
         <rect
-   v-if="(showThis && (boxType.value === 'openTop') && (customID === 'top_wall_svg'))"
-   :x="width + materialThickness"
-   :y="0"
-   :width="materialThickness"
-   :height="materialThickness"
-   :fill="topRectColor" 
-        />
-</g>
-
-    <!-- MAIN RECTANGLE INSIDE STROKE -->
-    <rect
-        v-if="showThis && (customID === 'top_wall_svg') && (boxType.value === 'openTop')"
-        :x="materialThickness" 
-        :y="materialThickness"
-        :width="width" 
-        :height="height"
-        fill="none"
-        stroke="black"
-        stroke-width="0.5"
-      /> 
-
-      <!-- Polygon -->
-      <polyline
-        :points="polygonPoints" 
-        :fill="props.color ?? 'none'"
-        stroke="black" 
-        stroke-width="0.32"
-      />
-      <!-- Circles -->
-      <g>
-        <circle
-          v-if="showCircles"
-          v-for="n in matrix.xyPositions"
-          :key="`${n[0]}-${n[1]}`"
-          :cx="(n[0] + materialThickness)"
-          :cy="((customID === 'top_wall_svg') && (boxType.value === 'lid'))? (n[1] + materialThickness * 3) : (n[1] + materialThickness)"
-          :r="matrix.diameter / 2"
-          :fill="versionForDownload ? 'white' : 'black'"
-          stroke="black"
-          stroke-width="0.12"
+        v-if="(boxType.value === 'openTop') && (customID === 'top_wall_svg')"
+        :x="width + materialThickness"
+        :y="0"
+        :width="materialThickness"
+        :height="materialThickness"
+        :fill="topRectColor" 
         />
       </g>
+
+  <!-- MAIN RECTANGLE INSIDE STROKE -->
+  <rect
+      v-if="visOnlyNotForDownload && (customID ?? '').includes('right') && (boxType.value === 'openTop')"
+      :x="materialThickness" 
+      :y="materialThickness"
+      :width="width" 
+      :height="height"
+      fill="none"
+      stroke="black"
+      stroke-width="0.5"
+    /> 
+
+  <!-- Polygon -->
+  <polyline
+    :points="polygonPoints" 
+    :fill="props.color ?? 'none'"
+    stroke="black" 
+    stroke-width="0.32"
+  />
+  <!-- Circles -->
+  <g>
+    <circle
+      v-if="showCircles"
+      v-for="n in matrix.xyPositions"
+      :key="`${n[0]}-${n[1]}`"
+      :cx="(n[0] + materialThickness)"
+      :cy="((customID ?? '').includes('top') && (boxType.value === 'lid'))? (n[1] + materialThickness * 3) : (n[1] + materialThickness)"
+      :r="matrix.diameter / 2"
+      :fill="versionForDownload ? 'white' : 'black'"
+      stroke="black"
+      stroke-width="0.12"
+    />
+  </g>
       <!-- HINGE CIRCLE -->
       <circle
-        v-if="(boxType.value === 'lid') && ((customID === 'right_wall_svg') || (customID === 'left_wall_svg') || (customID === 'leftAndRighWall'))"
-        :cx="(customID === 'right_wall_svg') ? materialThickness * 1.5 : width + materialThickness * 2.5"
+        v-if="hingeHoles"
+        :cx="((customID ?? '').includes('right')) ? materialThickness * 1.5 : width + materialThickness * 2.5"
         :cy="materialThickness * 1.5"
         :r="Math.sqrt(Math.pow((materialThickness / 2), 2) + Math.pow((materialThickness), 2))" 
         :fill="versionForDownload ? 'white' : 'black'"
         stroke="black"
-        stroke-width="0.12"
+        stroke-width="0.12"        
       />
     </svg>
   </div>
@@ -199,6 +194,7 @@ import { wallColors } from '@/utils/wallColors';
     viusaSizeModifier: number | string;
     materialThickness: number;
     versionForDownload?: boolean;
+    hingeHoles?: boolean;
     reff?: Ref<HTMLElement | null>;
   }>();
 
@@ -209,14 +205,17 @@ import { wallColors } from '@/utils/wallColors';
   const rightRectColor = props.colorRightRect ?? 'red';
   const leftRectColor = props.colorLeftRect ?? 'blue';
 // const c_id = props.customID ?? 'svg_id';
-  const showThis = props.versionForDownload ? false : true;
-  const modifyViewBoX = showThis ? 0 : 20;
+  const visOnlyNotForDownload = props.versionForDownload ? false : true;
+  const showHingeCircle = props.hingeHoles ? true : false;
+
+  const modifyViewBoX = visOnlyNotForDownload ? 0 : 20;
 
   const injectedMatrix: any = inject('providedMatrix');
   const matrix = injectedMatrix;
 
   const injectedBoxType: any = inject('providedBoxType');
   const boxType = injectedBoxType;
+  
   console.log('boxTypeValue!!!!!', boxType.value)
   const forceUpdate = ref(0);
 

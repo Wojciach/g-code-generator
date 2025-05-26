@@ -4,6 +4,7 @@ export const wallColors = {
   left: 'oklch(0.811 0.111 293.571)',
   leftButDarker: 'oklch(0.6 0.111 293.571)',
   right: 'oklch(0.614 0.140 16.935)',
+  rightButDarker: 'oklch(0.5 0.140 16.935)',
   front: 'oklch(0.457 0.24 277.023)',
   back: 'oklch(0.511 0.096 186.391)',
   backButDarker: 'oklch(0.4 0.096 186.391)'

@@ -2,18 +2,12 @@
     <div
       class="relative flex justify-center items-center"
       :style="{
-        // width: `${((dimensions.width + (materialThickness * 2)) * scale.value)}px`,
-        // height: `${((dimensions.depth + (materialThickness * 2)) * scale.value)}px`,
         width: `fit-content`,
         height: `fit-content`,
-        //padding: '100px',
-        //paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
-        paddingTop: `${(((dimensions.depth + (materialThickness * 2)) * scale.value) / 2) + padding}px`,
+        paddingTop: `${(((dimensions.depth + (materialThickness * 2) + modifierForLidCase) * scale.value) / 2) + padding}px`,
         paddingBottom: `${((dimensions.height + (materialThickness * 2)) * scale.value) + padding}px`,
         paddingRight: `${(((dimensions.depth + (dimensions.width * 2) + (materialThickness * 6)) * scale.value)/2) + padding}px`,
         paddingLeft: `${padding}px`,
-        //margin: '100px',
-        //bottom: '0px'
         margin: 'auto'
       }"
       >
@@ -26,7 +20,7 @@
           class="absolute border-black border-1 border-b-0"
           :style="computedStyleTop"
           :matrix="matrix"
-          :polygonPoints="polygons.top"
+          :polygonPoints="polygons.top ?? ''"
           :showCircles="boxTypeValue === 'openTop' ? false : true"
           :width="dimensions.width"
           :height="dimensions.depth"
@@ -47,7 +41,7 @@
           class="absolute"
           :style="computedStyleFront"
           :matrix="matrix"
-          :polygonPoints="polygons.front"
+          :polygonPoints="polygons.front ?? ''"
           :showCircles="false"
           :width="dimensions.width"
           :height="dimensions.height"
@@ -68,7 +62,10 @@
         <div v-if="(boxTypeValue === 'lid')" :style="computedStyleFront_MockWallDepth_LEFT" class="absolute z-50">
           <div :style="inside_LEFT" class="absolute z-50"></div>
         </div>
-
+        <!-- Mock wall depth for the FRONT wall (FRONT OF THE LID -->
+        <div v-if="(boxTypeValue === 'lid')" :style="computedStyleFront_FRONT_OF_THE_LID" class="absolute z-50">
+          <div :style="inside_FRONT_OF_THE_LID" class="absolute z-50"></div>
+        </div>
 
         <!-- RIGHT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
@@ -78,8 +75,9 @@
           class="absolute"
           :style="computedStyleRight"
           :matrix="matrix"
-          :polygonPoints="polygons.right"
+          :polygonPoints="polygons.right ?? ''"
           :showCircles="false"
+          :hingeHoles="boxTypeValue === 'lid' ? true : false"
           :width="dimensions.height"
           :height="dimensions.depth"
           :color="wallColors.right"
@@ -91,6 +89,8 @@
           :viusaSizeModifier="scale.value"
           :materialThickness="materialThickness"
         />
+        <!-- Hook Mock Depth -->
+        <div v-if="boxType.value === 'lid'" :style="computedStyleRight_Hook" class="absolute"> </div>
 
         <!-- LEFT -->
         <!-- this side is rotated -90deg so top, bottom, left and right rectangle positions do not match visual represetion (clor...Rect prop)  -->
@@ -101,8 +101,9 @@
           class="absolute"
           :style="computedStyleLeft"
           :matrix="matrix"
-          :polygonPoints="polygons.left"
+          :polygonPoints="polygons.left ?? ''"
           :showCircles="false"
+          :hingeHoles="boxTypeValue === 'lid' ? true : false"
           :width="dimensions.height"
           :height="dimensions.depth"
           :color="wallColors.left"
@@ -125,6 +126,7 @@
 import type { Dimensions, Polygons } from '@/utils/types';
 import { wallColors } from '@/utils/wallColors.ts'
 import ScaleButton from './buttonSets/ScaleButton.vue';
+import type { CSSProperties } from 'vue';
 
 const props = defineProps<{
   matrix?: MatrixOfHoles;
@@ -137,9 +139,14 @@ const props = defineProps<{
   showInfo?: string;
   showScaleButton?: boolean;
 }>();
+
 console.log('POLYGONS LEFT TYPE', typeof props.polygons.left, props.polygons.left) 
 const boxType: any = inject('providedBoxType');
 const boxTypeValue = computed(() => boxType.value)
+
+const modifierForLidCase = computed(() => {
+  return (boxTypeValue.value === 'lid')? props.materialThickness * 7 : 0;
+});
 
 const updateScale = (value) => {
   console.log('updateScale');
@@ -168,7 +175,7 @@ const computedStyleTop = computed(() => {
   const translateValueY = outsideDimensions.value.depth  - (outsideDimensions.value.depth / 4);
   const matThic = (boxTypeValue.value === 'lid')? props.materialThickness * scale.value : 0;
   return {
-    transform: `translateY(-${translateValueY + (matThic * 2.6)}px) translateX(${translateValueX + (matThic * 0.7)}px) skewX(-45deg) scaleY(0.5)`,
+    transform: `translateY(-${translateValueY + (matThic * 2.5)}px) translateX(${translateValueX + (matThic * 0.5)}px) skewX(-45deg) scaleY(0.5)`,
     clipPath: `inset(0px 0px 0px ${matThic}px)`
   };
 });
@@ -182,6 +189,36 @@ const computedStyleFront = computed(() => {
     zIndex: 10
   };
 });
+const computedStyleFront_FRONT_OF_THE_LID = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = matThic - (matThic * 0.25);
+  const translateValueY = matThic * 0.25 + 0.1;
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px)`,
+    transformOrigin: 'top center',
+    width: `${props.dimensions.width * scale.value}px`,
+    height : `${matThic}px `,
+    backgroundColor: wallColors.top,
+    border: '0.5px solid black',
+    borderTop: '0px',
+    zIndex: 10
+  };
+});
+
+const inside_FRONT_OF_THE_LID = computed(() => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = outsideDimensions.value.width - (matThic * 2) - 0.75;
+  const translateValueY = -0.35;
+  return {
+    transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) skewY(-45deg) scaleY(0.5)`,
+    transformOrigin: 'top left',
+    width: `${matThic}px`,
+    height : `${1.65 + matThic * 2}px`,
+    backgroundColor: wallColors.top,
+    border: '0.5px solid black',
+  };
+});
+
 const computedStyleFront_MockWallDepth_LEFT = computed(() => {
   const matThic = props.materialThickness * scale.value;
   const translateValueX = 0;
@@ -191,20 +228,22 @@ const computedStyleFront_MockWallDepth_LEFT = computed(() => {
     transformOrigin: 'top center',
     width: `${matThic}px`,
     height : `${matThic * 2}px `,
-    backgroundColor: wallColors.left
+    backgroundColor: wallColors.left,
+    border: '0.4px solid black',
+    zIndex: -10
   };
 });
 const inside_LEFT = computed(() => {
   const matThic = props.materialThickness * scale.value;
-  const translateValueX = 0;
-  const translateValueY = outsideDimensions.value.depth + (matThic * 3);
+  const translateValueX = -0.4;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 3) +0.3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
     transformOrigin: 'bottom center',
     width: `${matThic}px`,
     height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
     backgroundColor: wallColors.left,
-    border: '1px solid black'
+    border: '0.5px solid black'
   };
 });
 
@@ -218,22 +257,22 @@ const computedStyleFront_MockWallDepth = computed(() => {
     width: `${matThic}px`,
     height : `${matThic * 3}px`,
     backgroundColor: wallColors.right,
+    border: '0.5px solid black'
   };
 });
 const inside = computed(() => {
   const matThic = props.materialThickness * scale.value;
-  const translateValueX = 0;
-  const translateValueY = outsideDimensions.value.depth + (matThic * 3);
+  const translateValueX = -0.5;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 3) + 0.3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
     transformOrigin: 'bottom center',
     width: `${matThic}px`,
     height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
     backgroundColor: wallColors.right,
-    border: '1px solid black'
+    border: '0.5px solid black'
   };
 });
-
 
 //RIGHT SIDE WALL DIV
 const computedStyleRight = computed(() => {
@@ -245,6 +284,22 @@ const computedStyleRight = computed(() => {
     zIndex: 0
   };
 });
+
+const computedStyleRight_Hook = computed((): CSSProperties => {
+  const matThic = props.materialThickness * scale.value;
+  const translateValueX = outsideDimensions.value.width +  outsideDimensions.value.depth / 2 + matThic / 2  ;
+  const translateValueY = (outsideDimensions.value.height + outsideDimensions.value.depth / 2) - outsideDimensions.value.height; 
+  return {
+    transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) rotate(0deg) skewX(0deg) scaleY(0.5)`,
+    transformOrigin: 'top left',
+    zIndex: -10,
+    backgroundColor: wallColors.rightButDarker,
+    position: 'absolute',
+    width: `${matThic /2}px`,
+    height: `${matThic * 4}px`,
+  };
+});
+
 //LEFT SIDE WALL DIV
 const computedStyleLeft = computed(() => {
   const translateValueX = props.materialThickness * scale.value;
