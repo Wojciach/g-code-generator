@@ -176,7 +176,8 @@ const computedStyleTop = computed(() => {
   const matThic = (boxTypeValue.value === 'lid')? props.materialThickness * scale.value : 0;
   return {
     transform: `translateY(-${translateValueY + (matThic * 2.5)}px) translateX(${translateValueX + (matThic * 0.5)}px) skewX(-45deg) scaleY(0.5)`,
-    clipPath: `inset(0px 0px 0px ${matThic}px)`
+    clipPath: `inset(0px 0px 0px ${matThic}px)`,
+    zIndex: 10,
   };
 });
 
@@ -222,26 +223,26 @@ const inside_FRONT_OF_THE_LID = computed(() => {
 const computedStyleFront_MockWallDepth_LEFT = computed(() => {
   const matThic = props.materialThickness * scale.value;
   const translateValueX = 0;
-  const translateValueY = matThic * 2;
+  const translateValueY = matThic * 3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px)`,
     transformOrigin: 'top center',
     width: `${matThic}px`,
-    height : `${matThic * 2}px `,
+    height : `${matThic * 3}px `,
     backgroundColor: wallColors.left,
     border: '0.4px solid black',
-    zIndex: -10
+    zIndex: 8
   };
 });
 const inside_LEFT = computed(() => {
   const matThic = props.materialThickness * scale.value;
   const translateValueX = -0.4;
-  const translateValueY = outsideDimensions.value.depth + (matThic * 3) +0.3;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 4) + 0.3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
     transformOrigin: 'bottom center',
     width: `${matThic}px`,
-    height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
+    height : `${outsideDimensions.value.depth + (matThic * 4)}px`,
     backgroundColor: wallColors.left,
     border: '0.5px solid black'
   };
@@ -250,12 +251,12 @@ const inside_LEFT = computed(() => {
 const computedStyleFront_MockWallDepth = computed(() => {
   const matThic = props.materialThickness * scale.value;
   const translateValueX = outsideDimensions.value.width - matThic;
-  const translateValueY = matThic * 2;
+  const translateValueY = matThic * 3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px)`,
     transformOrigin: 'top center',
     width: `${matThic}px`,
-    height : `${matThic * 3}px`,
+    height : `${matThic * 4}px`,
     backgroundColor: wallColors.right,
     border: '0.5px solid black'
   };
@@ -263,12 +264,12 @@ const computedStyleFront_MockWallDepth = computed(() => {
 const inside = computed(() => {
   const matThic = props.materialThickness * scale.value;
   const translateValueX = -0.5;
-  const translateValueY = outsideDimensions.value.depth + (matThic * 3) + 0.3;
+  const translateValueY = outsideDimensions.value.depth + (matThic * 4) + 0.3;
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) skewX(-45deg) scaleY(0.5)`,
     transformOrigin: 'bottom center',
     width: `${matThic}px`,
-    height : `${outsideDimensions.value.depth + (matThic * 3)}px`,
+    height : `${outsideDimensions.value.depth + (matThic * 4)}px`,
     backgroundColor: wallColors.right,
     border: '0.5px solid black'
   };
@@ -281,21 +282,21 @@ const computedStyleRight = computed(() => {
   return {
     transform: `translateX(${translateValueX}px) translateY(${translateValueY}px) rotate(-90deg) skewX(45deg) scaleY(0.5)`,
     transformOrigin: 'top left',
-    zIndex: 0
+    zIndex: 20
   };
 });
 
 const computedStyleRight_Hook = computed((): CSSProperties => {
   const matThic = props.materialThickness * scale.value;
-  const translateValueX = outsideDimensions.value.width +  outsideDimensions.value.depth / 2 + matThic / 2  ;
-  const translateValueY = (outsideDimensions.value.height + outsideDimensions.value.depth / 2) - outsideDimensions.value.height; 
+  const translateValueX = outsideDimensions.value.width +  outsideDimensions.value.depth / 2 + matThic / 5;
+  const translateValueY = ((outsideDimensions.value.height + outsideDimensions.value.depth / 2) - outsideDimensions.value.height) - matThic; 
   return {
     transform: `translateX(${translateValueX}px) translateY(-${translateValueY}px) rotate(0deg) skewX(0deg) scaleY(0.5)`,
     transformOrigin: 'top left',
     zIndex: -10,
     backgroundColor: wallColors.rightButDarker,
     position: 'absolute',
-    width: `${matThic /2}px`,
+    width: `${matThic * 0.8}px`,
     height: `${matThic * 4}px`,
   };
 });

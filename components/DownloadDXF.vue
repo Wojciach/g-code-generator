@@ -71,14 +71,14 @@ const handleClick = () => {
 
     let leftHinge: HingeHoleCoordsDXF = {
       x: (dimensions.value.height + (matThick * 2.5)),
-      y: (matThick * 1.5),
+      y: (matThick * 2.5),
       radius: rad
     };
     downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.left), 'leftWall.dxf', false, leftHinge);
 
     let rightHinge: HingeHoleCoordsDXF = {
-      x: (matThick * 1.5),
-      y: (matThick * 1.5), 
+      x: (matThick * 2.5),
+      y: (matThick * 2.5), 
       radius: rad
     };
     downloadDXF(singlePolygonCoordinatesForDXFCreation(polygonPoints.value.right), 'rightWall.dxf', false, rightHinge);

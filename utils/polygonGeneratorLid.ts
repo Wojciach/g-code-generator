@@ -65,36 +65,6 @@ export class polygonGeneratorLid {
         return `${points}`;
     };
 
-    // public static polygonPointsFront = (
-    //     numberOfSteps:{ horizontal:number, vertical:number},
-    //     stepSize:{ horizontal:number, vertical:number},
-    //     materialThickness:number,
-    // ):string => {
-    //     let points = '';
-    //     const currentPosition = { x: materialThickness, y: materialThickness };
-      
-    //     points += `${currentPosition.x},${currentPosition.y} `;
-
-    //     //top wall going right
-    //     points += `${FlatTopGeneratorStatic.fromLeftToRight(currentPosition, stepSize.horizontal, numberOfSteps.horizontal, materialThickness)}`;
-        
-    //     //right wall going down
-    //     for(let i = 0; i < numberOfSteps.vertical; i++) {
-    //       points += `${StepsGeneratorStatic.goDownXzeroYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
-    //     }
-
-    //     //bottom wall going left
-    //     for(let i = 0; i < numberOfSteps.horizontal; i++) {
-    //       points += `${StepsGeneratorStatic.goLeftXminusYzero(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
-    //     }
-
-    //     //left wall going up
-    //     for(let i = 0; i < numberOfSteps.vertical; i++) {
-    //       points += `${StepsGeneratorStatic.goUpXzeroYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
-    //     }
-    //     return `${points}`;
-    // };
-
     public static polygonPointsBack = (
         numberOfSteps:{ horizontal:number, vertical:number},
         stepSize:{ horizontal:number, vertical:number},
@@ -119,7 +89,8 @@ export class polygonGeneratorLid {
         points += `${lidBoxGeneratorStatic.fromRightToLeft(currentPosition, stepSize.horizontal, numberOfSteps.horizontal, materialThickness)}`;
 
         //left wall going up
-        for(let i = 0; i < numberOfSteps.vertical; i++) {
+        points += `${lidBoxGeneratorStatic.goUpXzeroYminus_modifiedForHinge(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
+        for(let i = 0; i < (numberOfSteps.vertical - 1); i++) {
           points += `${StepsGeneratorStatic.goUpXzeroYminus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
         }
         return `${points}`;
@@ -131,7 +102,7 @@ export class polygonGeneratorLid {
       materialThickness:number,
   ):string => {
       let points = '';
-      const currentPosition = { x: ((materialThickness * 3) + (stepSize.horizontal * 2) ), y: (materialThickness * 4) };
+      const currentPosition = { x: ((materialThickness * 4) + (stepSize.horizontal * 2) ), y: (materialThickness * 5) };
     
       points += `${currentPosition.x},${currentPosition.y} `;
 
@@ -165,15 +136,16 @@ export class polygonGeneratorLid {
       materialThickness:number,
     ):string => {
       let points = '';
-      const currentPosition = { x: materialThickness, y: materialThickness * 4 };
+      const currentPosition = { x: (materialThickness * 1), y: materialThickness * 5 };
     
       points += `${currentPosition.x},${currentPosition.y} `;
 
       //top wall going right
       points += `${StepsGeneratorStatic.makeCornerXplusYplus(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
-      for(let i = 0; i < (numberOfSteps.horizontal -1); i++) {
+      for(let i = 0; i < (numberOfSteps.horizontal -2); i++) {
         points += `${StepsGeneratorStatic.goRightXplusYzero(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
       }
+      points += `${lidBoxGeneratorStatic.goRightXplusYzero_ModifiedForLid(currentPosition, stepSize.horizontal, stepSize.vertical, materialThickness)}`;
       
       //right wall going down
       //points +=`${FlatTopGeneratorStatic.fromTopGoingDown(currentPosition, stepSize.vertical, numberOfSteps.vertical, materialThickness)}`;

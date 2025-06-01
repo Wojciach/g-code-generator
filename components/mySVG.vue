@@ -161,8 +161,8 @@
       <!-- HINGE CIRCLE -->
       <circle
         v-if="hingeHoles"
-        :cx="((customID ?? '').includes('right')) ? materialThickness * 1.5 : width + materialThickness * 2.5"
-        :cy="materialThickness * 1.5"
+        :cx="((customID ?? '').includes('right')) ? materialThickness * 2.5 : width + materialThickness * 2.5"
+        :cy="materialThickness * 2.5"
         :r="Math.sqrt(Math.pow((materialThickness / 2), 2) + Math.pow((materialThickness), 2))" 
         :fill="versionForDownload ? 'white' : 'black'"
         stroke="black"
@@ -221,7 +221,7 @@ import { wallColors } from '@/utils/wallColors';
 
   const thicknessShiftBasedOnBoxType = computed(() => {
     if (boxType.value === 'lid') {
-      return props.materialThickness * 3;
+      return props.materialThickness * 4;
     } else {
       return 0;
     }
